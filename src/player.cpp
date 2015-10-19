@@ -68,12 +68,9 @@
 #endif
 
 namespace Player {
-	bool exit_flag;
 	bool reset_flag;
 	bool debug_flag;
-	bool hide_title_flag;
 	bool window_flag;
-	bool fps_flag;
 	bool battle_test_flag;
 	int battle_test_troop_id;
 	bool new_game_flag;
@@ -94,6 +91,12 @@ namespace Player {
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
+}
+
+namespace {
+	bool exit_flag;
+	bool hide_title_flag;
+	std::string game_title_native;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -136,6 +139,11 @@ void Player::Init(int argc, char *argv[]) {
 
 	srand(time(NULL));
 
+	// setup global flags
+	exit_flag = false;
+	hide_title_flag = false;
+	no_audio_flag = false;
+
 	ParseCommandLine(argc, argv);
 
 	if (Main_Data::project_path.empty()) {
@@ -144,6 +152,8 @@ void Player::Init(int argc, char *argv[]) {
 	}
 
 	FileFinder::Init();
+
+	ParseIni();
 
 	DisplayUi.reset();
 
@@ -228,7 +238,7 @@ void Player::Update(bool update_scene) {
 
 	// Normal logic update
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
-		fps_flag = !fps_flag;
+		Graphics::ToggleFPS();
 	}
 	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
@@ -275,6 +285,10 @@ int Player::GetFrames() {
 	return frames;
 }
 
+void Player::RequestExit() {
+	exit_flag = true;
+}
+
 void Player::Exit() {
 #ifdef EMSCRIPTEN
 	emscripten_cancel_main_loop();
@@ -304,10 +318,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 #else
 	window_flag = false;
 #endif
-	fps_flag = false;
 	debug_flag = false;
-	hide_title_flag = false;
-	exit_flag = false;
 	reset_flag = false;
 	battle_test_flag = false;
 	battle_test_troop_id = 0;
@@ -317,7 +328,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	party_y_position = -1;
 	start_map_id = -1;
 	no_rtp_flag = false;
-	no_audio_flag = false;
 
 	std::vector<std::string> args;
 
@@ -339,7 +349,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			window_flag = true;
 		}
 		else if (*it == "--show-fps") {
-			fps_flag = true;
+			Graphics::ShowFPS(true);
 		}
 		else if (*it == "testplay" || *it == "--test-play") {
 			debug_flag = true;
@@ -474,6 +484,27 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	}
 }
 
+static bool IniFlagEnabled(std::string flag) {
+	return (flag == "1" || flag == "true" || flag == "yes");
+}
+
+void Player::ParseIni() {
+	INIReader ini(FileFinder::FindDefault(INI_NAME));
+	if (ini.ParseError() != -1) {
+		game_title_native = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1" ? true : no_rtp_flag;
+
+		if (IniFlagEnabled(ini.Get("EasyRPG", "hide-title", "0")))
+			hide_title_flag = true;
+
+		if (IniFlagEnabled(ini.Get("EasyRPG", "show-fps", "0")))
+			Graphics::ShowFPS(true);
+
+		if (IniFlagEnabled(ini.Get("EasyRPG", "disable-audio", "0")))
+			no_audio_flag = true;
+	}
+}
+
 static void OnSystemFileReady(FileRequestResult* result) {
 	Game_System::SetSystemName(result->file);
 }
@@ -489,12 +520,8 @@ void Player::CreateGameObjects() {
 
 		LoadDatabase();
 
-		INIReader ini(FileFinder::FindDefault(INI_NAME));
-		if (ini.ParseError() != -1) {
-			std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
-			game_title = ReaderUtil::Recode(title, encoding);
-			no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
-		}
+		// setup correct game title
+		game_title = ReaderUtil::Recode(game_title_native, encoding);
 
 		Output::Debug("Loading game %s", Player::game_title.c_str());
 
@@ -766,6 +793,14 @@ bool Player::IsRPG2k3E() {
 	return (engine & EngineRpg2k3E) == EngineRpg2k3E;
 }
 
+bool Player::IsTitleHidden() {
+	return hide_title_flag;
+}
+
+bool Player::ExitRequested() {
+	return exit_flag;
+}
+
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)
@@ -884,6 +919,4 @@ static void InitMiniDumpWriter()
 		}
 	}
 }
-
-
 #endif

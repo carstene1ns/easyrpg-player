@@ -84,6 +84,11 @@ namespace Player {
 	void FrameReset();
 
 	/**
+	 * Initiates a clean exit
+	 */
+	void RequestExit();
+
+	/**
 	 * Exits EasyRPG Player.
 	 */
 	void Exit();
@@ -92,6 +97,11 @@ namespace Player {
 	 * Parses the command line arguments.
 	 */
 	void ParseCommandLine(int argc, char *argv[]);
+
+	/**
+	 * Parses settings from ini file.
+	 */
+	void ParseIni();
 
 	/**
 	 * (Re)Initializes all game objects
@@ -148,17 +158,21 @@ namespace Player {
 	/** Output program usage information on stdout */
 	void PrintUsage();
 
-	/** Exit flag, if true will exit application on next Player::Update. */
-	extern bool exit_flag;
+	/**
+	 * @return If title scene will run without image and music.
+	 */
+	bool IsTitleHidden();
+
+	/**
+	 * @return If will exit application on next Player::Update.
+	 */
+	bool ExitRequested();
 
 	/** Reset flag, if true will restart game on next Player::Update. */
 	extern bool reset_flag;
 
 	/** Debug flag, if true will run game in debug mode. */
 	extern bool debug_flag;
-
-	/** Hide Title flag, if true title scene will run without image and music. */
-	extern bool hide_title_flag;
 
 	/** Window flag, if true will run in window mode instead of full screen. */
 	extern bool window_flag;

@@ -68,6 +68,10 @@ namespace Graphics {
 	bool SortDrawableList(const Drawable* first, const Drawable* second);
 }
 
+namespace {
+	bool show_fps = false;
+}
+
 unsigned SecondToFrame(float const second) {
 	return(second * Graphics::framerate);
 }
@@ -147,7 +151,7 @@ void Graphics::UpdateTitle() {
 	std::stringstream title;
 	title << Player::game_title;
 
-	if (Player::fps_flag) {
+	if (show_fps) {
 		title << " - FPS " << real_fps;
 	}
 
@@ -201,7 +205,7 @@ void Graphics::DrawFrame() {
 }
 
 void Graphics::DrawOverlay() {
-	if (DisplayUi->IsFullscreen() && Player::fps_flag) {
+	if (DisplayUi->IsFullscreen() && show_fps) {
 		std::stringstream text;
 		text << "FPS: " << real_fps;
 		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text.str());
@@ -475,4 +479,12 @@ void Graphics::Pop() {
 
 int Graphics::GetDefaultFps() {
 	return DEFAULT_FPS;
+}
+
+void Graphics::ToggleFPS() {
+	show_fps = !show_fps;
+}
+
+void Graphics::ShowFPS(bool visibility) {
+	show_fps = visibility;
 }

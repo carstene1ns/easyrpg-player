@@ -33,13 +33,13 @@ extern "C" {
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps
   (JNIEnv *, jclass)
 {
-	Player::fps_flag = !Player::fps_flag;
+	Graphics::ToggleFPS();
 }
 
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame
   (JNIEnv *, jclass)
 {
-	Player::exit_flag = true;
+	Player::RequestExit();
 }
 
 #ifdef __cplusplus

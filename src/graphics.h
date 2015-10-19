@@ -137,6 +137,17 @@ namespace Graphics {
 	 * @return target frame rate
 	 */
 	int GetDefaultFps();
+
+	/**
+	 * Shows or Hides the Frames per Second display
+	 */
+	void ToggleFPS();
+
+	/**
+	 * Sets the Frames per Second display visibility
+	 * @param visibility The visibility to set to
+	 */
+	void ShowFPS(bool visibility);
 }
 
 #endif

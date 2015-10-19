@@ -143,7 +143,8 @@ static void HandleErrorOutput(const std::string& err) {
 		DisplayUi->Sleep(1);
 		DisplayUi->ProcessEvents();
 
-		if (Player::exit_flag) break;
+		if (Player::ExitRequested())
+			break;
 
 		Input::Update();
 	}

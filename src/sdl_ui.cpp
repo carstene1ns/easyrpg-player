@@ -523,7 +523,7 @@ void SdlUi::ProcessEvents() {
 	while (SDL_PollEvent(&evnt)) {
 		ProcessEvent(evnt);
 
-		if (Player::exit_flag)
+		if (Player::ExitRequested())
 			break;
 	}
 }
@@ -594,7 +594,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 			return;
 
 		case SDL_QUIT:
-			Player::exit_flag = true;
+			Player::RequestExit();
 			return;
 
 		case SDL_KEYDOWN:
@@ -709,7 +709,7 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 	case SDLK_F4:
 		// Close program on LeftAlt+F4
 		if (evnt.key.keysym.mod & KMOD_LALT) {
-			Player::exit_flag = true;
+			Player::RequestExit();
 			return;
 		}
 
@@ -1176,7 +1176,7 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 
 	switch (evnt->type) {
 	case SDL_QUIT:
-		Player::exit_flag = true;
+		Player::RequestExit();
 		return 1;
 
 	case SDL_WINDOWEVENT:
