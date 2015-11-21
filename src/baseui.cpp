@@ -31,6 +31,8 @@
 #  include "platform/psvita/psp2_ui.h"
 #elif defined(__SWITCH__)
 #  include "platform/switch/switch_ui.h"
+#elif defined(PSP)
+#  include "psp_ui.h"
 #endif
 
 std::shared_ptr<BaseUi> DisplayUi;
@@ -52,6 +54,8 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, 
 	return std::make_shared<Psp2Ui>(width, height);
 #elif defined(__SWITCH__)
 	return std::make_shared<NxUi>(width, height);
+#elif PSP
+	return std::make_shared<PspUi>(width, height);
 #else
 #  error cannot create UI
 #endif

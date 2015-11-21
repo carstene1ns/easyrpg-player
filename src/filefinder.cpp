@@ -563,7 +563,11 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	env->DeleteLocalRef(sdl_activity);
 	env->DeleteLocalRef(cls);
 	add_rtp_path(cs + "/" + version_str);
+#elif defined(PSP)
+	add_rtp_path("ms0:/data/rtp/" + version_str);
+	add_rtp_path("ms0:/PSP/EasyRPG/data/rtp/" + version_str);
 #elif defined(USE_WINE_REGISTRY) || defined(_WIN32)
+	// Windows/Wine
 	std::string const product = "RPG" + version_str;
 	if (Player::IsRPG2k()) {
 		// Prefer original 2000 RTP over Kadokawa, because there is no

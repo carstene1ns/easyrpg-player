@@ -23,7 +23,41 @@
 #  include <SDL.h>
 #endif
 
+#ifdef PSP
+#  include <pspkernel.h>
+
+	PSP_MODULE_INFO("EasyRPG Player", 0, 0, 41);
+	//PSP_HEAP_SIZE_KB(2048);
+	PSP_HEAP_SIZE_MAX();
+	//PSP_MAIN_THREAD_STACK_SIZE_KB(2048);
+	PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_USER | PSP_THREAD_ATTR_VFPU);
+
+int psp_exit_callback(int arg1, int arg2, void *common) {
+    Player::exit_flag = true;
+    return 0;
+}
+
+int psp_callback_thread(SceSize args, void *argp) {
+    int cbid = sceKernelCreateCallback("Exit Callback", psp_exit_callback, NULL);
+    sceKernelRegisterExitCallback(cbid);
+    sceKernelSleepThreadCB();
+    return 0;
+}
+
+int psp_setup_callbacks(void) {
+    int thid = sceKernelCreateThread("update_thread", psp_callback_thread, 0x11, 0xFA0, 0, 0);
+    if(thid >= 0)
+        sceKernelStartThread(thid, 0, 0);
+    return thid;
+}
+#endif
+
 extern "C" int main(int argc, char* argv[]) {
+#ifdef PSP
+	atexit(sceKernelExitGame);
+	psp_setup_callbacks();
+#endif
+
 	Player::Init(argc, argv);
 	Player::Run();
 

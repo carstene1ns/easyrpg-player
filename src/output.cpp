@@ -38,6 +38,9 @@
 #  include <android/log.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#elif defined(PSP)
+#  include <unistd.h>
+#  include <pspdebug.h>
 #endif
 
 #include "filefinder.h"
@@ -165,6 +168,8 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 
 #ifdef __ANDROID__
 	__android_log_print(lvl == LogLevel::Error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
+#elif defined(PSP) && !defined(NDEBUG)
+	pspDebugScreenPuts(msg.c_str());
 #else
 	std::cerr << prefix << msg << std::endl;
 #endif
@@ -280,7 +285,7 @@ void Output::ErrorStr(std::string const& err) {
 		std::cout << err << std::endl;
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now.";
-#if defined (GEKKO) || defined(__SWITCH__)
+#if defined (GEKKO) || defined(__SWITCH__) || defined (PSP)
 		// stdin is non-blocking
 		sleep(5);
 #elif defined (EMSCRIPTEN)
