@@ -131,6 +131,8 @@
 #  undef SUPPORT_ZOOM
 #  undef SUPPORT_KEYBOARD
 #  undef SUPPORT_MOUSE
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_AXIS
 #endif
 
 #endif

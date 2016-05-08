@@ -23,19 +23,31 @@
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 		{DECISION, Keys::JOY_1}, // Circle
 		{DECISION, Keys::JOY_2}, // Cross
 		{CANCEL, Keys::JOY_3}, // Square
+		{SHIFT, Keys::JOY_0}, // Triangle
 
-		{TOGGLE_FPS, Keys::JOY_0}, // Triangle
+		{TOGGLE_FPS, Keys::JOY_10}, // Select
+		{DEBUG_MENU, Keys::JOY_11}, // Start
+		{SHOW_LOG, Keys::JOY_13}, // Hold
 
-		{N1, Keys::JOY_4}, // Left trigger
-		{N2, Keys::JOY_5}, // Right trigger
+		{FAST_FORWARD, Keys::JOY_4}, // Left trigger
+		{RESET, Keys::JOY_5}, // Right trigger
 
 		{DOWN, Keys::JOY_6}, // Down
 		{LEFT, Keys::JOY_7}, // Left
 		{UP, Keys::JOY_8}, // Up
 		{RIGHT, Keys::JOY_9}, // Right
+#endif
+
+#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
+		{LEFT, Keys::JOY_AXIS_X_LEFT},
+		{RIGHT, Keys::JOY_AXIS_X_RIGHT},
+		{DOWN, Keys::JOY_AXIS_Y_DOWN},
+		{UP, Keys::JOY_AXIS_Y_UP},
+#endif
 	};
 }
 

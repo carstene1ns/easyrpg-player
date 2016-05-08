@@ -117,6 +117,11 @@ void PspUi::ProcessEvents() {
 	keys[Input::Keys::JOY_11] = pad.Buttons & PSP_CTRL_START;
 	keys[Input::Keys::JOY_12] = pad.Buttons & PSP_CTRL_HOME;
 	keys[Input::Keys::JOY_13] = pad.Buttons & PSP_CTRL_HOLD;
+
+	keys[Input::Keys::JOY_AXIS_X_LEFT] = (pad.Lx < 55);
+	keys[Input::Keys::JOY_AXIS_X_RIGHT] = (pad.Lx > 200);
+	keys[Input::Keys::JOY_AXIS_Y_DOWN] = (pad.Ly > 200);
+	keys[Input::Keys::JOY_AXIS_Y_UP] = (pad.Ly < 55);
 }
 
 void PspUi::UpdateDisplay() {
