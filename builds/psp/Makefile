@@ -8,7 +8,7 @@ INCLUDES = $(SOURCES)
 
 INCDIR = $(foreach dir,$(INCLUDES), $(CURDIR)/$(dir))
 CFLAGS = -G0 -g0 -O2 -fomit-frame-pointer -ffast-math -Wall -DPSP -DNDEBUG \
-         -DLCF_SUPPORT_ICU -DPSPUI
+         -DLCF_SUPPORT_ICU -DPSPUI -DPSPUI_SCALE
 #-DPPSSPP_COMPATIBLE
 CXXFLAGS = $(CFLAGS) -std=c++11 -fno-exceptions -fno-rtti
 

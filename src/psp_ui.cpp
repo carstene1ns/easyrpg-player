@@ -133,8 +133,12 @@ void PspUi::UpdateDisplay() {
 	g2dSetCoordMode(G2D_CENTER);
 	g2dSetCoordXY(G2D_SCR_W/2, G2D_SCR_H/2);
 
-	// scale
-	//g2dSetScaleWH(main_surface->GetWidth()+32, main_surface->GetHeight()+32); // maximise
+#ifdef PSPUI_SCALE
+	g2dSetScaleWH(main_surface->GetWidth()+32, main_surface->GetHeight()+32); // maximise
+#else
+	// disable bilinear filter, only useful while scaling
+	g2dSetTexLinear(false);
+#endif
 
 	// copy
 	for (int y = 0; y < main_surface->GetHeight(); y++) {
