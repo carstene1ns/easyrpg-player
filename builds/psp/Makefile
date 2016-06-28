@@ -9,6 +9,7 @@ INCLUDES = $(SOURCES)
 INCDIR = $(foreach dir,$(INCLUDES), $(CURDIR)/$(dir))
 CFLAGS = -G0 -g0 -O2 -fomit-frame-pointer -ffast-math -Wall -DPSP -DNDEBUG \
          -DLCF_SUPPORT_ICU -DPSPUI
+#-DPPSSPP_COMPATIBLE
 CXXFLAGS = $(CFLAGS) -std=c++11 -fno-exceptions -fno-rtti
 
 PSP_EBOOT_TITLE = EasyRPG Player

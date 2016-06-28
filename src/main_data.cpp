@@ -45,6 +45,8 @@
 #elif defined(PSP2)
 #  include <cstdio>
 #  include <psp2/io/stat.h>
+#elif defined(PSP)
+#  include <unistd.h>
 #elif defined(USE_SDL) && defined(__APPLE__) && defined(__MACH__)
 #  include <SDL.h>
 #endif
@@ -79,11 +81,15 @@ void Main_Data::Init() {
 			// first set to current directory for all platforms
 			project_path = ".";
 
-#if defined(GEKKO) || defined(__SWITCH__) || defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
+<<<<<<< HEAD
+#if defined(GEKKO) || defined(__SWITCH__) || defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) || defined(PSP)
 			// Working directory not correctly handled
 			char working_dir[256];
 			getcwd(working_dir, 255);
 			project_path = std::string(working_dir);
+#  if defined(PPSSPP_COMPATIBLE)
+			project_path = "ms0:/PSP/GAME/easyrpg";
+#  endif
 #elif defined(PSP2)
 			// Check if app0 filesystem contains the title id reference file
 			FILE* f = fopen("app0:/titleid.txt","r");
