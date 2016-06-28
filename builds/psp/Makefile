@@ -10,6 +10,7 @@ INCDIR = $(foreach dir,$(INCLUDES), $(CURDIR)/$(dir))
 CFLAGS = -G0 -g0 -O2 -fomit-frame-pointer -ffast-math -Wall -DPSP -DNDEBUG \
          -DLCF_SUPPORT_ICU -DPSPUI -DPSPUI_SCALE
 #-DPPSSPP_COMPATIBLE
+CFLAGS += -DHAVE_MPG123 -DHAVE_WILDMIDI -DHAVE_TREMOR -DHAVE_LIBSPEEXDSP
 CXXFLAGS = $(CFLAGS) -std=c++11 -fno-exceptions -fno-rtti
 
 PSP_EBOOT_TITLE = EasyRPG Player
@@ -24,7 +25,9 @@ CFLAGS += -I$(TOOLCHAIN_DIR)/include/pixman-1 \
 LIBS = -L$(TOOLCHAIN_DIR)/lib -L$(PSPSDK)/../lib \
        -lpixman-1 -lpng -lz \
        -licui18n -licuuc -licudata \
-       -lglib2d -lpsprtc -lpsphprm \
+       -lglib2d \
+       -lmpg123 -lWildMidi -lvorbisidec -logg -lspeexdsp \
+       -lpspaudiolib -lpspaudio -lpsprtc -lpsphprm \
        -lpspgu -lpspvram -lpsppower \
        -lpspdebug -lstdc++ -lm
 

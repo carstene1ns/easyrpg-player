@@ -27,9 +27,8 @@
 #  include <pspkernel.h>
 
 	PSP_MODULE_INFO("EasyRPG Player", 0, 0, 41);
-	//PSP_HEAP_SIZE_KB(2048);
-	PSP_HEAP_SIZE_MAX();
-	//PSP_MAIN_THREAD_STACK_SIZE_KB(2048);
+	//PSP_HEAP_SIZE_MAX();
+	PSP_HEAP_SIZE_KB(-1024); // leave 1 mb for thread stack space and such
 	PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_USER | PSP_THREAD_ATTR_VFPU);
 
 int psp_exit_callback(int arg1, int arg2, void *common) {

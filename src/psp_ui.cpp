@@ -35,6 +35,13 @@ static g2dTexture* main_texture;
 static struct timeval time_start;
 static SceCtrlData pad;
 
+#ifdef SUPPORT_AUDIO
+#include "audio_psp.h"
+AudioInterface& PspUi::GetAudio() {
+	return *audio_;
+}
+#endif
+
 PspUi::PspUi(int width, int height) :
 	BaseUi() {
 	gettimeofday(&time_start, NULL);
@@ -55,6 +62,11 @@ PspUi::PspUi(int width, int height) :
 	const DynamicFormat format(32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000, PF::NoAlpha);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(width, height, true, 32);
+
+	// audio
+	#ifdef SUPPORT_AUDIO
+		audio_.reset(new PspAudio());
+	#endif
 }
 
 PspUi::~PspUi() {

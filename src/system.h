@@ -127,7 +127,7 @@
 #endif
 
 #ifdef PSP
-#  undef SUPPORT_AUDIO
+#  define SUPPORT_AUDIO
 #  undef SUPPORT_ZOOM
 #  undef SUPPORT_KEYBOARD
 #  undef SUPPORT_MOUSE
