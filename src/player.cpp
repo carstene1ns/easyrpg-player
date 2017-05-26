@@ -125,11 +125,7 @@ void Player::Init(int argc, char *argv[]) {
 
 	// Display a nice version string
 	std::stringstream header;
-	std::string addtl_ver(PLAYER_ADDTL);
-	header << "EasyRPG Player " << PLAYER_VERSION;
-	if (!addtl_ver.empty())
-		header << " " << addtl_ver;
-	header << " started";
+	header << "EasyRPG Player " << GetVersion() << " started";
 	Output::Debug(header.str().c_str());
 
 	unsigned int header_width = header.str().length();
@@ -889,7 +885,7 @@ int Player::GetSpeedModifier() {
 	return 1;
 }
 
-void Player::PrintVersion() {
+std::string Player::GetVersion() {
 	std::string additional(PLAYER_ADDTL);
 	std::stringstream version;
 
@@ -898,7 +894,11 @@ void Player::PrintVersion() {
 	if (!additional.empty())
 		version << " " << additional;
 
-	std::cout << "EasyRPG Player " << version.str() << std::endl;
+	return version.str();
+}
+
+void Player::PrintVersion() {
+	std::cout << "EasyRPG Player " << GetVersion() << std::endl;
 }
 
 void Player::PrintUsage() {
