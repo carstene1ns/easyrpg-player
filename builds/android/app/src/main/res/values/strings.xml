@@ -41,6 +41,7 @@ You can add additional game directories in the settings.</string>
     <!--Ingame menu-->
     <string name="toggle_fps">Toggle FPS</string>
     <string name="toggle_ui">Toggle virtual buttons</string>
+    <string name="reset_game">Reset game</string>
     <string name="end_game">End game</string>
     <string name="report_bug">Report a bug</string>
     <string name="report_bug_msg">This function will open your E-mail program (e.g. Gmail) to send us the bug report.\n\nIf you don\'t want to send a mail or don\'t have a mail program configured you can open a new issue at https://github.com/EasyRPG/Player/issues instead.</string>

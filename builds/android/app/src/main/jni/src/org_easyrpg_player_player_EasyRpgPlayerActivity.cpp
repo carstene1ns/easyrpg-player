@@ -36,6 +36,12 @@ JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_togg
 	Player::fps_flag = !Player::fps_flag;
 }
 
+JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_resetGame
+  (JNIEnv *, jclass)
+{
+	Player::reset_flag = true;
+}
+
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame
   (JNIEnv *, jclass)
 {

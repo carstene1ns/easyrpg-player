@@ -165,6 +165,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
             case R.id.report_bug:
                 reportBug();
                 break;
+            case R.id.reset_game:
+                resetGame();
+                break;
             case R.id.end_game:
                 showEndGameDialog();
                 break;
@@ -298,6 +301,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     }
 
     public static native void toggleFps();
+
+    public static native void resetGame();
 
     public static native void endGame();
 

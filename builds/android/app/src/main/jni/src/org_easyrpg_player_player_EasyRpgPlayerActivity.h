@@ -25,6 +25,14 @@ JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_togg
 
 /*
  * Class:     org_easyrpg_player_EasyRpgPlayerActivity
+ * Method:    resetGame
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_resetGame
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_easyrpg_player_EasyRpgPlayerActivity
  * Method:    endGame
  * Signature: ()V
  */
