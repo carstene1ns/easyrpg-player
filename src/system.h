@@ -80,6 +80,9 @@
 #  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(__SWITCH__)
+#elif defined(PSP)
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_AXIS
 #elif defined(__MORPHOS__) || defined(__amigaos4__)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_MOUSE
@@ -124,15 +127,6 @@
 
 #if defined(HAVE_LIBSAMPLERATE) || defined(HAVE_LIBSPEEXDSP)
 #  define USE_AUDIO_RESAMPLER
-#endif
-
-#ifdef PSP
-#  define SUPPORT_AUDIO
-#  undef SUPPORT_ZOOM
-#  undef SUPPORT_KEYBOARD
-#  undef SUPPORT_MOUSE
-#  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_AXIS
 #endif
 
 #endif

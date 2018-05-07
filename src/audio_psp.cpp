@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#ifdef PSPUI
+#if defined(PSP) && defined(SUPPORT_AUDIO)
 
 #include <cstring>
 #include <malloc.h>

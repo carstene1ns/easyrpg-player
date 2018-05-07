@@ -169,6 +169,7 @@ void Player::Init(int argc, char *argv[]) {
 	romfsInit();
 #elif defined (PSP)
 	pspDebugScreenInit();
+	pspDebugScreenPuts("Loading...");
 
 	// Set processor frequency to maximum
 	scePowerSetClockFrequency(333, 333, 166);
