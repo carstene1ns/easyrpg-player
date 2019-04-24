@@ -1,0 +1,5 @@
+.gitattributes export-ignore
+.gitignore export-ignore
+/.github/ export-ignore
+/.tx/ export-ignore
+/src/version.h export-subst

@@ -30,6 +30,8 @@
 #define PLAYER_MINOR 6
 #define PLAYER_PATCH 1
 #define PLAYER_ADDTL ""
+#define PLAYER_COMMIT "$Format:%h$"
+#define PLAYER_DATE "$Format:%ci$"
 #define PLAYER_VERSION TO_STRING(PLAYER_MAJOR) "." TO_STRING(PLAYER_MINOR) "." TO_STRING(PLAYER_PATCH)
 
 /**
