@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
 
-EXTRA_DIST = AUTHORS.md README.md builds resources CMakeLists.txt
+#EXTRA_DIST = AUTHORS.md README.md builds resources CMakeLists.txt
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
@@ -441,18 +441,21 @@ if HAVE_A2X
 resources/easyrpg-player.6: resources/easyrpg-player.6.adoc
 	$(AM_V_GEN) $(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/resources $<
 
-dist_man6_MANS = resources/easyrpg-player.6
+#dist_man6_MANS = resources/easyrpg-player.6
+man6_MANS = resources/easyrpg-player.6
 MOSTLYCLEANFILES += resources/easyrpg-player.6
 else
 if HAVE_MANUAL
-dist_man6_MANS = resources/easyrpg-player.6
+#dist_man6_MANS = resources/easyrpg-player.6
+man6_MANS = resources/easyrpg-player.6
 endif
 endif
 
 # bash completion
 if HAVE_BASHCOMPLETION
 bashcompletiondir = $(BASHCOMPLETION_DIR)
-dist_bashcompletion_DATA = resources/unix/bash-completion/easyrpg-player
+#dist_bashcompletion_DATA = resources/unix/bash-completion/easyrpg-player
+bashcompletion_DATA = resources/unix/bash-completion/easyrpg-player
 endif
 
 # doxygen
@@ -488,4 +491,7 @@ check-local:
 
 # Some tests will create this file
 # make distcheck will fail if it is not cleaned after running these tests
-CLEANFILES = easyrpg_log.txt
+#CLEANFILES = easyrpg_log.txt
+
+dist:
+	@echo
