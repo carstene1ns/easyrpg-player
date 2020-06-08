@@ -81,7 +81,6 @@ void Main_Data::Init() {
 			// first set to current directory for all platforms
 			project_path = ".";
 
-<<<<<<< HEAD
 #if defined(GEKKO) || defined(__SWITCH__) || defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) || defined(PSP)
 			// Working directory not correctly handled
 			char working_dir[256];
