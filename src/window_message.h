@@ -116,6 +116,9 @@ public:
 	 */
 	void InputNumber();
 
+	/** @return the current message box content */
+	const char* GetFullText();
+
 	/** @return the stored PendingMessage */
 	const PendingMessage& GetPendingMessage() const;
 
@@ -141,6 +144,8 @@ protected:
 	const char* text_index = nullptr;
 	/** text message that will be displayed. */
 	std::string text;
+	/** full text message without escape codes. */
+	std::string full_text;
 	/** Text color. */
 	int text_color = 0;
 	/** Current speed modifier. */

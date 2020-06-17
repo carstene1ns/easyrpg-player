@@ -204,6 +204,9 @@ namespace Game_Message {
 	/** @return true if message window is running */
 	bool IsMessageActive();
 
+	/** return the current shown message lines */
+	const char* GetCurrentText();
+
 	// EasyRPG extension allowing more recursive variables \v[\v[...]]
 	static constexpr int easyrpg_default_max_recursion = 8;
 	// RPG_RT only allows 1 level of recursion.

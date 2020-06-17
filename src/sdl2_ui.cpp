@@ -41,6 +41,7 @@
 #include "output.h"
 #include "player.h"
 #include "bitmap.h"
+#include "game_message.h"
 #include "lcf/scope_guard.h"
 
 #include "audio.h"
@@ -581,6 +582,11 @@ void Sdl2Ui::ProcessKeyDownEvent(SDL_Event &evnt) {
 			ToggleFullscreen();
 			return;
 		}
+	} else if (evnt.key.keysym.sym == SDLK_INSERT) {
+		if (SDL_SetClipboardText(Game_Message::GetCurrentText()) != 0) {
+			Output::Warning("Couldn't copy message content to clipboard.");
+		}
+		return;
 	}
 
 	// Update key state

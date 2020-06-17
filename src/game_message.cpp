@@ -224,6 +224,9 @@ bool Game_Message::CanShowMessage(bool foreground) {
 	return window ? window->GetAllowNextMessage(foreground) : false;
 }
 
+const char* Game_Message::GetCurrentText() {
+	return window ? window->GetFullText() : "";
+}
 
 static Game_Message::ParseParamResult ParseParamImpl(
 		const char upper,

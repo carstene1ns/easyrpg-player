@@ -785,3 +785,59 @@ bool Window_Message::IsFaceEnabled() const {
 	return pending_message.IsFaceEnabled() && !Game_Message::GetFaceName().empty();
 }
 
+const char* Window_Message::GetFullText() {
+	full_text.clear();
+	const char* ti = text.data();
+
+	while (true) {
+		const auto* end = text.data() + text.size();
+
+		if (ti == end) {
+			break;
+		}
+
+		auto tret = Utils::TextNext(ti, end, Player::escape_char);
+		ti = tret.next;
+		if (EP_UNLIKELY(!tret)) {
+			continue;
+		}
+
+		const auto ch = tret.ch;
+
+		if (tret.is_exfont) {
+			continue;
+		}
+
+		if (tret.is_escape && ch != Player::escape_char) {
+			switch (ch) {
+			case 'c':
+			case 'C':
+				{
+					auto pres = Game_Message::ParseColor(ti, end, Player::escape_char, true);
+					ti = pres.next;
+				}
+				break;
+			case 's':
+			case 'S':
+				{
+					auto pres = Game_Message::ParseSpeed(ti, end, Player::escape_char, true);
+					ti = pres.next;
+				}
+				break;
+			default:
+				break;
+			}
+			continue;
+		}
+
+		if (Utils::IsControlCharacter(ch) && ch != '\n') {
+			continue;
+		}
+
+		
+		full_text += ch;
+	}
+
+	
+	return full_text.c_str();
+}
