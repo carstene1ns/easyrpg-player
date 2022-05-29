@@ -28,10 +28,6 @@
 #include "player.h"
 #include "bitmap.h"
 
-#ifdef GEKKO
-#  include "platform/wii/main.h"
-#endif
-
 #ifdef SUPPORT_AUDIO
 #  include "audio.h"
 
@@ -61,7 +57,7 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
-#if !defined(GEKKO) && !defined(__MORPHOS__)
+#if !defined(__MORPHOS__)
 	// Set window position to the middle of the screen
 	putenv(const_cast<char *>("SDL_VIDEO_WINDOW_POS=center"));
 #endif
@@ -77,11 +73,6 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 			Output::Error("No suitable video resolution found. Aborting.");
 		}
 	EndDisplayModeChange();
-
-#ifdef GEKKO
-	// Eliminate debug spew in on-screen console
-	Wii::SetConsole();
-#endif
 
 	SetTitle(GAME_TITLE);
 
@@ -375,19 +366,10 @@ bool SdlUi::ShowCursor(bool flag) {
 	return temp_flag;
 }
 
-bool SdlUi::LogMessage(const std::string &message) {
-#ifdef GEKKO
-	return Wii::LogMessage(message);
-#else
-	// not logged
-	return false;
-#endif
-}
-
 void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
 
-#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(GEKKO)
+#if defined(__MORPHOS__) || defined(__amigaos4__)
 	// Quick & dirty big endian 2x zoom blitter
 	int blit_height = src.height() * 2;
 	int blit_width = src.width();

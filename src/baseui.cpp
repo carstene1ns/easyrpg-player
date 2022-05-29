@@ -31,6 +31,8 @@
 #  include "platform/psvita/ui.h"
 #elif defined(__SWITCH__)
 #  include "platform/switch/ui.h"
+#elif defined(GEKKO)
+#  include "platform/wii/ui.h"
 #endif
 
 std::shared_ptr<BaseUi> DisplayUi;

@@ -15,22 +15,53 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_WII_MAIN_H
-#define EP_PLATFORM_WII_MAIN_H
+#ifndef EP_PLATFORM_WII_UI_H
+#define EP_PLATFORM_WII_UI_H
 
 // Headers
-#include <ogcsys.h>
-#include <string>
+#include "baseui.h"
+#include "system.h"
 #include "output.h"
 
-// Variables
-extern GXRModeObj *vmode;
-extern void *xfb[2];
-extern int fb;
+/**
+ * WiiUi class.
+ */
+class WiiUi final : public BaseUi {
+public:
+	/**
+	 * Constructor.
+	 *
+	 * @param width window client width.
+	 * @param height window client height.
+	 * @param cfg video config options
+	 */
+	WiiUi(int width, int height, const Game_ConfigVideo& cfg);
 
-namespace Wii {
+	/**
+	 * Destructor.
+	 */
+	~WiiUi();
 
-	// Functions
-	void LogPrint(std::string const& msg);};
+	/**
+	 * Inherited from BaseUi.
+	 */
+	/** @{ */
+	void UpdateDisplay() override;
+	bool LogMessage(const std::string &message) override;
+	void ProcessEvents() override;
+
+#ifdef SUPPORT_AUDIO
+	AudioInterface& GetAudio();
+#endif
+
+	/** @} */
+
+private:
+
+#ifdef SUPPORT_AUDIO
+	std::unique_ptr<AudioInterface> audio_;
+#endif
+
+};
 
 #endif

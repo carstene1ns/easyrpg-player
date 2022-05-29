@@ -1,8 +1,4 @@
-cmake_minimum_required(VERSION 3.10...3.20 FATAL_ERROR)
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-	# Use most recent policies, even for older cmake
-	cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-endif()
+cmake_minimum_required(VERSION 3.13...3.22 FATAL_ERROR)
 
 project(EasyRPG_Player VERSION 0.7 LANGUAGES CXX)
 
@@ -11,6 +7,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules"
 include(ConfigureWindows)
 include(PlayerFindPackage)
 include(PlayerBuildType)
+include(CMakeDependentOption)
 
 # C++14 is required
 set(CMAKE_CXX_STANDARD 14)
@@ -448,8 +445,8 @@ add_library(${PROJECT_NAME} STATIC
 # These are actually unused when building in CMake
 #	src/platform/opendingux/opendingux_input_buttons.cpp
 #	src/platform/psp/psp_input_buttons.cpp
-
-include(CMakeDependentOption)
+#	src/platform/sdl/sdl_ui.cpp
+#	src/platform/sdl/sdl_ui.h
 
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -619,17 +616,20 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	if(NOT NINTENDO_WII)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
 	endif()
-	find_package(SDL REQUIRED)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1 PLAYER_NINTENDO)
-	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=WiiUi PLAYER_NINTENDO)
+	enable_language(ASM)
 	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/wii/audio.cpp
+		src/platform/wii/audio.h
+		src/platform/wii/bsod.cpp
+		src/platform/wii/bsod.h
+		src/platform/wii/buttons.h
 		src/platform/wii/clock.cpp
 		src/platform/wii/clock.h
+		src/platform/wii/exceptionhandler.S
 		src/platform/wii/input_buttons.cpp
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
-		src/platform/sdl/sdl_ui.cpp
-		src/platform/sdl/sdl_ui.h)
+		src/platform/wii/ui.cpp
+		src/platform/wii/ui.cpp)
 else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
@@ -1071,10 +1071,9 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			src/platform/wii/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
-			${SDL_LIBRARIES}
 			-laesnd
-			-lfat
-			-lwiikeyboard)
+			#-lwiidrc
+			-lfat)
 		ogc_create_dol(easyrpg-player)
 		string(TIMESTAMP WII_DATE "%Y%m%d000000")
 		configure_file(resources/wii/meta.xml.in resources/wii/meta.xml @ONLY)

@@ -15,22 +15,16 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_WII_MAIN_H
-#define EP_PLATFORM_WII_MAIN_H
+#include <ogc/machine/asm.h>
 
-// Headers
-#include <ogcsys.h>
-#include <string>
-#include "output.h"
+	/* lowlevel handler */
+	.section	.text.ll_exceptionhandler,"ax",@progbits
+	.global	ll_exceptionhandler
 
-// Variables
-extern GXRModeObj *vmode;
-extern void *xfb[2];
-extern int fb;
-
-namespace Wii {
-
-	// Functions
-	void LogPrint(std::string const& msg);};
-
-#endif
+ll_exceptionhandler:
+	/* save registers */
+	stw		%r11,GPR1_OFFSET(%sp)
+	stmw	%r13,GPR13_OFFSET(%sp)
+	mr		%r3,%sp
+	/* call highlevel handler */
+	b		hl_exceptionhandler

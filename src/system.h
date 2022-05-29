@@ -63,7 +63,6 @@
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(GEKKO)
-#  include <cstdint>
 #  define WORDS_BIGENDIAN
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS

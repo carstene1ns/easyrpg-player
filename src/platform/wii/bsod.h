@@ -15,22 +15,9 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_WII_MAIN_H
-#define EP_PLATFORM_WII_MAIN_H
+#ifndef EP_PLATFORM_WII_BSOD_H
+#define EP_PLATFORM_WII_BSOD_H
 
-// Headers
-#include <ogcsys.h>
-#include <string>
-#include "output.h"
-
-// Variables
-extern GXRModeObj *vmode;
-extern void *xfb[2];
-extern int fb;
-
-namespace Wii {
-
-	// Functions
-	void LogPrint(std::string const& msg);};
+void InitialiseBSOD();
 
 #endif

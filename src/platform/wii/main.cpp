@@ -15,35 +15,89 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "player.h"
 #include <gccore.h>
 #include <ogcsys.h>
+#include <ogc/conf.h>
+#include <ogc/machine/processor.h>
+#if DEBUG_GDB
+#include <debug.h>
+#endif
+#include <sys/iosupport.h>
+#include <fat.h>
 #include <unistd.h>
 #include <string>
 #include <vector>
 #include <algorithm>
+#include "player.h"
 #include "baseui.h"
-#include <sys/iosupport.h>
-#include <wiiuse/wpad.h>
 #include "main.h"
+#include "ui.h"
+#include "bsod.h"
+#include "game_clock.h"
 
-// Currently for sdl-wii based port is wrapped
-#ifdef USE_SDL
-#  define main SDL_main
+using namespace std::chrono_literals;
+
+GXRModeObj *vmode;
+void *xfb[2];
+int fb;
+
+int main(int argc, char* argv[]) {
+	// activate 64-byte fetches for the L2 cache
+	L2Enhance();
+
+	// reload custom ios
+	u32 version = IOS_GetVersion();
+	s32 preferred = IOS_GetPreferredVersion();
+	if(preferred > 0 && version != (u32)preferred)
+		IOS_ReloadIOS(preferred);
+
+	// setup video
+	VIDEO_Init();
+	VIDEO_SetBlack(true);
+	vmode = VIDEO_GetPreferredMode(nullptr);
+
+	// widescreen
+	if (CONF_GetAspectRatio() == CONF_ASPECT_16_9) {
+		// Wii U letterbox
+		if ((*(u32*)(0xCD8005A0) >> 16) == 0xCAFE) {
+			write32(0xd8006a0, 0x30000004);
+			mask32(0xd8006a8, 0, 2);
+		}
+		vmode->viWidth = 678; // 720
+	} else {
+		vmode->viWidth = 672;
+	}
+	vmode->viXOrigin = (720 - vmode->viWidth) / 2;
+	VIDEO_Configure(vmode);
+	// framebuffer
+	for (int i = 0; i <= 1; i++) {
+		xfb[i] = SYS_AllocateFramebuffer(vmode);
+		DCInvalidateRange(xfb[i], VIDEO_GetFrameBufferSize(vmode));
+		xfb[i] = MEM_K0_TO_K1(xfb[i]);
+		VIDEO_ClearFrameBuffer(vmode, xfb[i], COLOR_BLACK);
+	}
+	fb = 0;
+	VIDEO_SetNextFramebuffer(xfb[fb]);
+
+	VIDEO_SetBlack(false);
+	VIDEO_Flush();
+	VIDEO_WaitVSync();
+	if(vmode->viTVMode & VI_NON_INTERLACE)
+		VIDEO_WaitVSync();
+	else
+		while (VIDEO_GetNextField())
+			VIDEO_WaitVSync();
+
+#ifdef DEBUG_GDB
+	DEBUG_Init(GDBSTUB_DEVICE_USB, CARD_SLOTB);
+#else
+	InitialiseBSOD();
+
+	// Enable USBGecko output
+	CON_EnableGecko(CARD_SLOTB, true);
 #endif
 
-// USBGecko Debugging
-bool usbgecko = false;
-mutex_t usbgecko_mutex = 0;
-
-// in sdl-wii
-extern "C" void OGC_ChangeSquare(int xscale, int yscale, int xshift, int yshift);
-
-static void GekkoResetCallback(u32 /* irq */ , void* /* ctx */) {
-	Player::reset_flag = true;
-}
-
-extern "C" int main(int argc, char* argv[]) {
+	// cmdline
 	std::vector<std::string> args(argv, argv + argc);
 
 	// dolphin
@@ -52,11 +106,6 @@ extern "C" int main(int argc, char* argv[]) {
 		// set arbitrary application path
 		args.push_back("/easyrpg-player");
 	}
-
-	SYS_SetResetCallback(GekkoResetCallback);
-
-	// Eliminate overscan / add 5% borders
-	OGC_ChangeSquare(304, 228, 0, 0);
 
 	// Check if a game directory was provided
 	if (std::none_of(args.cbegin(), args.cend(),
@@ -69,57 +118,71 @@ extern "C" int main(int argc, char* argv[]) {
 		args.push_back(working_dir);
 	}
 
-	// Run Player
-	Player::Init(std::move(args));
-	Player::Run();
+	int ret = EXIT_FAILURE;
 
-	return EXIT_SUCCESS;
-}
+	// Init libfat (Mount SD/USB)
+	if (fatInitDefault()) {
+		if (is_emu || !strchr(argv[0], '/')) {
+			Wii::LogPrint("Debug: USBGecko/Dolphin mode, changing dir to default.");
+			chdir("/apps/easyrpg");
+		}
 
-static ssize_t __usbgecko_write(struct _reent * /* r */, void* /* fd */, const char *ptr, size_t len) {
-	uint32_t level;
+		// Run Player
+		Player::Init(std::move(args));
+		Player::Run();
 
-	if (!ptr || !len || !usbgecko)
-		return 0;
+		ret = EXIT_SUCCESS;
+		Wii::LogPrint("Debug: Player shut down.");
 
-	LWP_MutexLock(usbgecko_mutex);
-	level = IRQ_Disable();
-	usb_sendbuffer(1, ptr, len);
-	IRQ_Restore(level);
-	LWP_MutexUnlock(usbgecko_mutex);
-
-	return len;
-}
-
-const devoptab_t dotab_geckoout = {
-	"stdout", 0, NULL, NULL, __usbgecko_write, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL
-};
-
-extern const devoptab_t dotab_stdnull;
-
-void Wii::SetConsole() {
-	LWP_MutexInit(&usbgecko_mutex, false);
-	usbgecko = usb_isgeckoalive(1);
-
-	if (usbgecko) {
-		devoptab_list[STD_OUT] = &dotab_geckoout;
-		devoptab_list[STD_ERR] = &dotab_geckoout;
+		// deinit storage
+		fatUnmount("sd");
+		fatUnmount("usb");
 	} else {
-		devoptab_list[STD_OUT] = &dotab_stdnull;
-		devoptab_list[STD_ERR] = &dotab_stdnull;
+		// Cannot use Output::Error() here, too soon
+		Wii::LogPrint("Error: Couldn't mount any storage medium (SD/USB - FAT32)!\n\n"
+			"EasyRPG Player will close now.");
+		Game_Clock::SleepFor(5s);
 	}
+
+	// deinit video
+	VIDEO_SetBlack(true);
+	VIDEO_Flush();
+	VIDEO_WaitVSync();
+	if(vmode->viTVMode & VI_NON_INTERLACE)
+		VIDEO_WaitVSync();
+	else
+		while (VIDEO_GetNextField())
+			VIDEO_WaitVSync();
+	for (int i = 0; i <= 1; i++) {
+		free(MEM_K1_TO_K0(xfb[i]));
+		xfb[i] = nullptr;
+	}
+
+	return(ret);
 }
 
-bool Wii::LogMessage(const std::string &message) {
-	if (usbgecko) return false;
 
-	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
+void Wii::LogPrint(std::string const& msg) {
+	// poor mans colored log, cannot use rang as it cripples the message
+	std::string lvl = msg.substr(0, 5);
 
-	// HLE in dolphin emulator
-	printf("%s", m.c_str());
+	int color = 37; // white
+	if (lvl == "Error") color = 31; // red
+	else if (lvl == "Warni") color = 33; // orange
+	else if (lvl == "Debug") color = 34; // blue
 
-	// additional usbgecko output not needed
-	return true;
+#ifdef NDEBUG
+	// no console, no usbgecko = no need to print
+	static bool has_usbgecko = usb_isgeckoalive(CARD_SLOTB);
+	if (!has_usbgecko && lvl != "Error") return;
+#endif
+
+	// initialize console for error display on startup
+	if(!DisplayUi && lvl == "Error") {
+		CON_Init(VIDEO_GetNextFramebuffer(), 20, 20, vmode->fbWidth,
+			vmode->xfbHeight, vmode->fbWidth * VI_DISPLAY_PIX_SZ);
+		puts("\n\n");
+	}
+
+	printf("\x1B[%dm%s\x1B[0m\n", color, msg.c_str());
 }

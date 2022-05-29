@@ -243,6 +243,8 @@ namespace rang_implementation {
 			  = (_isatty(_fileno(stderr)) || isMsysPty(_fileno(stderr)));
 			return cerr_term;
 		}
+#else
+		(void)osbuf;
 #endif
 		return false;
 	}
@@ -472,6 +474,7 @@ template <typename T>
 inline rang_implementation::enableStd<T> operator<<(std::ostream &os,
 													const T value)
 {
+#if defined(OS_LINUX) || defined(OS_MAC) || defined(OS_WIN)
 	const control option = rang_implementation::controlMode();
 	switch (option) {
 		case control::Auto:
@@ -482,6 +485,11 @@ inline rang_implementation::enableStd<T> operator<<(std::ostream &os,
 		case control::Force: return rang_implementation::setColor(os, value);
 		default: return os;
 	}
+#else
+	// since rang is disabled, use a shortcut
+	(void)value;
+	return os;
+#endif
 }
 
 inline void setWinTermMode(const rang::winTerm value) noexcept

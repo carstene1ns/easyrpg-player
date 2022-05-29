@@ -15,22 +15,18 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_WII_MAIN_H
-#define EP_PLATFORM_WII_MAIN_H
+#ifndef EP_PLATFORM_WII_AUDIO_GENERIC_H
+#define EP_PLATFORM_WII_AUDIO_GENERIC_H
 
-// Headers
-#include <ogcsys.h>
-#include <string>
-#include "output.h"
+#include "audio_generic.h"
 
-// Variables
-extern GXRModeObj *vmode;
-extern void *xfb[2];
-extern int fb;
+class WiiAudio : public GenericAudio {
+public:
+	WiiAudio();
+	~WiiAudio();
 
-namespace Wii {
-
-	// Functions
-	void LogPrint(std::string const& msg);};
+	void LockMutex() const override;
+	void UnlockMutex() const override;
+};
 
 #endif
