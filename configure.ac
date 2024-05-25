@@ -91,6 +91,7 @@ PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.5],[sdl_version=2],[
 AC_DEFINE_UNQUOTED([USE_SDL],[$sdl_version],[Enable SDL, version 2 or 1.2])
 AM_CONDITIONAL([HAVE_SDL2], [test "x$sdl_version" = "x2"])
 AM_CONDITIONAL([HAVE_SDL1], [test "x$sdl_version" = "x1"])
+AC_DEFINE([PLAYER_AUDIO],[SdlAudio],[Enable SDL audio])
 EP_PKG_CHECK([FREETYPE],[freetype2],[Custom Font rendering.])
 AS_IF([test "$with_freetype" = "yes"],[
 	EP_PKG_CHECK([HARFBUZZ],[harfbuzz],[Custom Font text shaping.])

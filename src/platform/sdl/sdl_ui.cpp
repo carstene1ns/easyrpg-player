@@ -34,6 +34,7 @@
 #  else
 #    include "sdl_audio.h"
 #  endif
+#  include "platform/generic/ao_audio.h"
 
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
@@ -170,9 +171,8 @@ SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 #  ifdef __wii__
 		audio_ = std::make_unique<WiiAudio>(cfg.audio);
 #  else
-		audio_ = std::make_unique<SdlAudio>(cfg.audio);
+		audio_ = std::make_unique<PLAYER_AUDIO>(cfg.audio);
 #  endif
-		return;
 	}
 #endif
 }

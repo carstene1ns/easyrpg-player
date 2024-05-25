@@ -23,7 +23,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
-option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
+option(BUILD_SHARED_LIBS "Build shared libary, e.g. easyrpg_libretro core" ON)
 
 option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
 
@@ -551,8 +551,6 @@ endif()
 
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/sdl_audio.cpp
-		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/sdl2_ui.cpp
 		src/platform/sdl/sdl2_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
@@ -886,31 +884,45 @@ player_find_package(NAME lhasa
 
 # Sound system to use
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
-	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OFF)
+	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 libao OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 libao OFF)
 
 	if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2_mixer")
 		message(FATAL_ERROR "SDL2_mixer is not supported anymore. Use SDL2 instead.")
 	endif()
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
-	set(PLAYER_AUDIO_BACKEND "SDL1" CACHE STRING "Audio system to use. Options: SDL1 OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL1 OFF)
+
+	if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2")
+		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_AUDIO=SdlAudio)
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/sdl/sdl_audio.cpp
+			src/platform/sdl/sdl_audio.h)
+	endif()
+
+	if(${PLAYER_AUDIO_BACKEND} STREQUAL "libao")
+		find_package(PkgConfig QUIET)
+		pkg_check_modules(LIBAO ao REQUIRED)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_AUDIO=AoAudio)
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/generic/ao_audio.cpp
+			src/platform/generic/ao_audio.h)
+		target_include_directories(${PROJECT_NAME} PUBLIC ${LIBAO_INCLUDEDIR})
+		target_link_libraries(${PROJECT_NAME} ${LIBAO_LIBRARIES})
+		set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+		find_package(Threads REQUIRED)
+		target_link_libraries(${PROJECT_NAME} Threads::Threads)
+	endif()
 else()
+	# Assuming that all platforms not targeting SDL have only one audio backend
 	set(PLAYER_AUDIO_BACKEND "Default" CACHE STRING "Audio system to use. Options: Default OFF")
 	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Default OFF)
-
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "Default")
-		# Assuming that all platforms not targeting SDL have only one audio backend
-		set(PLAYER_AUDIO_BACKEND ${PLAYER_TARGET_PLATFORM})
-	endif()
 endif()
 
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|amigaos4)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libao|Default)$")
 	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "libretro")
+	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		if (WIN32 OR UNIX OR APPLE)
 			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
@@ -965,7 +977,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|amigaos4)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libao|Default)$")
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
@@ -1484,8 +1496,10 @@ if(PLAYER_BUILD_LIBLCF)
 	message(STATUS "")
 endif()
 
-message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$")
+if(NOT ${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|Default)$")
+	message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
+endif()
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|Default|libao)$")
 	message(STATUS "")
 
 	set(WAV_LIBS)

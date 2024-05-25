@@ -50,6 +50,7 @@
 
 #ifdef SUPPORT_AUDIO
 #  include "sdl_audio.h"
+#  include "platform/generic/ao_audio.h"
 
 AudioInterface& Sdl2Ui::GetAudio() {
 	return *audio_;
@@ -187,8 +188,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag) {
-		audio_ = std::make_unique<SdlAudio>(cfg.audio);
-		return;
+		audio_ = std::make_unique<PLAYER_AUDIO>(cfg.audio);
 	}
 #endif
 }
