@@ -29,12 +29,8 @@ public:
 
 	void LockMutex() const override;
 	void UnlockMutex() const override;
-	
-	volatile bool termStream = false;
 
-private:
-	Thread audio_thread;
-	Mutex audio_mutex;
+	volatile bool want_audio;
 }; // class NxAudio
 
 #endif

@@ -29,67 +29,64 @@
 #define ALIGN_TO(x, a) (((x) + ((a) - 1)) & ~((a) - 1))
 
 namespace {
-	const int samplerate = 48000;
-	const int bytes_per_sample = 4;
-	const int samples_per_buf = 4096;
-	const int buf_size = samples_per_buf * bytes_per_sample;
-	NxAudio* instance = nullptr;
+	constexpr int samplerate = 48000;
+	constexpr int bytes_per_sample = 4;
+	constexpr int samples_per_buf = 4096;
+	constexpr int buf_size = samples_per_buf * bytes_per_sample;
+	static Thread audio_thread;
+	static Mutex audio_mutex;
 }
 
-void switch_audio_thread(void*) {
-	uint8_t *buffer1 = (uint8_t*)memalign(0x1000, ALIGN_TO(buf_size, 0x1000));
-	uint8_t *buffer2 = (uint8_t*)memalign(0x1000, ALIGN_TO(buf_size, 0x1000));
+void switch_audio_thread(void* args) {
+	NxAudio* instance = (NxAudio *)args;
 	uint32_t released_count;
-	
 	AudioOutBuffer source_buffers[2], *released_buffer;
-	
+
 	// Init audio buffers
-	source_buffers[0].buffer = buffer1;
-	source_buffers[1].buffer = buffer2;
-	
 	for (int i = 0; i < 2; i++){
-		source_buffers[i].next = NULL;
+		source_buffers[i].buffer = memalign(0x1000, ALIGN_TO(buf_size, 0x1000));
+		if (!source_buffers[i].buffer) {
+			Output::Error("Could not create audio buffers!");
+			return;
+		}
+		source_buffers[i].next = nullptr;
 		source_buffers[i].buffer_size = buf_size;
 		source_buffers[i].data_size = buf_size;
 		source_buffers[i].data_offset = 0;
+
+		// Fill in first portion of audio
 		instance->LockMutex();
 		instance->Decode((uint8_t*)source_buffers[i].buffer, buf_size);
 		instance->UnlockMutex();
 		audoutAppendAudioOutBuffer(&source_buffers[i]);
 	}
-	
-	for(;;) {
-		// A pretty bad way to close thread
-		if (instance->termStream) {
-			instance->termStream = false;
-			free(buffer1);
-			free(buffer2);
-			return;
-		}
 
+	// Render audio until termination requested
+	while(instance->want_audio) {
 		audoutWaitPlayFinish(&released_buffer, &released_count, UINT64_MAX);
 		instance->LockMutex();
 		instance->Decode((uint8_t*)released_buffer->buffer, buf_size);
 		instance->UnlockMutex();
 		audoutAppendAudioOutBuffer(released_buffer);
-
 	}
+
+	// Free memory
+	free(source_buffers[0].buffer);
+	free(source_buffers[1].buffer);
 }
 
-NxAudio::NxAudio(const Game_ConfigAudio& cfg) :
-	GenericAudio(cfg)
-{
-	instance = this;
-
-	audoutInitialize();
-	audoutStartAudioOut();
-	
-	mutexInit(&audio_mutex);
-
-	threadCreate(&audio_thread, switch_audio_thread, NULL, NULL, 0x10000, 0x2B, -2);
-	
+NxAudio::NxAudio(const Game_ConfigAudio& cfg) : GenericAudio(cfg) {
+	// Setup GenericAudio
 	SetFormat(samplerate, AudioDecoder::Format::S16, 2);
 
+	// Initialize audio service
+	audoutInitialize();
+	audoutStartAudioOut();
+	mutexInit(&audio_mutex);
+
+	// Start streaming thread
+	want_audio = true;
+	threadCreate(&audio_thread, switch_audio_thread, this, nullptr, 0x10000, 0x2B, -2);
 	if (R_FAILED(threadStart(&audio_thread))) {
 		Output::Error("Failed to init audio thread.");
 		return;
@@ -97,24 +94,22 @@ NxAudio::NxAudio(const Game_ConfigAudio& cfg) :
 }
 
 NxAudio::~NxAudio() {
-	// Closing streaming thread
-	termStream = true;
+	// Close streaming thread
+	want_audio = false;
 	threadWaitForExit(&audio_thread);
-	
-	// Deleting thread
 	threadClose(&audio_thread);
-	
-	// Terminating audio API
+
+	// Terminate audio service
 	audoutStopAudioOut();
 	audoutExit();
 }
 
 void NxAudio::LockMutex() const {
-	mutexLock((Mutex*)&audio_mutex);
+	mutexLock(&audio_mutex);
 }
 
 void NxAudio::UnlockMutex() const {
-	mutexUnlock((Mutex*)&audio_mutex);
+	mutexUnlock(&audio_mutex);
 }
 
 #endif
