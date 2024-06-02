@@ -30,6 +30,9 @@
 #  include "platform/emscripten/interface.h"
 #elif defined(__vita__)
 #  include <psp2/kernel/processmgr.h>
+#elif defined(__WIIU__)
+#  include <whb/proc.h>
+#  include <sysapp/launch.h>
 #endif
 
 #include "output.h"
@@ -319,6 +322,13 @@ void Output::ErrorStr(std::string const& err) {
 	// FIXME: This does not go through platform teardown code
 #ifdef __vita__
 	sceKernelExitProcess(EXIT_FAILURE);
+#elif defined(__WIIU__)
+	// cleanup procui (see FIXME in platform/wiiu/main.cpp)
+	SYSLaunchMenu();
+	while(WHBProcIsRunning()) {
+		Output::Debug("Waiting for shutdown...");
+		Game_Clock::SleepFor(1s);
+	}
 #endif
 	exit(EXIT_FAILURE);
 }
