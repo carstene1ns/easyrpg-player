@@ -26,7 +26,7 @@
 #include <memory>
 
 #include "audio_decoder.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 
 class CtrAudio final : public AudioInterface {
 public:

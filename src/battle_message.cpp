@@ -18,7 +18,7 @@
 #include "player.h"
 #include "utils.h"
 #include "algo.h"
-#include "game_battler.h"
+#include "engine/battler.h"
 #include <lcf/rpg/state.h>
 #include <lcf/data.h>
 #include <lcf/reader_util.h>

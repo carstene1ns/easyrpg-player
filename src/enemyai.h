@@ -20,7 +20,7 @@
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/system.h>
 #include <lcf/rpg/saveactor.h>
-#include <game_battler.h>
+#include "engine/battler.h"
 #include <memory>
 
 class Game_Actor;

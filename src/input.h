@@ -26,7 +26,7 @@
 #include "input_buttons.h"
 #include "input_source.h"
 #include "keys.h"
-#include "game_config.h"
+#include "engine/config.h"
 
 /**
  * Input namespace.

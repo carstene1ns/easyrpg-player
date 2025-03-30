@@ -22,9 +22,9 @@
 #include "fileext_guesser.h"
 #include "meta.h"
 #include "translation.h"
-#include "game_clock.h"
-#include "game_config.h"
-#include "game_config_game.h"
+#include "engine/clock.h"
+#include "engine/config.h"
+#include "engine/config_game.h"
 #include <vector>
 #include <memory>
 #include <cstdint>

@@ -2,8 +2,8 @@
 #include "enemyai.h"
 #include "rand.h"
 #include "algo.h"
-#include "game_battlealgorithm.h"
-#include "game_switches.h"
+#include "engine/battlealgorithm.h"
+#include "engine/switches.h"
 #include "main_data.h"
 #include "doctest.h"
 

@@ -1,14 +1,14 @@
-#include "game_player.h"
+#include "engine/hero.h"
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
+#include "engine/map.h"
 #include "main_data.h"
 #include <climits>
 
-TEST_SUITE_BEGIN("Game_Player_SaveCount");
+TEST_SUITE_BEGIN("Game_Hero_SaveCount");
 
 TEST_CASE("SaveCounts") {
-	Game_Player ch;
+	Game_Hero ch;
 
 	REQUIRE(!ch.IsMapCompatibleWithSave(-1));
 	REQUIRE(ch.IsMapCompatibleWithSave(0));

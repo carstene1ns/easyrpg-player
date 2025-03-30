@@ -20,7 +20,7 @@
 #include "message_overlay.h"
 #include "player.h"
 #include "bitmap.h"
-#include "game_message.h"
+#include "engine/message.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
 

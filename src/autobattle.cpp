@@ -15,12 +15,12 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "autobattle.h"
-#include "game_actor.h"
-#include "game_enemy.h"
-#include "game_enemyparty.h"
-#include "game_party.h"
-#include "game_battlealgorithm.h"
-#include "game_battle.h"
+#include "engine/actor.h"
+#include "engine/enemy.h"
+#include "engine/enemyparty.h"
+#include "engine/party.h"
+#include "engine/battlealgorithm.h"
+#include "engine/battle.h"
 #include "algo.h"
 #include "player.h"
 #include "output.h"

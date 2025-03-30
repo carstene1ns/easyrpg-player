@@ -19,7 +19,7 @@
 
 #include "audio.h"
 #include "output.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 
 #include <vector>
 #include <cstdint>

@@ -22,7 +22,7 @@
 #ifdef HAVE_NATIVE_MIDI
 #include <chrono>
 #include "filesystem_stream.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 #include "output.h"
 
 #ifdef USE_LIBRETRO

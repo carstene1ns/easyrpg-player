@@ -1,7 +1,7 @@
-#include "game_character.h"
-#include "game_player.h"
-#include "game_event.h"
-#include "game_vehicle.h"
+#include "engine/character.h"
+#include "engine/hero.h"
+#include "engine/event.h"
+#include "engine/vehicle.h"
 #include "doctest.h"
 #include <climits>
 
@@ -172,7 +172,7 @@ TEST_CASE("InitVehicle") {
 }
 
 TEST_CASE("InitPlayer") {
-	Game_Player ch;
+	Game_Hero ch;
 
 	testInit(ch);
 
@@ -388,7 +388,7 @@ TEST_CASE("BasicSetVehicle") {
 }
 
 TEST_CASE("BasicSetPlayer") {
-	Game_Player ch;
+	Game_Hero ch;
 
 	testBasicSet(ch);
 
@@ -417,7 +417,7 @@ TEST_CASE("BasicSetEvent") {
 }
 
 TEST_CASE("TransparencyAndOpacity") {
-	Game_Player ch;
+	Game_Hero ch;
 
 	ch.SetTransparency(-1);
 	REQUIRE_EQ(ch.GetTransparency(), 0);
@@ -476,7 +476,7 @@ TEST_CASE("TransparencyAndOpacity") {
 }
 
 TEST_CASE("TileVsCharset") {
-	Game_Player ch;
+	Game_Hero ch;
 
 	REQUIRE(ch.HasTileSprite());
 	REQUIRE_EQ(ch.GetTileId(), 0);
@@ -497,7 +497,7 @@ TEST_CASE("TileVsCharset") {
 }
 
 TEST_CASE("Animated") {
-	Game_Player ch;
+	Game_Hero ch;
 
 	REQUIRE(!ch.IsAnimPaused());
 
@@ -560,7 +560,7 @@ static void testVisible(Game_Character& ch) {
 }
 
 TEST_CASE("VisiblePlayer") {
-	Game_Player ch;
+	Game_Hero ch;
 
 	testVisible(ch);
 
@@ -589,7 +589,7 @@ TEST_CASE("LockFacingVsAnimType") {
 	for (int i = 0; i <= static_cast<int>(lcf::rpg::EventPage::AnimType_step_frame_fix); ++i) {
 		auto at = static_cast<lcf::rpg::EventPage::AnimType>(i);
 
-		Game_Player ch;
+		Game_Hero ch;
 		ch.SetAnimationType(at);
 
 		if (Game_Character::IsDirectionFixedAnimationType(at)) {

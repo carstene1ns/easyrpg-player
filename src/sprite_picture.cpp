@@ -18,10 +18,10 @@
 
 #include "sprite_picture.h"
 #include "main_data.h"
-#include "game_pictures.h"
-#include "game_battle.h"
-#include "game_screen.h"
-#include "game_windows.h"
+#include "engine/pictures.h"
+#include "engine/battle.h"
+#include "engine/screen.h"
+#include "engine/windows.h"
 #include "player.h"
 #include "bitmap.h"
 

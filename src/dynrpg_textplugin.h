@@ -18,7 +18,7 @@
 #ifndef EP_DYNRPG_TEXTPLUGIN_H
 #define EP_DYNRPG_TEXTPLUGIN_H
 
-#include "game_dynrpg.h"
+#include "engine/dynrpg.h"
 
 namespace DynRpg {
 	class TextPlugin : public DynRpgPlugin {

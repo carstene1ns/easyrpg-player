@@ -19,7 +19,7 @@
 #include <string>
 #include "bitmap.h"
 #include "color.h"
-#include "game_screen.h"
+#include "engine/screen.h"
 #include "main_data.h"
 #include "screen.h"
 #include "drawable_mgr.h"

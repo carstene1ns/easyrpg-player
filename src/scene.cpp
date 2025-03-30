@@ -26,14 +26,14 @@
 #include "audio.h"
 #include "filefinder.h"
 #include "transition.h"
-#include "game_actors.h"
-#include "game_interpreter.h"
-#include "game_system.h"
+#include "engine/actors.h"
+#include "engine/interpreter.h"
+#include "engine/system.h"
 #include "main_data.h"
-#include "scene_language.h"
-#include "scene_settings.h"
-#include "scene_title.h"
-#include "game_map.h"
+#include "scenes/language.h"
+#include "scenes/settings.h"
+#include "scenes/title.h"
+#include "engine/map.h"
 
 #ifndef NDEBUG
 #define DEBUG_VALIDATE(x) Scene::DebugValidate(x)

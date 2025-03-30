@@ -1,14 +1,14 @@
 #ifndef EP_TEST_MOCK_ACTOR
 #define EP_TEST_MOCK_ACTOR
 
-#include "game_actors.h"
-#include "game_party.h"
-#include "game_enemyparty.h"
-#include "game_system.h"
-#include "game_variables.h"
-#include "game_switches.h"
-#include "game_player.h"
-#include "game_battle.h"
+#include "engine/actors.h"
+#include "engine/party.h"
+#include "engine/enemyparty.h"
+#include "engine/system.h"
+#include "engine/variables.h"
+#include "engine/switches.h"
+#include "engine/hero.h"
+#include "engine/battle.h"
 #include "main_data.h"
 #include "player.h"
 #include "output.h"
@@ -91,7 +91,7 @@ public:
 		Main_Data::game_party = std::make_unique<Game_Party>();
 		Main_Data::game_switches = std::make_unique<Game_Switches>();
 		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k, Game_Variables::max_2k);
-		Main_Data::game_player = std::make_unique<Game_Player>();
+		Main_Data::game_hero = std::make_unique<Game_Hero>();
 
 		Main_Data::game_party->SetupNewGame();
 	}

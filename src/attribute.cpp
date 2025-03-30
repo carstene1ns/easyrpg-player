@@ -20,9 +20,9 @@
 #include <lcf/rpg/attribute.h>
 #include <lcf/reader_util.h>
 #include <lcf/data.h>
-#include "game_battler.h"
-#include "game_actor.h"
-#include "game_enemy.h"
+#include "engine/battler.h"
+#include "engine/actor.h"
+#include "engine/enemy.h"
 #include "output.h"
 #include "player.h"
 #include <climits>

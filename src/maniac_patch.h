@@ -24,7 +24,7 @@
 #include <vector>
 #include "span.h"
 
-#include "game_strings.h"
+#include "engine/strings.h"
 
 class Game_BaseInterpreterContext;
 

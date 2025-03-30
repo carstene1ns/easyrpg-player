@@ -1,7 +1,7 @@
-#include "game_event.h"
+#include "engine/event.h"
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
+#include "engine/map.h"
 #include "main_data.h"
 #include <climits>
 

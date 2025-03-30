@@ -18,7 +18,7 @@
 // Headers
 #include "ui.h"
 #include "color.h"
-#include "game_config.h"
+#include "engine/config.h"
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"

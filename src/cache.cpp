@@ -34,7 +34,7 @@
 #include "output.h"
 #include "player.h"
 #include <lcf/data.h>
-#include "game_clock.h"
+#include "engine/clock.h"
 #include "translation.h"
 
 using namespace std::chrono_literals;

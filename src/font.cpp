@@ -24,7 +24,7 @@
 
 #include "filesystem_stream.h"
 #include "system.h"
-#include "game_system.h"
+#include "engine/system.h"
 #include "main_data.h"
 
 #ifdef HAVE_FREETYPE

@@ -1,7 +1,7 @@
 #include "test_mock_actor.h"
 #include "rand.h"
 #include "algo.h"
-#include "game_battlealgorithm.h"
+#include "engine/battlealgorithm.h"
 #include "main_data.h"
 #include "doctest.h"
 

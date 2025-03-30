@@ -25,11 +25,11 @@
 #include "transition.h"
 #include "async_handler.h"
 #include "bitmap.h"
-#include "game_player.h"
+#include "engine/hero.h"
 #include "graphics.h"
 #include "main_data.h"
 #include "scene.h"
-#include "scene_map.h"
+#include "scenes/map.h"
 #include "spriteset_map.h"
 #include "baseui.h"
 #include "drawable.h"
@@ -160,8 +160,8 @@ void Transition::SetAttributesTransitions() {
 		if (scene != nullptr && scene->type == Scene::Map) {
 			auto map = static_cast<Scene_Map*>(scene);
 
-			zoom_position[0] = std::max(0, std::min(Main_Data::game_player->GetScreenX() + map->spriteset->GetRenderOx(), (int)Player::screen_width));
-			zoom_position[1] = std::max(0, std::min(Main_Data::game_player->GetScreenY() - 8 + map->spriteset->GetRenderOy(), (int)Player::screen_height));
+			zoom_position[0] = std::max(0, std::min(Main_Data::game_hero->GetScreenX() + map->spriteset->GetRenderOx(), (int)Player::screen_width));
+			zoom_position[1] = std::max(0, std::min(Main_Data::game_hero->GetScreenY() - 8 + map->spriteset->GetRenderOy(), (int)Player::screen_height));
 		}
 		else {
 			zoom_position[0] = Player::screen_width / 2;

@@ -36,28 +36,28 @@
 #include "cache.h"
 #include "rand.h"
 #include "cmdline_parser.h"
-#include "game_dynrpg.h"
+#include "engine/dynrpg.h"
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "fileext_guesser.h"
 #include "filesystem_hook.h"
-#include "game_actors.h"
-#include "game_battle.h"
-#include "game_destiny.h"
-#include "game_map.h"
-#include "game_message.h"
-#include "game_enemyparty.h"
-#include "game_ineluki.h"
-#include "game_party.h"
-#include "game_player.h"
-#include "game_switches.h"
-#include "game_screen.h"
-#include "game_pictures.h"
-#include "game_system.h"
-#include "game_variables.h"
-#include "game_strings.h"
-#include "game_targets.h"
-#include "game_windows.h"
+#include "engine/actors.h"
+#include "engine/battle.h"
+#include "engine/destiny.h"
+#include "engine/map.h"
+#include "engine/message.h"
+#include "engine/enemyparty.h"
+#include "engine/ineluki.h"
+#include "engine/party.h"
+#include "engine/hero.h"
+#include "engine/switches.h"
+#include "engine/screen.h"
+#include "engine/pictures.h"
+#include "engine/system.h"
+#include "engine/variables.h"
+#include "engine/strings.h"
+#include "engine/targets.h"
+#include "engine/windows.h"
 #include "graphics.h"
 #include <lcf/inireader.h>
 #include "input.h"
@@ -69,20 +69,20 @@
 #include "player.h"
 #include <lcf/reader_lcf.h>
 #include <lcf/reader_util.h>
-#include "scene_battle.h"
-#include "scene_logo.h"
-#include "scene_map.h"
+#include "scenes/battle.h"
+#include "scenes/logo.h"
+#include "scenes/map.h"
 #include "utils.h"
 #include "version.h"
-#include "game_quit.h"
-#include "scene_settings.h"
-#include "scene_title.h"
+#include "engine/quit.h"
+#include "scenes/settings.h"
+#include "scenes/title.h"
 #include "instrumentation.h"
 #include "transition.h"
 #include <lcf/scope_guard.h>
 #include <lcf/log_handler.h>
 #include "baseui.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 #include "message_overlay.h"
 #include "audio_midi.h"
 
@@ -941,7 +941,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_targets = std::make_unique<Game_Targets>();
 	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 	Main_Data::game_party = std::make_unique<Game_Party>();
-	Main_Data::game_player = std::make_unique<Game_Player>();
+	Main_Data::game_hero = std::make_unique<Game_Hero>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 	Main_Data::game_switches_global = std::make_unique<Game_Switches>();
 	Main_Data::game_variables_global = std::make_unique<Game_Variables>(min_var, max_var);
@@ -1109,7 +1109,7 @@ void Player::LoadFonts() {
 }
 
 static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
-	auto map = Game_Map::LoadMapFile(Main_Data::game_player->GetMapId());
+	auto map = Game_Map::LoadMapFile(Main_Data::game_hero->GetMapId());
 	Game_Map::SetupFromSave(
 			std::move(map),
 			std::move(save.map_info),
@@ -1199,10 +1199,10 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	Main_Data::game_screen->SetSaveData(std::move(save->screen));
 	Main_Data::game_pictures->SetSaveData(std::move(save->pictures));
 	Main_Data::game_targets->SetSaveData(std::move(save->targets));
-	Main_Data::game_player->SetSaveData(save->party_location);
+	Main_Data::game_hero->SetSaveData(save->party_location);
 	Main_Data::game_windows->SetSaveData(std::move(save->easyrpg_data.windows));
 
-	int map_id = Main_Data::game_player->GetMapId();
+	int map_id = Main_Data::game_hero->GetMapId();
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
 	save_request_id = map->Bind(
@@ -1242,7 +1242,7 @@ static void OnMapFileReady(FileRequestResult*) {
 		}
 	}
 
-	Main_Data::game_player->MoveTo(map_id, x_pos, y_pos);
+	Main_Data::game_hero->MoveTo(map_id, x_pos, y_pos);
 }
 
 void Player::SetupNewGame() {

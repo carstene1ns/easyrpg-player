@@ -17,9 +17,9 @@
 
 // Headers
 #include "sprite_weapon.h"
-#include "game_battler.h"
-#include "game_actor.h"
-#include "game_screen.h"
+#include "engine/battler.h"
+#include "engine/actor.h"
+#include "engine/screen.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"

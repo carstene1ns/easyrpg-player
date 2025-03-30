@@ -28,7 +28,7 @@
 #include "filefinder.h"
 #include "filesystem_stream.h"
 #include "player.h"
-#include "scene_save.h"
+#include "scenes/save.h"
 #include "output.h"
 
 void Emscripten_Interface::Reset() {

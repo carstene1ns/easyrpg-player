@@ -19,7 +19,7 @@
 #include <cstring>
 #include "SDL3/SDL_mouse.h"
 #include "SDL3/SDL_video.h"
-#include "game_config.h"
+#include "engine/config.h"
 #include "system.h"
 #include "sdl3_ui.h"
 

@@ -17,6 +17,7 @@
 Makefile.in
 aclocal.m4
 config.h
+!/src/engine/config.h
 config.h.in
 config.status
 configure

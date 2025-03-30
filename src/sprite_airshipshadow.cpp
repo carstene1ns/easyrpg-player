@@ -18,9 +18,9 @@
 // Headers
 #include "cache.h"
 #include "bitmap.h"
-#include "game_map.h"
-#include "game_player.h"
-#include "game_system.h"
+#include "engine/map.h"
+#include "engine/hero.h"
+#include "engine/system.h"
 #include "main_data.h"
 #include "sprite_airshipshadow.h"
 #include <string>
@@ -62,14 +62,14 @@ void Sprite_AirshipShadow::Draw(Bitmap &dst) {
 	const double opacity = (double)altitude / max_altitude;
 	SetOpacity(opacity * 255);
 
-	SetX(Main_Data::game_player->GetScreenX() + x_offset);
-	SetY(Main_Data::game_player->GetScreenY() + y_offset + Main_Data::game_player->GetJumpHeight());
+	SetX(Main_Data::game_hero->GetScreenX() + x_offset);
+	SetY(Main_Data::game_hero->GetScreenY() + y_offset + Main_Data::game_hero->GetJumpHeight());
 
 	Sprite::Draw(dst);
 }
 
 void Sprite_AirshipShadow::Update() {
-	if (!Main_Data::game_player->InAirship()) {
+	if (!Main_Data::game_hero->InAirship()) {
 		SetVisible(false);
 		return;
 	}

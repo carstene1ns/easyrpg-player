@@ -20,7 +20,7 @@
 
 #include "dynrpg_easyrpg.h"
 #include "main_data.h"
-#include "game_variables.h"
+#include "engine/variables.h"
 #include "utils.h"
 #include "version.h"
 

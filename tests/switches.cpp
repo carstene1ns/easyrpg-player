@@ -1,4 +1,4 @@
-#include "game_switches.h"
+#include "engine/switches.h"
 #include "doctest.h"
 
 TEST_SUITE_BEGIN("Switches");

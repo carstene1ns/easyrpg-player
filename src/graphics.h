@@ -23,7 +23,7 @@
 #include "bitmap.h"
 #include "drawable.h"
 #include "drawable_list.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 
 class MessageOverlay;
 class Scene;

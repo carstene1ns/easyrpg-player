@@ -1,21 +1,21 @@
-#include "game_player.h"
+#include "engine/hero.h"
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
+#include "engine/map.h"
 #include "main_data.h"
-#include "game_system.h"
+#include "engine/system.h"
 #include "rand.h"
 #include <climits>
 
 #include "mock_game.h"
 
-TEST_SUITE_BEGIN("Game_Player Input");
+TEST_SUITE_BEGIN("Game_Hero Input");
 
 static constexpr auto map_id = MockMap::ePassBlock20x15;
 
 // FIXME: Test conditions which disable input
 
-static void testPos(Game_Player& ch, int x, int y,
+static void testPos(Game_Hero& ch, int x, int y,
 		int dir, int face,
 		int remaining_step, bool jumping,
 		int stop_count, int max_stop_count,
@@ -137,7 +137,7 @@ TEST_CASE("DecisionEvent") {
 
 TEST_CASE("DecisionBoard") {
 	const MockGame mg(map_id);
-	auto& ch = *Main_Data::game_player;
+	auto& ch = *Main_Data::game_hero;
 
 	auto* vh = Game_Map::GetVehicle(Game_Vehicle::Boat);
 	REQUIRE(vh);
@@ -159,7 +159,7 @@ TEST_CASE("DecisionUnboard") {
 }
 
 static void testMenu(bool success) {
-	auto& ch = *Main_Data::game_player;
+	auto& ch = *Main_Data::game_hero;
 	ch.SetX(8);
 	ch.SetY(8);
 

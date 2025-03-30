@@ -18,10 +18,10 @@
 #include "bitmap.h"
 #include <lcf/rpg/animation.h>
 #include "output.h"
-#include "game_battle.h"
-#include "game_system.h"
-#include "game_screen.h"
-#include "game_map.h"
+#include "engine/battle.h"
+#include "engine/system.h"
+#include "engine/screen.h"
+#include "engine/map.h"
 #include "main_data.h"
 #include "filefinder.h"
 #include "cache.h"
@@ -31,7 +31,7 @@
 #include "player.h"
 #include "options.h"
 #include "drawable_mgr.h"
-#include "scene_map.h"
+#include "scenes/map.h"
 #include "spriteset_map.h"
 
 BattleAnimation::BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound, int cutoff) :

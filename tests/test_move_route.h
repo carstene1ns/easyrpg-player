@@ -1,17 +1,17 @@
 #ifndef EP_TEST_MOVE_ROUTE_H
 #define EP_TEST_MOVE_ROUTE_H
 
-#include "game_map.h"
-#include "game_vehicle.h"
-#include "game_event.h"
-#include "game_player.h"
-#include "game_party.h"
+#include "engine/map.h"
+#include "engine/vehicle.h"
+#include "engine/event.h"
+#include "engine/hero.h"
+#include "engine/party.h"
 #include "main_data.h"
 #include "map_data.h"
-#include "game_switches.h"
-#include "game_variables.h"
-#include "game_screen.h"
-#include "game_pictures.h"
+#include "engine/switches.h"
+#include "engine/variables.h"
+#include "engine/screen.h"
+#include "engine/pictures.h"
 #include "input.h"
 #include "output.h"
 #include <lcf/data.h>
@@ -81,8 +81,8 @@ struct MapGuard {
 		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k3, Game_Variables::max_2k3);
 		Main_Data::game_pictures = std::make_unique<Game_Pictures>();
 		Main_Data::game_screen = std::make_unique<Game_Screen>();
-		Main_Data::game_player = std::make_unique<Game_Player>();
-		Main_Data::game_player->SetMapId(1);
+		Main_Data::game_hero = std::make_unique<Game_Hero>();
+		Main_Data::game_hero->SetMapId(1);
 
 		auto map = std::make_unique<lcf::rpg::Map>();
 		map->events.push_back({});
@@ -103,7 +103,7 @@ struct MapGuard {
 	~MapGuard() {
 		Main_Data::game_switches = {};
 		Main_Data::game_variables = {};
-		Main_Data::game_player = {};
+		Main_Data::game_hero = {};
 		Main_Data::game_screen = {};
 		Main_Data::game_pictures = {};
 		Game_Map::Quit();
@@ -131,7 +131,7 @@ static void ForceUpdate(Game_Vehicle& ch) {
 	ch.Update();
 }
 
-/*static void ForceUpdate(Game_Player& ch) {
+/*static void ForceUpdate(Game_Hero& ch) {
 	ch.SetProcessed(false);
 	ch.Update();
 }

@@ -18,15 +18,15 @@
 // Headers
 #include "spriteset_map.h"
 #include "cache.h"
-#include "game_dynrpg.h"
-#include "game_map.h"
+#include "engine/dynrpg.h"
+#include "engine/map.h"
 #include "main_data.h"
 #include "sprite_airshipshadow.h"
 #include "sprite_character.h"
-#include "game_character.h"
-#include "game_player.h"
-#include "game_vehicle.h"
-#include "game_screen.h"
+#include "engine/character.h"
+#include "engine/hero.h"
+#include "engine/vehicle.h"
+#include "engine/screen.h"
 #include "bitmap.h"
 #include "player.h"
 #include "drawable_list.h"
@@ -75,7 +75,7 @@ void Spriteset_Map::Refresh() {
 
 	CreateAirshipShadowSprite(need_x_clone, need_y_clone);
 
-	CreateSprite(Main_Data::game_player.get(), need_x_clone, need_y_clone);
+	CreateSprite(Main_Data::game_hero.get(), need_x_clone, need_y_clone);
 
 	for (bool& v: vehicle_loaded) {
 		v = false;

@@ -26,7 +26,7 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 #include "drawable_mgr.h"
-#include "game_screen.h"
+#include "engine/screen.h"
 #include "player.h"
 
 Background::Background(const std::string& name) : Drawable(Priority_Background)

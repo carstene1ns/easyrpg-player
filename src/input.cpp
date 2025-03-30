@@ -17,7 +17,7 @@
 
 // Headers
 #include "input.h"
-#include "game_config.h"
+#include "engine/config.h"
 #include "input_buttons.h"
 #include "input_source.h"
 #include "output.h"

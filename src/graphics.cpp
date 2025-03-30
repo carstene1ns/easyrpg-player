@@ -29,7 +29,7 @@
 #include "scene.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 
 using namespace std::chrono_literals;
 

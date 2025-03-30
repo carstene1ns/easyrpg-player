@@ -17,7 +17,7 @@
 
 // Headers
 #include "sprite_battler.h"
-#include "game_battler.h"
+#include "engine/battler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"

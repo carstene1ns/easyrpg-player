@@ -25,8 +25,8 @@
 #include "main_data.h"
 #include "bitmap.h"
 #include "compiler.h"
-#include "game_map.h"
-#include "game_system.h"
+#include "engine/map.h"
+#include "engine/system.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
 

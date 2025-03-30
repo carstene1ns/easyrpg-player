@@ -22,7 +22,7 @@
 
 #include "audio.h"
 #include "filefinder.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 #include "output.h"
 #include "audio_secache.h"
 

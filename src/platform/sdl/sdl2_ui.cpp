@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
-#include "game_config.h"
+#include "engine/config.h"
 #include "system.h"
 #include "sdl2_ui.h"
 

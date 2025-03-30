@@ -1,5 +1,5 @@
 #include <benchmark/benchmark.h>
-#include "game_variables.h"
+#include "engine/variables.h"
 #include <lcf/data.h>
 
 constexpr int max_vars = 1024; // Keep this a power of 2 so no expensive modulus instructions

@@ -15,14 +15,14 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "algo.h"
-#include "game_battler.h"
-#include "game_actor.h"
-#include "game_enemy.h"
-#include "game_system.h"
+#include "engine/battler.h"
+#include "engine/actor.h"
+#include "engine/enemy.h"
+#include "engine/system.h"
 #include "main_data.h"
-#include "game_player.h"
-#include "game_targets.h"
-#include "game_battle.h"
+#include "engine/hero.h"
+#include "engine/targets.h"
+#include "engine/battle.h"
 #include "attribute.h"
 #include "player.h"
 #include "rand.h"
@@ -295,11 +295,11 @@ bool IsSkillUsable(const lcf::rpg::Skill& skill,
 	const auto in_battle = Game_Battle::IsBattleRunning();
 
 	if (skill.type == lcf::rpg::Skill::Type_escape) {
-		return !in_battle && Main_Data::game_system->GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget() && !Main_Data::game_player->IsFlying();
+		return !in_battle && Main_Data::game_system->GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget() && !Main_Data::game_hero->IsFlying();
 	}
 
 	if (skill.type == lcf::rpg::Skill::Type_teleport) {
-		return !in_battle && Main_Data::game_system->GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets() && !Main_Data::game_player->IsFlying();
+		return !in_battle && Main_Data::game_system->GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets() && !Main_Data::game_hero->IsFlying();
 	}
 
 	if (skill.type == lcf::rpg::Skill::Type_switch) {

@@ -22,8 +22,8 @@
 #include <fstream>
 #include <memory>
 #include "filesystem_stream.h"
-#include "game_config.h"
-#include "game_clock.h"
+#include "engine/config.h"
+#include "engine/clock.h"
 #include "input_buttons.h"
 #include "keys.h"
 #include "point.h"

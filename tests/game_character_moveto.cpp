@@ -1,9 +1,9 @@
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
-#include "game_vehicle.h"
+#include "engine/map.h"
+#include "engine/vehicle.h"
 #include "main_data.h"
-#include "game_switches.h"
+#include "engine/switches.h"
 #include <climits>
 #include <initializer_list>
 
@@ -43,7 +43,7 @@ static void testChar(const Game_Character& ch, int map_id, int x, int y,
 	REQUIRE_EQ(ch.GetSpriteIndex(), sprite_id);
 }
 
-static void testPlayer(Game_Player& ch) {
+static void testPlayer(Game_Hero& ch) {
 	ch.SetRemainingStep(256);
 	ch.SetJumping(true);
 	ch.SetStopCount(77);

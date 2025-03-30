@@ -17,8 +17,8 @@
 
 // Headers
 #include "battle_animation.h"
-#include "game_enemy.h"
-#include "game_screen.h"
+#include "engine/enemy.h"
+#include "engine/screen.h"
 #include "sprite_enemy.h"
 #include "bitmap.h"
 #include "cache.h"
@@ -27,7 +27,7 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 #include "feature.h"
-#include "game_battle.h"
+#include "engine/battle.h"
 
 Sprite_Enemy::Sprite_Enemy(Game_Enemy* enemy)
 	: Sprite_Battler(enemy, enemy->GetTroopMemberId())

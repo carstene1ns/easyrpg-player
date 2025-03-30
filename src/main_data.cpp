@@ -21,23 +21,23 @@
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "filesystem.h"
-#include "game_destiny.h"
-#include "game_system.h"
-#include "game_actors.h"
-#include "game_party.h"
-#include "game_enemyparty.h"
-#include "game_dynrpg.h"
-#include "game_ineluki.h"
-#include "game_player.h"
-#include "game_screen.h"
-#include "game_pictures.h"
-#include "game_map.h"
-#include "game_variables.h"
-#include "game_strings.h"
-#include "game_switches.h"
-#include "game_targets.h"
-#include "game_quit.h"
-#include "game_windows.h"
+#include "engine/destiny.h"
+#include "engine/system.h"
+#include "engine/actors.h"
+#include "engine/party.h"
+#include "engine/enemyparty.h"
+#include "engine/dynrpg.h"
+#include "engine/ineluki.h"
+#include "engine/hero.h"
+#include "engine/screen.h"
+#include "engine/pictures.h"
+#include "engine/map.h"
+#include "engine/variables.h"
+#include "engine/strings.h"
+#include "engine/switches.h"
+#include "engine/targets.h"
+#include "engine/quit.h"
+#include "engine/windows.h"
 #include "font.h"
 #include "player.h"
 #include "system.h"
@@ -67,7 +67,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Pictures> game_pictures;
 	std::unique_ptr<Game_Windows> game_windows;
 	std::unique_ptr<Game_Actors> game_actors;
-	std::unique_ptr<Game_Player> game_player;
+	std::unique_ptr<Game_Hero> game_hero;
 	std::unique_ptr<Game_Party> game_party;
 	std::unique_ptr<Game_EnemyParty> game_enemyparty;
 	std::unique_ptr<Game_Targets> game_targets;
@@ -122,7 +122,7 @@ void Main_Data::Cleanup() {
 	game_screen.reset();
 	game_pictures.reset();
 	game_windows.reset();
-	game_player.reset();
+	game_hero.reset();
 	game_party.reset();
 	game_enemyparty.reset();
 	game_actors.reset();

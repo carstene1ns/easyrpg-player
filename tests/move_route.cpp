@@ -1,10 +1,10 @@
-#include "game_player.h"
+#include "engine/hero.h"
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
-#include "game_vehicle.h"
+#include "engine/map.h"
+#include "engine/vehicle.h"
 #include "main_data.h"
-#include "game_switches.h"
+#include "engine/switches.h"
 #include <climits>
 #include <initializer_list>
 #include <lcf/rpg/movecommand.h>
@@ -189,8 +189,8 @@ TEST_CASE("TestMoveRouteInvalidCmd") {
 
 template <bool success, bool repeat, bool skip>
 static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
-	Main_Data::game_player->SetX(px);
-	Main_Data::game_player->SetY(py);
+	Main_Data::game_hero->SetX(px);
+	Main_Data::game_hero->SetY(py);
 
 	auto ch = MoveRouteVehicle();
 	ch.SetX(x);
@@ -447,8 +447,8 @@ TEST_CASE("CommandMoveRandom") {
 
 
 static void testTurn(lcf::rpg::MoveCommand::Code code, int orig_dir, int dir, int face, int x = 0, int y = 0, int px = 0, int py = 0) {
-	Main_Data::game_player->SetX(px);
-	Main_Data::game_player->SetY(py);
+	Main_Data::game_hero->SetX(px);
+	Main_Data::game_hero->SetY(py);
 
 	auto ch = MoveRouteVehicle();
 	ch.SetX(x);
@@ -541,8 +541,8 @@ TEST_CASE("CommandWait") {
 
 template <bool success, bool repeat, bool skip, bool end>
 static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
-	Main_Data::game_player->SetX(px);
-	Main_Data::game_player->SetY(py);
+	Main_Data::game_hero->SetX(px);
+	Main_Data::game_hero->SetY(py);
 
 	auto ch = MoveRouteVehicle();
 	ch.SetX(x);

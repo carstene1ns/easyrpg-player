@@ -23,7 +23,7 @@
 #include "audio_generic_midiout.h"
 #include "filesystem_stream.h"
 #include "audio_secache.h"
-#include "game_config.h"
+#include "engine/config.h"
 
 /**
  * Base Audio class.

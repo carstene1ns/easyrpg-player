@@ -1,5 +1,5 @@
 #include <benchmark/benchmark.h>
-#include "game_switches.h"
+#include "engine/switches.h"
 #include <lcf/data.h>
 
 constexpr int max_sws = 1024; // Keep this a power of 2 so no expensive modulus instructions

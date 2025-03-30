@@ -21,7 +21,7 @@
 #include <lcf/rpg/fwd.h>
 #include <lcf/dbbitarray.h>
 #include "span.h"
-#include "game_battler.h"
+#include "engine/battler.h"
 
 class Game_Battler;
 class Game_Actor;

@@ -26,7 +26,7 @@
 #include "android.h"
 #include "player.h"
 #include "baseui.h"
-#include "scene_settings.h"
+#include "scenes/settings.h"
 
 #ifdef __cplusplus
 extern "C" {

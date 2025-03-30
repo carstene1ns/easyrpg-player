@@ -21,7 +21,7 @@
 #include "system.h"
 #include "baseui.h"
 #include "player.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 
 AudioInterface& Audio() {
 	static Game_ConfigAudio cfg;

@@ -1,6 +1,6 @@
 #include "mock_game.h"
-#include "game_actors.h"
-#include "game_system.h"
+#include "engine/actors.h"
+#include "engine/system.h"
 
 static lcf::rpg::Terrain MakeTerrain() {
 	return {};
@@ -41,14 +41,14 @@ MockGame::MockGame(MockMap maptag) {
 	Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k3, Game_Variables::max_2k3);
 	Main_Data::game_pictures = std::make_unique<Game_Pictures>();
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
-	Main_Data::game_player = std::make_unique<Game_Player>();
-	Main_Data::game_player->SetMapId(1);
+	Main_Data::game_hero = std::make_unique<Game_Hero>();
+	Main_Data::game_hero->SetMapId(1);
 
 	Game_Map::Setup(MakeMockMap(maptag));
 }
 
-Game_Player* MockGame::GetPlayer() {
-	return Main_Data::game_player.get();
+Game_Hero* MockGame::GetPlayer() {
+	return Main_Data::game_hero.get();
 }
 
 Game_Vehicle* MockGame::GetVehicle(Game_Vehicle::Type veh) {
@@ -69,7 +69,7 @@ void MockGame::Reset() {
 void MockGame::DoReset() {
 	Main_Data::game_switches = {};
 	Main_Data::game_variables = {};
-	Main_Data::game_player = {};
+	Main_Data::game_hero = {};
 	Main_Data::game_screen = {};
 	Main_Data::game_pictures = {};
 	Game_Map::Quit();

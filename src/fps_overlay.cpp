@@ -18,7 +18,7 @@
 #include <sstream>
 
 #include "fps_overlay.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 #include "bitmap.h"
 #include "utils.h"
 #include "input.h"

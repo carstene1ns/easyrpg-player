@@ -25,7 +25,7 @@
 #include "input_source.h"
 #include "player.h"
 #include "output.h"
-#include "game_system.h"
+#include "engine/system.h"
 #include "main_data.h"
 #include "version.h"
 

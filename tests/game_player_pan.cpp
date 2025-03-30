@@ -1,15 +1,15 @@
-#include "game_player.h"
+#include "engine/hero.h"
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
+#include "engine/map.h"
 #include "main_data.h"
 #include <climits>
 
 #include "mock_game.h"
 
-TEST_SUITE_BEGIN("Game_Player");
+TEST_SUITE_BEGIN("Game_Hero");
 
-static void testPanAbs(Game_Player& ch, bool active, bool locked, int dx, int dy, int dtx, int dty, int w) {
+static void testPanAbs(Game_Hero& ch, bool active, bool locked, int dx, int dy, int dtx, int dty, int w) {
 	CAPTURE(active);
 	CAPTURE(locked);
 	CAPTURE(dx);
@@ -27,23 +27,23 @@ static void testPanAbs(Game_Player& ch, bool active, bool locked, int dx, int dy
 	REQUIRE_EQ(ch.GetPanWait(), w);
 }
 
-static void testPan(Game_Player& ch, bool active, bool locked, int dx, int dy, int dtx, int dty, int w) {
+static void testPan(Game_Hero& ch, bool active, bool locked, int dx, int dy, int dtx, int dty, int w) {
 	testPanAbs(ch, active, locked, dx * SCREEN_TILE_SIZE, dy * SCREEN_TILE_SIZE, dtx * SCREEN_TILE_SIZE, dty * SCREEN_TILE_SIZE, w);
 }
 
 TEST_CASE("StartResetPan") {
-	Game_Player ch;
+	Game_Hero ch;
 
-	ch.StartPan(Game_Player::PanRight, 16, 1);
+	ch.StartPan(Game_Hero::PanRight, 16, 1);
 	testPan(ch, true, false, 0, 0, -16, 0, 1024);
 
-	ch.StartPan(Game_Player::PanUp, 8, 1);
+	ch.StartPan(Game_Hero::PanUp, 8, 1);
 	testPan(ch, true, false, 0, 0, -16, 8, 1024);
 
-	ch.StartPan(Game_Player::PanLeft, 4, 1);
+	ch.StartPan(Game_Hero::PanLeft, 4, 1);
 	testPan(ch, true, false, 0, 0, -12, 8, 768);
 
-	ch.StartPan(Game_Player::PanDown, 9, 1);
+	ch.StartPan(Game_Hero::PanDown, 9, 1);
 	testPan(ch, true, false, 0, 0, -12, -1, 768);
 
 	ch.ResetPan(2);
@@ -52,8 +52,8 @@ TEST_CASE("StartResetPan") {
 }
 
 static void testPanSpeed(int dist, int speed, int wait) {
-	Game_Player ch;
-	ch.StartPan(Game_Player::PanRight, dist, speed);
+	Game_Hero ch;
+	ch.StartPan(Game_Hero::PanRight, dist, speed);
 	REQUIRE_EQ(ch.GetPanWait(), wait);
 }
 
@@ -74,7 +74,7 @@ TEST_CASE("PanSpeed") {
 }
 
 TEST_CASE("LockPan") {
-	Game_Player ch;
+	Game_Hero ch;
 
 	REQUIRE(!ch.IsPanLocked());
 	ch.StartPan(Game_Character::Right, 1, 1);
@@ -93,7 +93,7 @@ TEST_CASE("LockPan") {
 	REQUIRE(!ch.IsPanLocked());
 }
 
-static void testAnimPan(Game_Player::PanDirection dir_x, Game_Player::PanDirection dir_y, int speed) {
+static void testAnimPan(Game_Hero::PanDirection dir_x, Game_Hero::PanDirection dir_y, int speed) {
 	static constexpr auto map_id = MockMap::ePass40x30;
 
 	const MockGame mg(map_id);
@@ -114,10 +114,10 @@ static void testAnimPan(Game_Player::PanDirection dir_x, Game_Player::PanDirecti
 	int fx = 1 * SCREEN_TILE_SIZE;
 	int fy = 2 * SCREEN_TILE_SIZE;
 
-	if (dir_x == Game_Player::PanRight) {
+	if (dir_x == Game_Hero::PanRight) {
 		fx = -1 * SCREEN_TILE_SIZE;
 	}
-	if (dir_y == Game_Player::PanDown) {
+	if (dir_y == Game_Hero::PanDown) {
 		fy = -2 * SCREEN_TILE_SIZE;
 	}
 
@@ -134,12 +134,12 @@ static void testAnimPan(Game_Player::PanDirection dir_x, Game_Player::PanDirecti
 
 	for (int i = 1; i < wait; ++i) {
 		ForceUpdate(ch);
-		if (dir_x == Game_Player::PanRight) {
+		if (dir_x == Game_Hero::PanRight) {
 			dx = std::max(dx - step_x, fx);
 		} else {
 			dx = std::min(dx + step_x, fx);
 		}
-		if (dir_y == Game_Player::PanDown) {
+		if (dir_y == Game_Hero::PanDown) {
 			dy = std::max(dy - step_y, fy);
 		} else {
 			dy = std::min(dy + step_y, fy);
@@ -158,12 +158,12 @@ static void testAnimPan(Game_Player::PanDirection dir_x, Game_Player::PanDirecti
 	dy = fy;
 	for (int i = 1; i < wait; ++i) {
 		ForceUpdate(ch);
-		if (dir_x == Game_Player::PanRight) {
+		if (dir_x == Game_Hero::PanRight) {
 			dx = std::min(dx + step_x, 0);
 		} else {
 			dx = std::max(dx - step_x, 0);
 		}
-		if (dir_y == Game_Player::PanDown) {
+		if (dir_y == Game_Hero::PanDown) {
 			dy = std::min(dy + step_y, 0);
 		} else {
 			dy = std::max(dy - step_y, 0);
@@ -177,12 +177,12 @@ static void testAnimPan(Game_Player::PanDirection dir_x, Game_Player::PanDirecti
 
 TEST_CASE("AnimatePan") {
 	for (int speed = 1; speed <= 6; ++speed) {
-		testAnimPan(Game_Player::PanLeft, Game_Player::PanUp, speed);
-		testAnimPan(Game_Player::PanRight, Game_Player::PanDown, speed);
+		testAnimPan(Game_Hero::PanLeft, Game_Hero::PanUp, speed);
+		testAnimPan(Game_Hero::PanRight, Game_Hero::PanDown, speed);
 	}
 }
 
-static void testAnimBlocked(Game_Player::PanDirection dir_x, Game_Player::PanDirection dir_y, int speed) {
+static void testAnimBlocked(Game_Hero::PanDirection dir_x, Game_Hero::PanDirection dir_y, int speed) {
 	static constexpr auto map_id = MockMap::ePassBlock20x15;
 
 	const MockGame mg(map_id);
@@ -195,10 +195,10 @@ static void testAnimBlocked(Game_Player::PanDirection dir_x, Game_Player::PanDir
 	int fx = 1 * SCREEN_TILE_SIZE;
 	int fy = 2 * SCREEN_TILE_SIZE;
 
-	if (dir_x == Game_Player::PanRight) {
+	if (dir_x == Game_Hero::PanRight) {
 		fx = -1 * SCREEN_TILE_SIZE;
 	}
-	if (dir_y == Game_Player::PanDown) {
+	if (dir_y == Game_Hero::PanDown) {
 		fy = -2 * SCREEN_TILE_SIZE;
 	}
 
@@ -218,8 +218,8 @@ static void testAnimBlocked(Game_Player::PanDirection dir_x, Game_Player::PanDir
 
 TEST_CASE("BlockedPan") {
 	for (int speed = 1; speed <= 6; ++speed) {
-		testAnimBlocked(Game_Player::PanLeft, Game_Player::PanUp, speed);
-		testAnimBlocked(Game_Player::PanRight, Game_Player::PanDown, speed);
+		testAnimBlocked(Game_Hero::PanLeft, Game_Hero::PanUp, speed);
+		testAnimBlocked(Game_Hero::PanRight, Game_Hero::PanDown, speed);
 	}
 }
 

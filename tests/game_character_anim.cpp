@@ -1,9 +1,9 @@
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
-#include "game_vehicle.h"
+#include "engine/map.h"
+#include "engine/vehicle.h"
 #include "main_data.h"
-#include "game_switches.h"
+#include "engine/switches.h"
 #include <climits>
 #include <initializer_list>
 

@@ -18,7 +18,7 @@
 // Headers
 #include "sprite_character.h"
 #include "cache.h"
-#include "game_map.h"
+#include "engine/map.h"
 #include "bitmap.h"
 #include "output.h"
 #include "player.h"

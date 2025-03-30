@@ -16,11 +16,11 @@
  */
 
 #include "pending_message.h"
-#include "game_variables.h"
-#include "game_strings.h"
-#include "game_actors.h"
-#include "game_message.h"
-#include "game_switches.h"
+#include "engine/variables.h"
+#include "engine/strings.h"
+#include "engine/actors.h"
+#include "engine/message.h"
+#include "engine/switches.h"
 #include <lcf/data.h>
 #include "output.h"
 #include "utils.h"

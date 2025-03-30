@@ -1,4 +1,4 @@
-#include "game_variables.h"
+#include "engine/variables.h"
 #include "doctest.h"
 
 TEST_SUITE_BEGIN("Variables");

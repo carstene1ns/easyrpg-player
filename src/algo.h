@@ -22,7 +22,7 @@
 #include <lcf/rpg/system.h>
 #include <lcf/rpg/saveactor.h>
 #include <lcf/rpg/skill.h>
-#include "game_battler.h"
+#include "engine/battler.h"
 
 class Game_Actor;
 class Game_Enemy;

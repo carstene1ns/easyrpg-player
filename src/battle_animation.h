@@ -19,8 +19,8 @@
 #define EP_BATTLE_ANIMATION_H
 
 // Headers
-#include "game_battler.h"
-#include "game_character.h"
+#include "engine/battler.h"
+#include "engine/character.h"
 #include "system.h"
 #include <lcf/rpg/animation.h>
 #include "drawable.h"

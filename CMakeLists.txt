@@ -35,14 +35,15 @@ option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXX
 add_library(${PROJECT_NAME} OBJECT
 	src/lcf_data.cpp
 	src/lcf/data.h
+	src/algo.cpp
+	src/algo.h
 	src/async_handler.cpp
 	src/async_handler.h
 	src/async_op.h
-	src/algo.h
-	src/algo.cpp
-	src/attribute.h
 	src/attribute.cpp
+	src/attribute.h
 	src/audio.cpp
+	src/audio.h
 	src/audio_decoder.cpp
 	src/audio_decoder.h
 	src/audio_decoder_base.cpp
@@ -53,7 +54,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/audio_generic.h
 	src/audio_generic_midiout.cpp
 	src/audio_generic_midiout.h
-	src/audio.h
 	src/audio_midi.cpp
 	src/audio_midi.h
 	src/audio_resampler.cpp
@@ -71,10 +71,10 @@ add_library(${PROJECT_NAME} OBJECT
 	src/battle_message.cpp
 	src/battle_message.h
 	src/bitmap.cpp
-	src/bitmapfont.h
-	src/bitmapfont_glyph.h
 	src/bitmap.h
 	src/bitmap_hslrgb.h
+	src/bitmapfont.h
+	src/bitmapfont_glyph.h
 	src/cache.cpp
 	src/cache.h
 	src/callback.h
@@ -113,17 +113,89 @@ add_library(${PROJECT_NAME} OBJECT
 	src/dynrpg_textplugin.h
 	src/enemyai.cpp
 	src/enemyai.h
+	src/engine/actor.cpp
+	src/engine/actor.h
+	src/engine/actors.cpp
+	src/engine/actors.h
+	src/engine/battle.cpp
+	src/engine/battle.h
+	src/engine/battlealgorithm.cpp
+	src/engine/battlealgorithm.h
+	src/engine/battler.cpp
+	src/engine/battler.h
+	src/engine/character.cpp
+	src/engine/character.h
+	src/engine/clock.cpp
+	src/engine/clock.h
+	src/engine/commonevent.cpp
+	src/engine/commonevent.h
+	src/engine/config.cpp
+	src/engine/config.h
+	src/engine/config_game.cpp
+	src/engine/config_game.h
+	src/engine/destiny.cpp
+	src/engine/destiny.h
+	src/engine/dynrpg.cpp
+	src/engine/dynrpg.h
+	src/engine/enemy.cpp
+	src/engine/enemy.h
+	src/engine/enemyparty.cpp
+	src/engine/enemyparty.h
+	src/engine/event.cpp
+	src/engine/event.h
+	src/engine/hero.cpp
+	src/engine/hero.h
+	src/engine/ineluki.cpp
+	src/engine/ineluki.h
+	src/engine/interpreter.cpp
+	src/engine/interpreter.h
+	src/engine/interpreter_battle.cpp
+	src/engine/interpreter_battle.h
+	src/engine/interpreter_control_variables.cpp
+	src/engine/interpreter_control_variables.h
+	src/engine/interpreter_map.cpp
+	src/engine/interpreter_map.h
+	src/engine/interpreter_shared.cpp
+	src/engine/interpreter_shared.h
+	src/engine/map.cpp
+	src/engine/map.h
+	src/engine/message.cpp
+	src/engine/message.h
+	src/engine/party.cpp
+	src/engine/party.h
+	src/engine/party_base.cpp
+	src/engine/party_base.h
+	src/engine/pictures.cpp
+	src/engine/pictures.h
+	src/engine/quit.cpp
+	src/engine/quit.h
+	src/engine/screen.cpp
+	src/engine/screen.h
+	src/engine/strings.cpp
+	src/engine/strings.h
+	src/engine/switches.cpp
+	src/engine/switches.h
+	src/engine/system.cpp
+	src/engine/system.h
+	src/engine/targets.cpp
+	src/engine/targets.h
+	src/engine/variables.cpp
+	src/engine/variables.h
+	src/engine/vehicle.cpp
+	src/engine/vehicle.h
+	src/engine/windows.cpp
+	src/engine/windows.h
 	src/exe_reader.cpp
 	src/exe_reader.h
 	src/exfont.h
 	src/feature.cpp
 	src/feature.h
+	src/fileext_guesser.cpp
+	src/fileext_guesser.h
 	src/filefinder.cpp
 	src/filefinder.h
 	src/filefinder_rtp.cpp
 	src/filefinder_rtp.h
-	src/fileext_guesser.cpp
-	src/fileext_guesser.h
 	src/filesystem.cpp
 	src/filesystem.h
 	src/filesystem_hook.cpp
@@ -146,78 +218,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/fps_overlay.h
 	src/frame.cpp
 	src/frame.h
-	src/game_actor.cpp
-	src/game_actor.h
-	src/game_actors.cpp
-	src/game_actors.h
-	src/game_battlealgorithm.cpp
-	src/game_battlealgorithm.h
-	src/game_battle.cpp
-	src/game_battle.h
-	src/game_battler.cpp
-	src/game_battler.h
-	src/game_character.cpp
-	src/game_character.h
-	src/game_clock.cpp
-	src/game_clock.h
-	src/game_commonevent.cpp
-	src/game_commonevent.h
-	src/game_config.cpp
-	src/game_config.h
-	src/game_config_game.cpp
-	src/game_config_game.h
-	src/game_destiny.cpp
-	src/game_destiny.h
-	src/game_dynrpg.cpp
-	src/game_dynrpg.h
-	src/game_enemy.cpp
-	src/game_enemy.h
-	src/game_enemyparty.cpp
-	src/game_enemyparty.h
-	src/game_event.cpp
-	src/game_event.h
-	src/game_ineluki.cpp
-	src/game_ineluki.h
-	src/game_interpreter_battle.cpp
-	src/game_interpreter_battle.h
-	src/game_interpreter_control_variables.cpp
-	src/game_interpreter_control_variables.h
-	src/game_interpreter.cpp
-	src/game_interpreter.h
-	src/game_interpreter_map.cpp
-	src/game_interpreter_map.h
-	src/game_interpreter_shared.cpp
-	src/game_interpreter_shared.h
-	src/game_map.cpp
-	src/game_map.h
-	src/game_message.cpp
-	src/game_message.h
-	src/game_party_base.cpp
-	src/game_party_base.h
-	src/game_party.cpp
-	src/game_party.h
-	src/game_pictures.cpp
-	src/game_pictures.h
-	src/game_player.cpp
-	src/game_player.h
-	src/game_quit.cpp
-	src/game_quit.h
-	src/game_screen.cpp
-	src/game_screen.h
-	src/game_strings.cpp
-	src/game_strings.h
-	src/game_switches.cpp
-	src/game_switches.h
-	src/game_system.cpp
-	src/game_system.h
-	src/game_targets.cpp
-	src/game_targets.h
-	src/game_variables.cpp
-	src/game_variables.h
-	src/game_vehicle.cpp
-	src/game_vehicle.h
-	src/game_windows.cpp
-	src/game_windows.h
 	src/generated/bitmapfont_rmg2000.h
 	src/generated/bitmapfont_ttyp0.h
 	src/generated/bitmapfont_wqy.h
@@ -236,10 +236,10 @@ add_library(${PROJECT_NAME} OBJECT
 	src/image_png.h
 	src/image_xyz.cpp
 	src/image_xyz.h
-	src/input_buttons_desktop.cpp
-	src/input_buttons.h
 	src/input.cpp
 	src/input.h
+	src/input_buttons.h
+	src/input_buttons_desktop.cpp
 	src/input_source.cpp
 	src/input_source.h
 	src/instrumentation.cpp
@@ -263,8 +263,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/options.h
 	src/output.cpp
 	src/output.h
-	src/pending_message.h
 	src/pending_message.cpp
+	src/pending_message.h
 	src/pixel_format.h
 	src/pixman_image_ptr.h
 	src/plane.cpp
@@ -284,86 +284,86 @@ add_library(${PROJECT_NAME} OBJECT
 	src/rtp.cpp
 	src/rtp.h
 	src/rtp_table.cpp
-	src/scene_actortarget.cpp
-	src/scene_actortarget.h
-	src/scene_battle.cpp
-	src/scene_battle.h
-	src/scene_battle_rpg2k3.cpp
-	src/scene_battle_rpg2k3.h
-	src/scene_battle_rpg2k.cpp
-	src/scene_battle_rpg2k.h
 	src/scene.cpp
-	src/scene_debug.cpp
-	src/scene_debug.h
-	src/scene_end.cpp
-	src/scene_end.h
-	src/scene_equip.cpp
-	src/scene_equip.h
-	src/scene_file.cpp
-	src/scene_file.h
-	src/scene_gamebrowser.cpp
-	src/scene_gamebrowser.h
-	src/scene_gameover.cpp
-	src/scene_gameover.h
 	src/scene.h
-	src/scene_import.cpp
-	src/scene_import.h
-	src/scene_item.cpp
-	src/scene_item.h
-	src/scene_language.cpp
-	src/scene_language.h
-	src/scene_load.cpp
-	src/scene_load.h
-	src/scene_logo.cpp
-	src/scene_logo.h
-	src/scene_map.cpp
-	src/scene_map.h
-	src/scene_menu.cpp
-	src/scene_menu.h
-	src/scene_name.cpp
-	src/scene_name.h
-	src/scene_order.cpp
-	src/scene_order.h
-	src/scene_save.cpp
-	src/scene_save.h
-	src/scene_shop.cpp
-	src/scene_shop.h
-	src/scene_skill.cpp
-	src/scene_skill.h
-	src/scene_status.cpp
-	src/scene_status.h
-	src/scene_settings.h
-	src/scene_settings.cpp
-	src/scene_teleport.cpp
-	src/scene_teleport.h
-	src/scene_title.cpp
-	src/scene_title.h
+	src/scenes/actortarget.cpp
+	src/scenes/actortarget.h
+	src/scenes/battle.cpp
+	src/scenes/battle.h
+	src/scenes/battle_rpg2k.cpp
+	src/scenes/battle_rpg2k.h
+	src/scenes/battle_rpg2k3.cpp
+	src/scenes/battle_rpg2k3.h
+	src/scenes/debug.cpp
+	src/scenes/debug.h
+	src/scenes/end.cpp
+	src/scenes/end.h
+	src/scenes/equip.cpp
+	src/scenes/equip.h
+	src/scenes/file.cpp
+	src/scenes/file.h
+	src/scenes/gamebrowser.cpp
+	src/scenes/gamebrowser.h
+	src/scenes/gameover.cpp
+	src/scenes/gameover.h
+	src/scenes/import.cpp
+	src/scenes/import.h
+	src/scenes/item.cpp
+	src/scenes/item.h
+	src/scenes/language.cpp
+	src/scenes/language.h
+	src/scenes/load.cpp
+	src/scenes/load.h
+	src/scenes/logo.cpp
+	src/scenes/logo.h
+	src/scenes/map.cpp
+	src/scenes/map.h
+	src/scenes/menu.cpp
+	src/scenes/menu.h
+	src/scenes/name.cpp
+	src/scenes/name.h
+	src/scenes/order.cpp
+	src/scenes/order.h
+	src/scenes/save.cpp
+	src/scenes/save.h
+	src/scenes/settings.cpp
+	src/scenes/settings.h
+	src/scenes/shop.cpp
+	src/scenes/shop.h
+	src/scenes/skill.cpp
+	src/scenes/skill.h
+	src/scenes/status.cpp
+	src/scenes/status.h
+	src/scenes/teleport.cpp
+	src/scenes/teleport.h
+	src/scenes/title.cpp
+	src/scenes/title.h
 	src/screen.cpp
 	src/screen.h
 	src/shake.h
 	src/span.h
-	src/sprite_airshipshadow.cpp
-	src/sprite_airshipshadow.h
-	src/sprite_actor.cpp
-	src/sprite_actor.h
-	src/sprite_battler.cpp
-	src/sprite_battler.h
-	src/sprite_enemy.cpp
-	src/sprite_enemy.h
-	src/sprite_character.cpp
-	src/sprite_character.h
-	src/sprite_picture.h
-	src/sprite_picture.cpp
-	src/sprite_weapon.cpp
-	src/sprite_weapon.h
 	src/sprite.cpp
 	src/sprite.h
+	src/sprite_actor.cpp
+	src/sprite_actor.h
+	src/sprite_airshipshadow.cpp
+	src/sprite_airshipshadow.h
+	src/sprite_battler.cpp
+	src/sprite_battler.h
+	src/sprite_character.cpp
+	src/sprite_character.h
+	src/sprite_enemy.cpp
+	src/sprite_enemy.h
+	src/sprite_picture.cpp
+	src/sprite_picture.h
+	src/sprite_timer.cpp
+	src/sprite_timer.h
+	src/sprite_weapon.cpp
+	src/sprite_weapon.h
 	src/spriteset_battle.cpp
 	src/spriteset_battle.h
 	src/spriteset_map.cpp
 	src/spriteset_map.h
-	src/sprite_timer.cpp
-	src/sprite_timer.h
 	src/state.cpp
 	src/state.h
 	src/std_clock.h
@@ -390,92 +390,92 @@ add_library(${PROJECT_NAME} OBJECT
 	src/version.h
 	src/weather.cpp
 	src/weather.h
-	src/window_about.cpp
-	src/window_about.h
-	src/window_actorinfo.cpp
-	src/window_actorinfo.h
-	src/window_actorsp.cpp
-	src/window_actorsp.h
-	src/window_actorstatus.cpp
-	src/window_actorstatus.h
-	src/window_actortarget.cpp
-	src/window_actortarget.h
-	src/window_base.cpp
-	src/window_base.h
-	src/window_battlemessage.cpp
-	src/window_battlemessage.h
-	src/window_battlestatus.cpp
-	src/window_battlestatus.h
-	src/window_command.cpp
-	src/window_command.h
-	src/window_command_horizontal.cpp
-	src/window_command_horizontal.h
 	src/window.cpp
-	src/window_equip.cpp
-	src/window_equip.h
-	src/window_equipitem.cpp
-	src/window_equipitem.h
-	src/window_equipstatus.cpp
-	src/window_equipstatus.h
-	src/window_face.cpp
-	src/window_face.h
-	src/window_gamelist.cpp
-	src/window_gamelist.h
-	src/window_gold.cpp
-	src/window_gold.h
 	src/window.h
-	src/window_help.cpp
-	src/window_help.h
-	src/window_import_progress.cpp
-	src/window_import_progress.h
-	src/window_input_settings.cpp
-	src/window_input_settings.h
-	src/window_item.cpp
-	src/window_item.h
-	src/window_interpreter.cpp
-	src/window_interpreter.h
-	src/window_keyboard.cpp
-	src/window_keyboard.h
-	src/window_menustatus.cpp
-	src/window_menustatus.h
-	src/window_message.cpp
-	src/window_message.h
-	src/window_name.cpp
-	src/window_name.h
-	src/window_numberinput.cpp
-	src/window_numberinput.h
-	src/window_paramstatus.cpp
-	src/window_paramstatus.h
-	src/window_savefile.cpp
-	src/window_savefile.h
-	src/window_selectable.cpp
-	src/window_selectable.h
-	src/window_settings.cpp
-	src/window_settings.h
-	src/window_shopbuy.cpp
-	src/window_shopbuy.h
-	src/window_shop.cpp
-	src/window_shop.h
-	src/window_shopnumber.cpp
-	src/window_shopnumber.h
-	src/window_shopparty.cpp
-	src/window_shopparty.h
-	src/window_shopsell.cpp
-	src/window_shopsell.h
-	src/window_shopstatus.cpp
-	src/window_shopstatus.h
-	src/window_skill.cpp
-	src/window_skill.h
-	src/window_skillstatus.cpp
-	src/window_skillstatus.h
-	src/window_stringview.cpp
-	src/window_stringview.h
-	src/window_targetstatus.cpp
-	src/window_targetstatus.h
-	src/window_teleport.cpp
-	src/window_teleport.h
-	src/window_varlist.cpp
-	src/window_varlist.h
+	src/windows/about.cpp
+	src/windows/about.h
+	src/windows/actorinfo.cpp
+	src/windows/actorinfo.h
+	src/windows/actorsp.cpp
+	src/windows/actorsp.h
+	src/windows/actorstatus.cpp
+	src/windows/actorstatus.h
+	src/windows/actortarget.cpp
+	src/windows/actortarget.h
+	src/windows/base.cpp
+	src/windows/base.h
+	src/windows/battlemessage.cpp
+	src/windows/battlemessage.h
+	src/windows/battlestatus.cpp
+	src/windows/battlestatus.h
+	src/windows/command.cpp
+	src/windows/command.h
+	src/windows/command_horizontal.cpp
+	src/windows/command_horizontal.h
+	src/windows/equip.cpp
+	src/windows/equip.h
+	src/windows/equipitem.cpp
+	src/windows/equipitem.h
+	src/windows/equipstatus.cpp
+	src/windows/equipstatus.h
+	src/windows/face.cpp
+	src/windows/face.h
+	src/windows/gamelist.cpp
+	src/windows/gamelist.h
+	src/windows/gold.cpp
+	src/windows/gold.h
+	src/windows/help.cpp
+	src/windows/help.h
+	src/windows/import_progress.cpp
+	src/windows/import_progress.h
+	src/windows/input_settings.cpp
+	src/windows/input_settings.h
+	src/windows/interpreter.cpp
+	src/windows/interpreter.h
+	src/windows/item.cpp
+	src/windows/item.h
+	src/windows/keyboard.cpp
+	src/windows/keyboard.h
+	src/windows/menustatus.cpp
+	src/windows/menustatus.h
+	src/windows/message.cpp
+	src/windows/message.h
+	src/windows/name.cpp
+	src/windows/name.h
+	src/windows/numberinput.cpp
+	src/windows/numberinput.h
+	src/windows/paramstatus.cpp
+	src/windows/paramstatus.h
+	src/windows/savefile.cpp
+	src/windows/savefile.h
+	src/windows/selectable.cpp
+	src/windows/selectable.h
+	src/windows/settings.cpp
+	src/windows/settings.h
+	src/windows/shop.cpp
+	src/windows/shop.h
+	src/windows/shopbuy.cpp
+	src/windows/shopbuy.h
+	src/windows/shopnumber.cpp
+	src/windows/shopnumber.h
+	src/windows/shopparty.cpp
+	src/windows/shopparty.h
+	src/windows/shopsell.cpp
+	src/windows/shopsell.h
+	src/windows/shopstatus.cpp
+	src/windows/shopstatus.h
+	src/windows/skill.cpp
+	src/windows/skill.h
+	src/windows/skillstatus.cpp
+	src/windows/skillstatus.h
+	src/windows/stringview.cpp
+	src/windows/stringview.h
+	src/windows/targetstatus.cpp
+	src/windows/targetstatus.h
+	src/windows/teleport.cpp
+	src/windows/teleport.h
+	src/windows/varlist.cpp
+	src/windows/varlist.h
 )
 
 # These are actually unused when building in CMake

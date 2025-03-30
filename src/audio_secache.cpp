@@ -23,7 +23,7 @@
 #include <set>
 #include "audio_resampler.h"
 #include "audio_secache.h"
-#include "game_clock.h"
+#include "engine/clock.h"
 #include "filefinder.h"
 #include "output.h"
 
