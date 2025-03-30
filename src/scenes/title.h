@@ -73,7 +73,7 @@ public:
 	bool Check2k3ShowTitle();
 
 	/**
-	 * Checks if there is a player start location.
+	 * Checks if there is a hero start location.
 	 *
 	 * @return true if there is one, false otherwise.
 	 */
@@ -110,7 +110,7 @@ public:
 
 	/**
 	 * Option Shutdown.
-	 * Does a player shutdown.
+	 * Does a Player shutdown.
 	 */
 	void CommandShutdown();
 

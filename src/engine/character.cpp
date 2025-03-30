@@ -100,7 +100,7 @@ Drawable::Z_t Game_Character::GetScreenZ(int x_offset, int y_offset) const {
 	if (IsFlying()) {
 		z = Priority_EventsFlying;
 	} else if (GetLayer() == lcf::rpg::EventPage::Layers_same) {
-		z = Priority_Player;
+		z = Priority_Hero;
 	} else if (GetLayer() == lcf::rpg::EventPage::Layers_below) {
 		z = Priority_EventsBelow;
 	} else if (GetLayer() == lcf::rpg::EventPage::Layers_above) {
@@ -229,7 +229,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 
 	const auto num_commands = static_cast<int>(current_route.move_commands.size());
 	// Invalid index could occur from a corrupted save game.
-	// Player, Vehicle, and Event all check for and fix this, but we still assert here in
+	// Hero, Vehicle, and Event all check for and fix this, but we still assert here in
 	// case any bug causes this to happen still.
 	assert(current_index >= 0);
 	assert(current_index <= num_commands);
@@ -281,10 +281,10 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					TurnRandom();
 					break;
 				case Code::move_towards_hero:
-					TurnTowardCharacter(GetPlayer());
+					TurnTowardCharacter(GetHero());
 					break;
 				case Code::move_away_from_hero:
-					TurnAwayFromCharacter(GetPlayer());
+					TurnAwayFromCharacter(GetHero());
 					break;
 				case Code::move_forward:
 					break;
@@ -339,10 +339,10 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					TurnRandom();
 					break;
 				case Code::face_hero:
-					TurnTowardCharacter(GetPlayer());
+					TurnTowardCharacter(GetHero());
 					break;
 				case Code::face_away_from_hero:
-					TurnAwayFromCharacter(GetPlayer());
+					TurnAwayFromCharacter(GetHero());
 					break;
 				default:
 					break;
@@ -599,10 +599,10 @@ bool Game_Character::BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::
 					TurnRandom();
 					break;
 				case Code::move_towards_hero:
-					TurnTowardCharacter(GetPlayer());
+					TurnTowardCharacter(GetHero());
 					break;
 				case Code::move_away_from_hero:
-					TurnAwayFromCharacter(GetPlayer());
+					TurnAwayFromCharacter(GetHero());
 					break;
 				case Code::move_forward:
 					break;
@@ -643,10 +643,10 @@ bool Game_Character::BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::
 					TurnRandom();
 					break;
 				case Code::face_hero:
-					TurnTowardCharacter(GetPlayer());
+					TurnTowardCharacter(GetHero());
 					break;
 				case Code::face_away_from_hero:
-					TurnAwayFromCharacter(GetPlayer());
+					TurnAwayFromCharacter(GetHero());
 					break;
 				default:
 					break;
@@ -1168,7 +1168,7 @@ void Game_Character::Flash(int r, int g, int b, int power, int frames) {
 // Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 	switch (character_id) {
-		case CharPlayer:
+		case CharHero:
 			// Player/Hero
 			return Main_Data::game_hero.get();
 		case CharBoat:
@@ -1186,7 +1186,7 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 	}
 }
 
-Game_Character& Game_Character::GetPlayer() {
+Game_Character& Game_Character::GetHero() {
 	assert(Main_Data::game_hero);
 
 	return *Main_Data::game_hero;
@@ -1213,7 +1213,7 @@ void Game_Character::SetMaxStopCountForWait() {
 void Game_Character::UpdateFacing() {
 	// RPG_RT only does the IsSpinning() check for Game_Event. We did it for all types here
 	// in order to avoid a virtual call and because normally with RPG_RT, spinning
-	// player or vehicle is impossible.
+	// hero or vehicle is impossible.
 	if (IsFacingLocked() || IsSpinning()) {
 		return;
 	}

@@ -19,6 +19,9 @@
 #include <lcf/rpg/savepicture.h>
 #include "drawable_mgr.h"
 
+// FIXME in liblcf
+#define MapLayer_events_same_as_hero MapLayer_events_same_as_player
+
 Drawable::~Drawable() {
 	DrawableMgr::Remove(this);
 }
@@ -41,8 +44,8 @@ Drawable::Z_t Drawable::GetPriorityForMapLayer(int which) {
 		case lcf::rpg::SavePicture::MapLayer_events_below:
 			layer = Priority_EventsBelow;
 			break;
-		case lcf::rpg::SavePicture::MapLayer_events_same_as_player:
-			layer = Priority_Player;
+		case lcf::rpg::SavePicture::MapLayer_events_same_as_hero:
+			layer = Priority_Hero;
 			break;
 		case lcf::rpg::SavePicture::MapLayer_tilemap_above:
 			layer = Priority_TilesetAbove;

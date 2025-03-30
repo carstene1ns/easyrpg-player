@@ -187,7 +187,7 @@ enum Priority : Drawable::Z_t {
 	Priority_Background = 10ULL << z_offset,
 	Priority_TilesetBelow = 20ULL << z_offset,
 	Priority_EventsBelow = 30ULL << z_offset,
-	Priority_Player = 40ULL << z_offset, // In Map, shared with "same as hero" events
+	Priority_Hero = 40ULL << z_offset, // In Map, shared with "same as hero" events
 	Priority_Battler = 40ULL << z_offset, // In Battle (includes animations)
 	Priority_TilesetAbove = 50ULL << z_offset,
 	Priority_EventsAbove = 60ULL << z_offset,

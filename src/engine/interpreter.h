@@ -251,7 +251,7 @@ protected:
 	bool CommandShowPicture(lcf::rpg::EventCommand const& com);
 	bool CommandMovePicture(lcf::rpg::EventCommand const& com);
 	bool CommandErasePicture(lcf::rpg::EventCommand const& com);
-	bool CommandPlayerVisibility(lcf::rpg::EventCommand const& com);
+	bool CommandHeroVisibility(lcf::rpg::EventCommand const& com);
 	bool CommandMoveEvent(lcf::rpg::EventCommand const& com);
 	bool CommandMemorizeBGM(lcf::rpg::EventCommand const& com);
 	bool CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& com);

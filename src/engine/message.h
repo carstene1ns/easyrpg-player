@@ -45,7 +45,7 @@ namespace Game_Message {
 	extern std::vector<std::string> texts;
 
 	/**
-	 * Determines the position of the message box respecting the player's map
+	 * Determines the position of the message box respecting the hero's map
 	 * position and if obstructing is allowed.
 	 *
 	 * @return Best message box position

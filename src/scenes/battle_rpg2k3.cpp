@@ -1309,7 +1309,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 				SetActiveActor(idx);
 			}
 		} else if (selected_actor != active_actor) {
-			// If selection changed due to player input
+			// If selection changed due to user input
 			SetActiveActor(status_window->GetIndex());
 		}
 		status_window->SetActive(active_actor != nullptr);

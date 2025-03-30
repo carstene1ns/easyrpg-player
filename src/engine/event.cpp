@@ -315,7 +315,7 @@ lcf::rpg::EventPage::Trigger Game_Event::GetTrigger() const {
 }
 
 
-bool Game_Event::ScheduleForegroundExecution(bool by_decision_key, bool face_player) {
+bool Game_Event::ScheduleForegroundExecution(bool by_decision_key, bool face_hero) {
 	// RPG_RT always resets this everytime this function is called, whether successful or not
 	data()->triggered_by_decision_key = by_decision_key;
 
@@ -324,8 +324,8 @@ bool Game_Event::ScheduleForegroundExecution(bool by_decision_key, bool face_pla
 		return false;
 	}
 
-	if (face_player && !(IsFacingLocked() || IsSpinning())) {
-		SetFacing(GetDirectionToCharacter(GetPlayer()));
+	if (face_hero && !(IsFacingLocked() || IsSpinning())) {
+		SetFacing(GetDirectionToCharacter(GetHero()));
 	}
 
 	data()->waiting_execution = true;
@@ -383,7 +383,7 @@ void Game_Event::CheckCollisonOnMoveFailure() {
 	{
 		ScheduleForegroundExecution(false, true);
 		// Events with trigger collision and layer same always reset their
-		// stop_count when they fail movement to a tile that the player inhabits.
+		// stop_count when they fail movement to a tile that the hero inhabits.
 		SetStopCount(0);
 	}
 }
@@ -546,8 +546,8 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 			dir = Rand::GetRandomNumber(0, 3);
 		} else {
 			dir = towards
-				? GetDirectionToCharacter(GetPlayer())
-				: GetDirectionAwayCharacter(GetPlayer());
+				? GetDirectionToCharacter(GetHero())
+				: GetDirectionAwayCharacter(GetHero());
 		}
 	}
 

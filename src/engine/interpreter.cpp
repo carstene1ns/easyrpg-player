@@ -72,6 +72,9 @@
 #include "algo.h"
 #include "rand.h"
 
+// FIXME in liblcf
+#define HeroVisibility PlayerVisibility
+
 using namespace Game_Interpreter_Shared;
 
 enum BranchSubcommand {
@@ -690,8 +693,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandMovePicture, 16>(com);
 		case Cmd::ErasePicture:
 			return CmdSetup<&Game_Interpreter::CommandErasePicture, 1>(com);
-		case Cmd::PlayerVisibility:
-			return CmdSetup<&Game_Interpreter::CommandPlayerVisibility, 1>(com);
+		case Cmd::HeroVisibility:
+			return CmdSetup<&Game_Interpreter::CommandHeroVisibility, 1>(com);
 		case Cmd::MoveEvent:
 			return CmdSetup<&Game_Interpreter::CommandMoveEvent, 4>(com);
 		case Cmd::MemorizeBGM:
@@ -2186,13 +2189,13 @@ bool Game_Interpreter::CommandChangeScreenTransitions(lcf::rpg::EventCommand con
 }
 
 bool Game_Interpreter::CommandMemorizeLocation(lcf::rpg::EventCommand const& com) { // code 10820
-	Game_Character *player = Main_Data::game_hero.get();
+	Game_Character *hero = Main_Data::game_hero.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
 	Main_Data::game_variables->Set(var_map_id, Game_Map::GetMapId());
-	Main_Data::game_variables->Set(var_x, player->GetX());
-	Main_Data::game_variables->Set(var_y, player->GetY());
+	Main_Data::game_variables->Set(var_x, hero->GetX());
+	Main_Data::game_variables->Set(var_y, hero->GetY());
 	Game_Map::SetNeedRefreshForVarChange({var_map_id, var_x, var_y});
 	return true;
 }
@@ -2239,7 +2242,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& c
 
 		// This implements a bug in RPG_RT which allows moving the party to a new map while boarded (or when using -1)
 		// without doing a teleport + transition.
-		// In player we implement this as an async "Quick Teleport" which immediately switches to
+		// In Player we implement this as an async "Quick Teleport" which immediately switches to
 		// the other map with no transition and no change in screen effects such as pictures and
 		// battle animations.
 
@@ -3079,12 +3082,12 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 	return true;
 }
 
-bool Game_Interpreter::CommandPlayerVisibility(lcf::rpg::EventCommand const& com) { // code 11310
+bool Game_Interpreter::CommandHeroVisibility(lcf::rpg::EventCommand const& com) { // code 11310
 	bool hidden = (com.parameters[0] == 0);
-	Game_Character* player = Main_Data::game_hero.get();
-	player->SetSpriteHidden(hidden);
+	Game_Character* hero = Main_Data::game_hero.get();
+	hero->SetSpriteHidden(hidden);
 	// RPG_RT does this here.
-	player->ResetThrough();
+	hero->ResetThrough();
 
 	return true;
 }
@@ -3095,7 +3098,7 @@ bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // 
 
 	Game_Character* event = GetCharacter(event_id, "MoveEvent");
 	if (event != NULL) {
-		// If the event is a vehicle in use, push the commands to the player instead
+		// If the event is a vehicle in use, push the commands to the hero instead
 		if (event_id >= Game_Character::CharBoat && event_id <= Game_Character::CharAirship)
 			if (static_cast<Game_Vehicle*>(event)->IsInUse())
 				event = Main_Data::game_hero.get();
@@ -3314,7 +3317,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 	if (_keyinput.wait) {
 		// RPG_RT will reset all trigger key states when a waiting key input proc command is executed,
 		// which means we always wait at least 1 frame to continue. Keys which are held down are not reset.
-		// This also prevents player actions for this frame such as summoning the menu or triggering events.
+		// This also prevents user actions for this frame such as summoning the menu or triggering events.
 		Input::ResetTriggerKeys();
 		return true;
 	}
@@ -4192,11 +4195,11 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 
 			if (com.parameters[4] == 1) {
 				// Get event graphic
-				// Bug: .static 10001 gives current sprite of Player. .dynamic 10001 gives out nothing.
+				// Bug: .static 10001 gives current sprite of Hero. .dynamic 10001 gives out nothing.
 				// Bug: Cannot get .static 10005 sprite of self. .dynamic 10005 works however
 				if (com.parameters[6] == 1) {
 					// Dynamic
-					if (event_id == Game_Character::CharPlayer) {
+					if (event_id == Game_Character::CharHero) {
 							// Return nothing as per Maniac Patch
 							Main_Data::game_strings->Asg(var, "");
 							Main_Data::game_variables->Set(com.parameters[3], 0);
@@ -4208,8 +4211,8 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 				} else {
 					// Static
 					switch (event_id) {
-						case Game_Character::CharPlayer:
-							// Return dynamic player sprite
+						case Game_Character::CharHero:
+							// Return dynamic hero sprite
 							Main_Data::game_strings->Asg(var, std::string_view(character->GetSpriteName()));
 							Main_Data::game_variables->Set(com.parameters[3], character->GetSpriteIndex());
 							break;

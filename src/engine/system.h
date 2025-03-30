@@ -387,7 +387,7 @@ public:
 
 	/**
 	 * Sets the message box position.
-	 * Depending on the player position this value is ignored to prevent overlap.
+	 * Depending on the hero position this value is ignored to prevent overlap.
 	 * (see SetPositionFixed)
 	 *
 	 * @param new_position 0: top, 1: middle, 2: bottom
@@ -403,7 +403,7 @@ public:
 	bool IsMessagePositionFixed();
 
 	/**
-	 * Sets if message box is moved to avoid obscuring the player.
+	 * Sets if message box is moved to avoid obscuring the hero.
 	 *
 	 * @param fixed position fixed
 	 */

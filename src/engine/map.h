@@ -296,22 +296,22 @@ namespace Game_Map {
 	/**
 	 * Gets if possible to embark the boat or ship at (x,y)
 	 *
-	 * @param player the player
+	 * @param hero the hero
 	 * @param x tile x.
 	 * @param y tile y.
 	 * @return whether is posible to disembark the boat or ship
 	 */
-	bool CanEmbarkShip(Game_Hero& player, int x, int y);
+	bool CanEmbarkShip(Game_Hero& hero, int x, int y);
 
 	/**
 	 * Gets if possible to disembark the boat or ship to (x,y)
 	 *
-	 * @param player the player
+	 * @param hero the hero
 	 * @param x tile x.
 	 * @param y tile y.
 	 * @return whether is posible to disembark the boat or ship
 	 */
-	bool CanDisembarkShip(Game_Hero& player, int x, int y);
+	bool CanDisembarkShip(Game_Hero& hero, int x, int y);
 
 	/**
 	 * Return the tiles array for the given tiles layer.
@@ -447,7 +447,7 @@ namespace Game_Map {
 	std::vector<int> GetEncountersAt(int x, int y);
 
 	/**
-	 * Updates all battle data based on the current player position and starts
+	 * Updates all battle data based on the current hero position and starts
 	 * a random encounter.
 	 *
 	 * @param args the arguments to pass to battle scene.
@@ -458,7 +458,7 @@ namespace Game_Map {
 	bool PrepareEncounter(BattleArgs& args);
 
 	/**
-	 * Updates all battle data based on the current player position.
+	 * Updates all battle data based on the current hero position.
 	 *
 	 * @param args the arguments to pass to battle scene.
 	 */
@@ -668,7 +668,7 @@ namespace Game_Map {
 	bool IsPassableTile(const Game_Character* self, int bit, int x, int y);
 
 	/**
-	 * Checks if the lower tile at (x,y) is passable by the player.
+	 * Checks if the lower tile at (x,y) is passable by the hero.
 	 *
 	 * Returns true if move is possible.
 	 *

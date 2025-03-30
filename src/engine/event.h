@@ -116,11 +116,11 @@ public:
 	 * Schedule the event for execution on the map's foreground interpreter.
 	 *
 	 * @param triggered_by_decision_key set whether this was triggered by decision key
-	 * @param face_hero if scheduled, event faces the player.
+	 * @param face_hero if scheduled, event faces the hero.
 	 *
 	 * @return true if event was scheduled.
 	 */
-	bool ScheduleForegroundExecution(bool triggered_by_decision_key, bool face_player);
+	bool ScheduleForegroundExecution(bool triggered_by_decision_key, bool face_hero);
 
 	/**
 	 * Update this for the current frame
@@ -198,17 +198,17 @@ private:
 
 	/**
 	 * Implementation method for walking to
-	 * or from the player
+	 * or from the hero
 	 */
 	void MoveTypeTowardsOrAwayPlayer(bool towards);
 
 	/**
-	 * Walks to the player.
+	 * Walks to the hero.
 	 */
 	void MoveTypeTowardsPlayer();
 
 	/**
-	 * Walks away from the player.
+	 * Walks away from the hero.
 	 */
 	void MoveTypeAwayFromPlayer();
 

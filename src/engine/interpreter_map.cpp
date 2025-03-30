@@ -627,14 +627,14 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 	int speed;
 	bool waiting_pan_screen = false;
 
-	auto& player = *Main_Data::game_hero;
+	auto& hero = *Main_Data::game_hero;
 
 	switch (com.parameters[0]) {
 	case 0: // Lock
-		player.LockPan();
+		hero.LockPan();
 		break;
 	case 1: // Unlock
-		player.UnlockPan();
+		hero.UnlockPan();
 		break;
 	case 2: // Pan
 		direction = com.parameters[1];
@@ -643,15 +643,15 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 		// which crashes depending on the hardware
 		speed = Utils::Clamp<int>(com.parameters[3], 1, 6);
 		waiting_pan_screen = com.parameters[4] != 0;
-		player.StartPan(direction, distance, speed);
+		hero.StartPan(direction, distance, speed);
 		break;
 	case 3: // Reset
 		speed = Utils::Clamp<int>(com.parameters[3], 1, 6);
 		waiting_pan_screen = com.parameters[4] != 0;
-		player.ResetPan(speed);
+		hero.ResetPan(speed);
 		distance = std::max(
-				std::abs(player.GetPanX() - player.GetTargetPanX())
-				, std::abs(player.GetPanY() - player.GetTargetPanY()));
+				std::abs(hero.GetPanX() - hero.GetTargetPanX())
+				, std::abs(hero.GetPanY() - hero.GetTargetPanY()));
 		distance /= SCREEN_TILE_SIZE;
 		break;
 	}
@@ -668,29 +668,29 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 		case 4: // Relative Pixel Pan (speed)
 			centered = false;
 			relative = true;
-			player.StartPixelPan(h, v, speed, false, centered, relative);
+			hero.StartPixelPan(h, v, speed, false, centered, relative);
 			break;
 		case 5: // Relative Pixel Pan (interpolated)
 			centered = false;
 			relative = true;
-			player.StartPixelPan(h, v, speed, true, centered, relative);
+			hero.StartPixelPan(h, v, speed, true, centered, relative);
 			break;
 		case 6: // Absolute Pixel Pan (speed)
 			centered = (com.parameters[4] & 0x02) != 0;
 			relative = (com.parameters[4] & 0x04) != 0;
-			player.StartPixelPan(h, v, speed, false, centered, relative);
+			hero.StartPixelPan(h, v, speed, false, centered, relative);
 			break;
 		case 7: // Absolute Pixel Pan (interpolated)
 			centered = (com.parameters[4] & 0x02) != 0;
 			relative = (com.parameters[4] & 0x04) != 0;
-			player.StartPixelPan(h, v, speed, true, centered, relative);
+			hero.StartPixelPan(h, v, speed, true, centered, relative);
 			break;
 		}
 	}
 
 	if (waiting_pan_screen) {
 		// RPG_RT uses the max wait for all pending pan commands, not just the current one.
-		_state.wait_time = player.GetPanWait();
+		_state.wait_time = hero.GetPanWait();
 	}
 
 	return true;
@@ -882,14 +882,14 @@ bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand c
 	int y = ValueOrVariable(com.parameters[2], com.parameters[3]);
 
 	// backwards compatible with old (shorter) command
-	bool face_player = true;
+	bool face_hero = true;
 
 	if (com.parameters.size() > 4) {
 		int flags = com.parameters[4];
-		face_player = (flags & 1) > 0;
+		face_hero = (flags & 1) > 0;
 	}
 
-	Main_Data::game_hero->TriggerEventAt(x, y, GetFrame().triggered_by_decision_key, face_player);
+	Main_Data::game_hero->TriggerEventAt(x, y, GetFrame().triggered_by_decision_key, face_hero);
 
 	return true;
 }

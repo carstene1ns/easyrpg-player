@@ -39,7 +39,7 @@ public:
 
 	enum Type {
 		Event,
-		Player,
+		Hero,
 		Vehicle
 	};
 
@@ -895,7 +895,7 @@ public:
 	int GetBushDepth() const;
 
 	enum CharsID {
-		CharPlayer		= 10001,
+		CharHero		= 10001,
 		CharBoat		= 10002,
 		CharShip		= 10003,
 		CharAirship		= 10004,
@@ -919,7 +919,7 @@ public:
 	static int ReverseDir(int dir);
 
 	static Game_Character* GetCharacter(int character_id, int event_id);
-	static Game_Character& GetPlayer();
+	static Game_Character& GetHero();
 
 	static constexpr int GetDxFromDirection(int dir);
 	static constexpr int GetDyFromDirection(int dir);
@@ -1420,7 +1420,7 @@ inline bool Game_Character::IsDirectionDiagonal(int d) {
 
 inline std::string_view Game_Character::TypeToStr(Game_Character::Type type) {
 	switch (type) {
-		case Player: return "Player";
+		case Hero: return "Hero";
 		case Vehicle: return "Vehicle";
 		case Event: return "Event";
 	}

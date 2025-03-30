@@ -1731,7 +1731,7 @@ void Scene_Battle_Rpg2k::SelectNextActor(bool auto_battle) {
 	std::vector<Game_Actor*> allies = Main_Data::game_party->GetActors();
 
 	if ((size_t)actor_index == allies.size()) {
-		// All actor actions decided, player turn ends
+		// All actor actions decided, user turn ends
 		SetState(State_Battle);
 		NextTurn();
 

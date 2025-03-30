@@ -162,7 +162,7 @@ int ControlVariables::Event(int op, int event_id, const Game_BaseInterpreterCont
 			case 0:
 				// Map ID
 				if (!Player::IsRPG2k()
-					|| event_id == Game_Character::CharPlayer
+					|| event_id == Game_Character::CharHero
 					|| event_id == Game_Character::CharBoat
 					|| event_id == Game_Character::CharShip
 					|| event_id == Game_Character::CharAirship) {

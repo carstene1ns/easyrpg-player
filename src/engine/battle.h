@@ -67,14 +67,14 @@ namespace Game_Battle {
 	void UpdateGraphics();
 
 	/**
-	 * Checks if a victory condition for the player party (enemy dead) is fulfilled.
+	 * Checks if a victory condition for the hero party (enemy dead) is fulfilled.
 	 *
 	 * @return True on victory
 	 */
 	bool CheckWin();
 
 	/**
-	 * Check if a lose condition for the player party (party dead) is fulfilled.
+	 * Check if a lose condition for the hero party (party dead) is fulfilled.
 	 *
 	 * @return True on lose
 	 */

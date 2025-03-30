@@ -59,7 +59,7 @@ int Game_Message::GetRealPosition() {
 		return Main_Data::game_system->GetMessagePosition();
 	}
 	else {
-		// Move Message Box to prevent player hiding
+		// Move Message Box to prevent hero hiding
 		int disp = Main_Data::game_hero->GetScreenY();
 
 		switch (Main_Data::game_system->GetMessagePosition()) {

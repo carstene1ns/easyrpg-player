@@ -202,12 +202,12 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	Main_Data::game_system->SetAllowEscape(can_escape != lcf::rpg::MapInfo::TriState_forbid);
 	Main_Data::game_system->SetAllowTeleport(can_teleport != lcf::rpg::MapInfo::TriState_forbid);
 
-	auto& player = *Main_Data::game_hero;
+	auto& hero = *Main_Data::game_hero;
 
-	SetPositionX(player.GetX() * SCREEN_TILE_SIZE - player.GetPanX());
-	SetPositionY(player.GetY() * SCREEN_TILE_SIZE - player.GetPanY());
+	SetPositionX(hero.GetX() * SCREEN_TILE_SIZE - hero.GetPanX());
+	SetPositionY(hero.GetY() * SCREEN_TILE_SIZE - hero.GetPanY());
 
-	// Update the save counts so that if the player saves the game
+	// Update the save counts so that if the user saves the game
 	// events will properly resume upon loading.
 	Main_Data::game_hero->UpdateSaveCounts(lcf::Data::system.save_count, GetMapSaveCount());
 }
@@ -860,8 +860,8 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 			}
 		}
 
-		auto& player = Main_Data::game_hero;
-		if (player->GetVehicleType() == Game_Vehicle::None) {
+		auto& hero = Main_Data::game_hero;
+		if (hero->GetVehicleType() == Game_Vehicle::None) {
 			if (CheckOrMakeCollideEvent(*Main_Data::game_hero)) {
 				return false;
 			}
@@ -875,7 +875,7 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 			}
 		}
 		auto& airship = vehicles[Game_Vehicle::Airship - 1];
-		if (airship.IsInCurrentMap() && self.GetType() != Game_Character::Player) {
+		if (airship.IsInCurrentMap() && self.GetType() != Game_Character::Hero) {
 			if (CheckOrMakeCollideEvent(airship)) {
 				return false;
 			}
@@ -1529,9 +1529,9 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 		} else if (map.parent_map == GetMapId() && map.type == lcf::rpg::TreeMap::MapType_area) {
 			// Area
 			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l, map.area_rect.b - map.area_rect.t);
-			Rect player_rect(x, y, 1, 1);
+			Rect hero_rect(x, y, 1, 1);
 
-			if (!player_rect.IsOutOfBounds(area_rect)) {
+			if (!hero_rect.IsOutOfBounds(area_rect)) {
 				for (const lcf::rpg::Encounter& enc : map.encounters) {
 					if (is_acceptable(enc.troop_id)) {
 						out.push_back(enc.troop_id);
