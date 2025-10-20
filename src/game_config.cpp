@@ -112,10 +112,11 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	cfg.input.gamepad_swap_ab_and_xy.Set(true);
 #endif
 
-#if defined(USE_CUSTOM_FILEBUF) || defined(USE_LIBRETRO)
+#if defined(USE_CUSTOM_FILEBUF) || defined(USE_LIBRETRO) || defined(EMSCRIPTEN) || PLAYER_UI==CustomUI
 	// Disable logging by default on
 	// - platforms with slow IO or bad FS drivers
 	// - libretro because the frontend handles the logging
+	// - emscripten because the browser console is sufficient
 	cfg.player.log_enabled.Set(false);
 #endif
 

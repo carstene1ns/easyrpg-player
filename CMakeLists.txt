@@ -29,7 +29,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
-option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
+option(BUILD_SHARED_LIBS "Build shared library (needed for libretro core)" ON)
 
 option(CMAKE_FIND_PACKAGE_PREFER_CONFIG
 	"Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
@@ -578,8 +578,8 @@ elseif(AMIGA)
 elseif(PS4)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for.")
 else()
-	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL3 SDL2 SDL1 libretro")
-	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL3 SDL2 SDL1 libretro)
+	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL3 SDL2 SDL1 libretro custom")
+	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL3 SDL2 SDL1 libretro custom)
 endif()
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
@@ -668,6 +668,9 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 	set(PLAYER_BUILD_EXECUTABLE OFF)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "custom")
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=CustomUi)
+	set(PLAYER_BUILD_EXECUTABLE OFF)
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "3ds")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=CtrUi PLAYER_NINTENDO)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after devkitarm ships newer gcc
@@ -776,7 +779,7 @@ elseif(PLAYER_AUDIO_BACKEND STREQUAL "AESND")
 		src/platform/wii/audio.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC AUDIO_AESND=1)
 elseif(PLAYER_AUDIO_BACKEND STREQUAL ${PLAYER_TARGET_PLATFORM})
-
+	# intentionally left blank
 elseif(PLAYER_AUDIO_BACKEND STREQUAL "OFF")
 	set(PLAYER_HAS_AUDIO OFF)
 else()
@@ -1492,6 +1495,20 @@ else() # library
 		set_target_properties(easyrpg_android PROPERTIES DEBUG_POSTFIX "")
 		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/android/app/src/gamebrowser)
 		set(PLAYER_TEST_LIBRARIES "easyrpg_android")
+	elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "custom")
+		add_library(easyrpg_custom
+			src/platform/custom/audio.cpp
+			src/platform/custom/audio.h
+			src/platform/custom/input_buttons.cpp
+			src/platform/custom/ui.cpp
+			src/platform/custom/ui.h)
+		target_link_libraries(easyrpg_custom ${PROJECT_NAME})
+		set_target_properties(easyrpg_custom PROPERTIES DEBUG_POSTFIX "")
+		set(PLAYER_TEST_LIBRARIES "easyrpg_custom")
+
+		# dummy executable
+		#add_executable(custom_dummy src/platform/custom/main.cpp)
+		#target_link_libraries(custom_dummy easyrpg_custom)
 	else()
 		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")
 	endif()

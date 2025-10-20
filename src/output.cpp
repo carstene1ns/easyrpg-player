@@ -136,10 +136,6 @@ void Output::SetLogCallback(LogCallbackFn fn, LogCallbackUserData userdata) {
 }
 
 static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Color()) {
-// skip writing log file
-#ifndef EMSCRIPTEN
-	std::string prefix = Output::LogLevelToString(lvl) + ": ";
-
 	// Every new message is written once to the file.
 	// When it is repeated increment a counter until a different message appears,
 	// then write the buffered message with the counter.
@@ -149,13 +145,12 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 		if (last_message.repeat > 0) {
 			output_time() << Output::LogLevelToString(last_message.lvl) << ": " << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
 		}
-		output_time() << prefix << msg << '\n';
+		output_time() << Output::LogLevelToString(lvl) << ": " << msg << '\n';
 
 		last_message.repeat = 0;
 		last_message.msg = msg;
 		last_message.lvl = lvl;
 	}
-#endif
 
 	// output to custom logger or terminal
 	log_cb(lvl, msg, log_cb_udata);
@@ -182,7 +177,7 @@ static void HandleErrorOutput(const std::string& err) {
 
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
-#if !defined(USE_LIBRETRO)
+#if !(defined(USE_LIBRETRO) || PLAYER_UI==CustomUi)
 		Game_Clock::SleepFor(1ms);
 #endif
 		if (!DisplayUi->ProcessEvents() || Player::exit_flag) {

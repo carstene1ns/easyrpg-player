@@ -215,7 +215,7 @@ void Player::Run() {
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	// Main loop
-#if defined(USE_LIBRETRO) || defined(EMSCRIPTEN)
+#if defined(USE_LIBRETRO) || defined(EMSCRIPTEN) || PLAYER_UI==CustomUI
 	// emscripten implemented in main.cpp
 	// libretro invokes the MainLoop through a retro_run-callback
 #else
