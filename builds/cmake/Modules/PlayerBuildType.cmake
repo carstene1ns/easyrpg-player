@@ -17,13 +17,3 @@ if(current_build_type STREQUAL "debug")
 elseif(current_build_type MATCHES "^(release|minsizerel|relwithdebinfo)$")
 	add_compile_definitions(NDEBUG)
 endif()
-
-# Since dkp is disabling default flags, add optimizing here
-if(NINTENDO_WII OR NINTENDO_3DS OR NINTENDO_SWITCH)
-	foreach(lang C CXX ASM)
-		string(APPEND CMAKE_${lang}_FLAGS_DEBUG " -g -O0")
-		string(APPEND CMAKE_${lang}_FLAGS_MINSIZEREL " -Os")
-		string(APPEND CMAKE_${lang}_FLAGS_RELEASE " -O3")
-		string(APPEND CMAKE_${lang}_FLAGS_RELWITHDEBINFO " -g -O2")
-	endforeach()
-endif()

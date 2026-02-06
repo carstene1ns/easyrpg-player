@@ -11,6 +11,29 @@ if(CMAKE_VERSION VERSION_LESS "3.24")
 	endif()
 endif()
 
+# Endianess check
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.20)
+	if(CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
+		set(PLAYER_BIGENDIAN 1)
+	endif()
+else()
+	include(TestBigEndian)
+	test_big_endian(PLAYER_BIGENDIAN)
+endif()
+
+# Since there are shared workarounds, add catch-all here
+if(NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_3DS OR NINTENDO_SWITCH)
+	set(PLAYER_DEVKITPRO 1)
+endif()
+if(PLAYER_DEVKITPRO OR VITA OR PS4)
+	set(PLAYER_CONSOLE_PORT 1)
+endif()
+
+# Detect a desktop macOS system
+if(APPLE AND NOT IOS AND NOT CMAKE_SYSTEM_NAME STREQUAL "tvOS")
+	set(PLAYER_MACOS 1)
+endif()
+
 include(GetGitRevisionDescription)
 # query special files or git commands to figure out a usable version
 function(player_find_gitversion)
@@ -79,5 +102,65 @@ function(player_find_gitversion)
 	endif()
 	if(FIND_GITVER_MESSAGE_VAR)
 		set(${FIND_GITVER_MESSAGE_VAR} ${message} PARENT_SCOPE)
+	endif()
+endfunction()
+
+# Helper function for the feature summary to unpack a library list
+function(player_summary_list PREFIX LIST_VAR)
+	list(LENGTH LIST_VAR ENTRIES)
+	if(ENTRIES GREATER_EQUAL 1)
+		list(JOIN ${LIST_VAR} ", " LIST)
+		message(STATUS "${PREFIX}: ${LIST}")
+	else()
+		message(STATUS "${PREFIX}: No")
+	endif()
+endfunction()
+
+# Show feature status based on condition(s)
+# (same technique and behaviour as CMakeDependentOption on cmake<3.22)
+# Condition handling could be improved with a loop to support more than 2
+function(player_summary_line PREFIX CONDITION1 FEATURE1)
+	if(ARGC GREATER 6)
+		message(AUTHOR_WARNING "Invalid use of internal function")
+	endif()
+
+	# handle first condition
+	set(CONDITION1_OK 1)
+	foreach(d ${CONDITION1})
+		string(REGEX REPLACE " +" ";" FEATURE_DEP "${d}")
+		if(${FEATURE_DEP})
+		else()
+			set(CONDITION1_OK 0)
+		endif()
+	endforeach()
+
+	# handle optional second condition
+	set(CONDITION2_OK 0)
+	if(ARGC GREATER_EQUAL 5)
+		set(FEATURE2 ${ARGV4})
+		set(CONDITION2_OK 1)
+		foreach(d ${ARGV3})
+			string(REGEX REPLACE " +" ";" FEATURE_DEP "${d}")
+			if(${FEATURE_DEP})
+			else()
+				set(CONDITION2_OK 0)
+			endif()
+		endforeach()
+	endif()
+
+	# default status
+	set(DEFAULT "No")
+	if(ARGC EQUAL 6)
+		set(DEFAULT ${ARGV5})
+	elseif(ARGC EQUAL 4)
+		set(DEFAULT ${ARGV3})
+	endif()
+
+	if(CONDITION1_OK)
+		message(STATUS "${PREFIX}: ${FEATURE1}")
+	elseif(CONDITION2_OK)
+		message(STATUS "${PREFIX}: ${FEATURE2}")
+	else()
+		message(STATUS "${PREFIX}: ${DEFAULT}")
 	endif()
 endfunction()
