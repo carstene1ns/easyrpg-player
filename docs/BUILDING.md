@@ -27,6 +27,17 @@ Step-by-step instructions:
 CMake is the only supported way to build Player. On Windows all dependencies
 must be installed with [vcpkg].
 
+CMake supports many different configuration options, see their manual for
+details. Our specific options start always with the `PLAYER_` prefix.
+You can toggle features with `PLAYER_ENABLE_<FEATURE>` and handle optional
+dependencies with `PLAYER_WITH_<FEATURE>`. All optional features are enabled
+by default and will simply be disabled when the dependency cannot be found.
+One of the most important settings is `PLAYER_TARGET_PLATFORM`, it decides
+which native platform code is included or which library handles the
+abstraction, e.g. `SDL2` or `SDL3`.
+
+To see all supported options you can use `ccmake` (a TUI tool) or `cmake-gui`.
+
 
 ## libretro core
 
