@@ -160,6 +160,10 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL2")
 
 	if(TARGET SDL2::SDL2main)
 		target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
+		if(NINTENDO_WII)
+			# FIXME: Missing dependency?
+			target_link_libraries(SDL2::SDL2main INTERFACE -lfat)
+		endif()
 	endif()
 
 	if(ANDROID)

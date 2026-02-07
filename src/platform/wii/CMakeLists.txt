@@ -26,10 +26,6 @@ endif()
 add_executable(easyrpg-player main.cpp)
 target_link_libraries(easyrpg-player
 	${PROJECT_NAME} ${SDL_LIBRARIES} -laesnd -lfat -lwiikeyboard)
-if(TARGET SDL2::SDL2main)
-	# Missing dependency?
-	target_link_libraries(SDL2::SDL2main INTERFACE -lfat)
-endif()
 
 ogc_create_dol(easyrpg-player)
 
