@@ -212,7 +212,6 @@ set(PLAYER_MAIN_SOURCES
 	src/image_png.h
 	src/image_xyz.cpp
 	src/image_xyz.h
-	src/input_buttons_desktop.cpp
 	src/input_buttons.h
 	src/input.cpp
 	src/input.h

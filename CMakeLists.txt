@@ -174,10 +174,6 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL2")
 		target_link_libraries(${PROJECT_NAME} "Dwmapi")
 	endif()
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL1")
-	if(NOT NINTENDO_WII)
-		player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
-	endif()
-
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
@@ -185,6 +181,10 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL1")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC
 		USE_SDL=1
 		EASYRPG_CONFIG_NAME="config_sdl1.ini")
+
+	if(NOT NINTENDO_WII)
+		player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
+	endif()
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
@@ -194,6 +194,11 @@ elseif(PLAYER_TARGET_PLATFORM MATCHES "^3ds|psvita|switch$")
 	# handled in platform folder
 else()
 	message(FATAL_ERROR "Invalid target platform: ${PLAYER_TARGET_PLATFORM}")
+endif()
+# all desktop platforms use SDL
+if(PLAYER_TARGET_PLATFORM MATCHES "^SDL" AND NOT PLAYER_CONSOLE_PORT)
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/generic/input_buttons_desktop.cpp)
 endif()
 
 # Sound system

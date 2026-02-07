@@ -15,9 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// FIXME: Move in platform/generic (?) and handle with CMake
-#if !(defined(OPENDINGUX) || defined(PLAYER_NINTENDO) || defined(PLAYER_UI))
-
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
@@ -188,6 +185,4 @@ SdlAxis Input::GetSdlAxis() {
 		0, 1, 2, 3, 4, 5, false, false
 	};
 }
-#endif
-
 #endif
