@@ -83,23 +83,43 @@ endif()
 
 set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS ${PLAYER_VERSION_DEFS})
 
+# Make content available for romfs/wuhb bundle
+if(NINTENDO_3DS OR NINTENDO_WIIU OR NINTENDO_SWITCH)
+	option(PLAYER_BUNDLE "Embed a directory in the executable" OFF)
+	set(PLAYER_BUNDLE_PATH "content" CACHE PATH "Directory to include in executable")
+	set(BUNDLE_ARG "_IGNORE_ME")
+	if(PLAYER_BUNDLE)
+		if(NINTENDO_WIIU)
+			set(BUNDLE_ARG "CONTENT")
+		else()
+			set(BUNDLE_ARG "ROMFS")
+		endif()
+	endif()
+endif()
+
 # Platform setup
 set(HELP_STRING "Platform to compile for.")
 if(NINTENDO_3DS)
 	set(PLAYER_TARGET_PLATFORM "3ds" CACHE STRING "${HELP_STRING}")
+	add_subdirectory(src/platform/3ds)
 elseif(NINTENDO_SWITCH)
 	set(PLAYER_TARGET_PLATFORM "switch" CACHE STRING "${HELP_STRING}")
+	add_subdirectory(src/platform/switch)
 elseif(VITA)
 	set(PLAYER_TARGET_PLATFORM "psvita" CACHE STRING "${HELP_STRING}")
+	add_subdirectory(src/platform/psvita)
 elseif(NINTENDO_WII)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "${HELP_STRING} Options: SDL2 SDL1")
 	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1)
+	add_subdirectory(src/platform/wii)
 elseif(NINTENDO_WIIU)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "${HELP_STRING}")
+	add_subdirectory(src/platform/wiiu)
 elseif(AMIGA)
 	set(PLAYER_TARGET_PLATFORM "SDL1" CACHE STRING "${HELP_STRING}")
 elseif(PS4)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "${HELP_STRING}")
+	add_subdirectory(src/platform/ps4)
 else()
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "${HELP_STRING} Options: SDL3 SDL2 SDL1 libretro")
 	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL3 SDL2 SDL1 libretro)
@@ -144,27 +164,13 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL2")
 
 	if(ANDROID)
 		set(PLAYER_BUILD_EXECUTABLE OFF)
-	elseif(NINTENDO_WII)
-		target_sources(${PROJECT_NAME} PRIVATE
-			src/platform/wii/clock.h
-			src/platform/wii/input_buttons.cpp)
-	elseif(NINTENDO_WIIU)
-		target_sources(${PROJECT_NAME} PRIVATE
-			src/platform/wiiu/main.h
-			src/platform/wiiu/input_buttons.cpp)
 	endif()
 
 	if(WIN32)
 		target_link_libraries(${PROJECT_NAME} "Dwmapi")
 	endif()
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL1")
-	if(NINTENDO_WII)
-		find_package(SDL REQUIRED)
-		target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
-		target_sources(${PROJECT_NAME} PRIVATE
-			src/platform/wii/clock.h
-			src/platform/wii/input_buttons.cpp)
-	else()
+	if(NOT NINTENDO_WII)
 		player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
 	endif()
 
@@ -180,64 +186,8 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 	set(PLAYER_BUILD_EXECUTABLE OFF)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
-elseif(PLAYER_TARGET_PLATFORM STREQUAL "3ds")
-	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=CtrUi)
-	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after devkitarm ships newer gcc
-	# generate gfx assets
-	enable_language(ASM)
-	ctr_add_graphics_target(keyboard IMAGE
-		INPUTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/keyboard.png
-		OPTIONS -f rgba)
-	ctr_add_graphics_target(battery ATLAS
-		INPUTS
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/empty.png
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/1bar.png
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/2bars.png
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/3bars.png
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/4bars.png
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/full.png
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/adapter.png
-		OPTIONS -f rgba)
-	dkp_add_embedded_binary_library(3ds-assets keyboard battery)
-	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-	target_sources(${PROJECT_NAME} INTERFACE
-		$<TARGET_OBJECTS:3ds-assets> PRIVATE
-		src/platform/3ds/audio.cpp
-		src/platform/3ds/audio.h
-		src/platform/3ds/clock.h
-		src/platform/3ds/input_buttons.cpp
-		src/platform/3ds/ui.cpp
-		src/platform/3ds/ui.h)
-	target_link_libraries(${PROJECT_NAME} 3ds-assets)
-elseif(PLAYER_TARGET_PLATFORM STREQUAL "psvita")
-	include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=Psp2Ui)
-	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after vitasdk ships newer gcc
-	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/psvita/audio.cpp
-		src/platform/psvita/audio.h
-		src/platform/psvita/clock.h
-		src/platform/psvita/input_buttons.cpp
-		src/platform/psvita/ui.cpp
-		src/platform/psvita/ui.h)
-elseif(PLAYER_TARGET_PLATFORM STREQUAL "switch")
-	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=NxUi)
-	find_package(OpenGL CONFIG REQUIRED)
-	find_library(GLAD glad REQUIRED)
-	target_link_libraries(${PROJECT_NAME} OpenGL::EGL)
-	# generate gfx assets
-	enable_language(ASM)
-	dkp_add_embedded_binary_library(switch-assets "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
-	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-	target_sources(${PROJECT_NAME} INTERFACE
-		$<TARGET_OBJECTS:switch-assets> PRIVATE
-		src/platform/switch/audio.cpp
-		src/platform/switch/audio.h
-		src/platform/switch/clock.h
-		src/platform/switch/input_buttons.cpp
-		src/platform/switch/ui.cpp
-		src/platform/switch/ui.h)
-	target_link_libraries(${PROJECT_NAME} switch-assets)
+elseif(PLAYER_TARGET_PLATFORM MATCHES "^3ds|psvita|switch$")
+	# handled in platform folder
 else()
 	message(FATAL_ERROR "Invalid target platform: ${PLAYER_TARGET_PLATFORM}")
 endif()
@@ -286,10 +236,7 @@ elseif(PLAYER_AUDIO_BACKEND STREQUAL "SDL1")
 		src/platform/sdl/sdl_audio.cpp
 		src/platform/sdl/sdl_audio.h)
 elseif(PLAYER_AUDIO_BACKEND STREQUAL "AESND")
-	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/wii/audio.cpp
-		src/platform/wii/audio.h)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC AUDIO_AESND=1)
+	# wii
 elseif(PLAYER_AUDIO_BACKEND STREQUAL ${PLAYER_TARGET_PLATFORM})
 	# intentionally left blank
 elseif(PLAYER_AUDIO_BACKEND STREQUAL "OFF")
@@ -312,29 +259,11 @@ if(PLAYER_CONSOLE_PORT)
 	set(PLAYER_ENABLE_TESTS OFF)
 	option(PLAYER_VERSIONED_PACKAGES "Create zip packages with versioned name (for internal use)" ON)
 endif()
-if(VITA)
-	# This optimisation is unstable on Vita (crashes at the end of MainLoop)
-	target_compile_options(${PROJECT_NAME} PUBLIC -fno-optimize-sibling-calls)
-endif()
 # Enable some common code paths/workarounds
 target_compile_definitions(${PROJECT_NAME} PUBLIC
 	$<$<BOOL:${PLAYER_DEVKITPRO}>:PLAYER_NINTENDO>)
 
-# Make content available (romfs/wuhb bundle)
-if(NINTENDO_3DS OR NINTENDO_WIIU OR NINTENDO_SWITCH)
-	option(PLAYER_BUNDLE "Embed a directory in the executable" OFF)
-	set(PLAYER_BUNDLE_PATH "content" CACHE PATH "Directory to include in executable")
-	set(BUNDLE_ARG "_IGNORE_ME")
-	if(PLAYER_BUNDLE)
-		if(NINTENDO_WIIU)
-			set(BUNDLE_ARG "CONTENT")
-		else()
-			set(BUNDLE_ARG "ROMFS")
-		endif()
-	endif()
-endif()
-
-# Amiga
+# Amiga (TODO: move into /src/platform)
 if(AMIGA)
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_AMIGA)
@@ -491,8 +420,7 @@ option(PLAYER_WITH_LHASA "Support running games in lzh archives" ON)
 player_find_package(NAME lhasa
 	CONDITION PLAYER_WITH_LHASA
 	DEFINITION HAVE_LHASA
-	TARGET LHASA::liblhasa
-)
+	TARGET LHASA::liblhasa)
 
 # json support
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
@@ -828,101 +756,12 @@ if(PLAYER_BUILD_EXECUTABLE AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND N
 			DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
 elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
-	set(CPACK_PLATFORM "${PLAYER_TARGET_PLATFORM}")
-	if(NINTENDO_3DS)
-		add_executable(easyrpg-player src/platform/3ds/main.cpp)
-		target_link_libraries(easyrpg-player ${PROJECT_NAME} -lcitro2d -lcitro3d)
-		ctr_generate_smdh(easyrpg-player.smdh
-			NAME "${PLAYER_NAME} ${PLAYER_VERSION_FULL}"
-			DESCRIPTION "Play your RPG Maker 2000/2003 games everywhere"
-			AUTHOR "${PLAYER_AUTHORS}"
-			ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/icon.png)
-		ctr_create_3dsx(easyrpg-player SMDH easyrpg-player.smdh
-			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.3dsx
-			DESTINATION easyrpg-player COMPONENT 3ds)
-	elseif(NINTENDO_SWITCH)
-		add_executable(easyrpg-player src/platform/switch/main.cpp)
-		target_link_libraries(easyrpg-player ${PROJECT_NAME} ${GLAD})
-		nx_generate_nacp(easyrpg-player.nacp
-			NAME "${PLAYER_NAME}"
-			AUTHOR "${PLAYER_AUTHORS}"
-			VERSION "${PLAYER_VERSION_FULL}")
-		nx_create_nro(easyrpg-player NACP easyrpg-player.nacp
-			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg"
-			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.nro
-			DESTINATION easyrpg-player COMPONENT switch)
-	elseif(NINTENDO_WII)
-		add_executable(easyrpg-player src/platform/wii/main.cpp)
-		target_link_libraries(easyrpg-player ${PROJECT_NAME}
-			${SDL_LIBRARIES} -laesnd -lfat -lwiikeyboard)
-		if(TARGET SDL2::SDL2main)
-			# Missing dependency?
-			target_link_libraries(SDL2::SDL2main INTERFACE -lfat)
-		endif()
-		ogc_create_dol(easyrpg-player)
-		string(TIMESTAMP WII_DATE "%Y%m%d000000")
-		configure_file(resources/wii/meta.xml.in resources/wii/meta.xml @ONLY)
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.dol
-			RENAME boot.dol
-			DESTINATION easyrpg-player COMPONENT wii)
-		install(FILES resources/wii/icon.png
-			${CMAKE_CURRENT_BINARY_DIR}/resources/wii/meta.xml
-			DESTINATION easyrpg-player COMPONENT wii)
-	elseif(NINTENDO_WIIU)
-		add_executable(easyrpg-player src/platform/wiiu/main.cpp)
-		target_link_libraries(easyrpg-player ${PROJECT_NAME})
-		wut_create_rpx(easyrpg-player)
-		wut_create_wuhb(easyrpg-player
-			NAME "${PLAYER_NAME} ${PLAYER_VERSION_FULL}"
-			SHORTNAME "${PLAYER_NAME}"
-			AUTHOR "${PLAYER_AUTHORS}"
-			ICON resources/wiiu/icon.png
-			TVSPLASH resources/wiiu/splash-tv.png
-			DRCSPLASH resources/wiiu/splash-drc.png
-			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.rpx
-				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.wuhb
-			DESTINATION . COMPONENT wiiu)
-		set(CPACK_PLATFORM "wiiu")
-	elseif(VITA)
-		set(CMAKE_EXECUTABLE_SUFFIX .elf)
-		add_executable(easyrpg-player src/platform/psvita/main.cpp)
-		target_link_libraries(easyrpg-player ${PROJECT_NAME}
-			vita2d -Wl,--whole-archive pthread -Wl,--no-whole-archive SceLibKernel_stub
-			SceDisplay_stub SceGxm_stub SceSysmodule_stub SceCtrl_stub SceTouch_stub
-			ScePgf_stub ScePower_stub SceCommonDialog_stub SceAudio_stub SceAppMgr_stub)
-		vita_create_self(eboot.bin easyrpg-player.elf $<$<NOT:$<CONFIG:Debug>>:STRIPPED>)
-		set(VITA_MKSFOEX_FLAGS "-d ATTRIBUTE2=12")
-		configure_file(resources/psvita/template.xml.in resources/psvita/template.xml @ONLY)
-		vita_create_vpk(EasyRPG-Player.vpk "EASYRPG01" eboot.bin
-			VERSION "${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${PROJECT_VERSION_TWEAK}"
-			NAME "${PLAYER_NAME}"
-			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/icon0.png" sce_sys/icon0.png
-			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/bg.png" sce_sys/livearea/contents/bg.png
-			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/startup.png" sce_sys/livearea/contents/startup.png
-			FILE "${CMAKE_CURRENT_BINARY_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml
-			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/touch_ui.png" touch_ui.png)
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EasyRPG-Player.vpk
-			DESTINATION . COMPONENT psvita)
-	elseif(PS4)
-		add_executable(easyrpg-player "src/platform/ps4/main.cpp")
-		target_link_libraries(easyrpg-player ${PROJECT_NAME}
-			bz2 SceSysmodule ScePigletv2VSH SceUserService SceAudioOut SceSystemService ScePad)
-
-		configure_file(${OPENORBIS}/samples/piglet/sce_module/libc.prx
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_module/libc.prx COPYONLY)
-		configure_file(${OPENORBIS}/samples/piglet/sce_module/libSceFios2.prx
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_module/libSceFios2.prx COPYONLY)
-		configure_file(${OPENORBIS}/samples/piglet/sce_sys/about/right.sprx
-			${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_sys/about/right.sprx COPYONLY)
-
-		add_self(easyrpg-player)
-		add_pkg(easyrpg-player ${CMAKE_SOURCE_DIR}/resources/ps4
-			"ERPG00001" "easyRPG" "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
+	if(NOT CPACK_PLATFORM)
+		set(CPACK_PLATFORM "${PLAYER_TARGET_PLATFORM}")
 	endif()
+
 	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
+
 	# debug information
 	if(PLAYER_DEVKITPRO)
 		dkp_target_generate_symbol_list(easyrpg-player)
@@ -930,6 +769,7 @@ elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.lst
 			DESTINATION . COMPONENT debug)
 	endif()
+
 	# packaging for distribution
 	set(CPACK_GENERATOR "ZIP")
 	set(CPACK_SOURCE_GENERATOR ";") # disable source archive
@@ -1045,36 +885,7 @@ endif()
 # Unit tests (target "check")
 option(PLAYER_ENABLE_TESTS "Execute unit tests after compilation finishes" ON)
 if(PLAYER_ENABLE_TESTS)
-	file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
-	add_executable(test_runner_player EXCLUDE_FROM_ALL ${TEST_FILES})
-	set_target_properties(test_runner_player PROPERTIES
-		OUTPUT_NAME "test_runner"
-		WIN32_EXECUTABLE FALSE)
-
-	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
-		target_compile_definitions(test_runner_player
-			PUBLIC EP_NATIVE_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
-		target_compile_definitions(test_runner_player
-			PUBLIC EP_TEST_PATH=\"/assets\")
-		target_compile_definitions(test_runner_player
-			PUBLIC DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS=1)
-
-		target_link_libraries(test_runner_player "nodefs.js")
-		set_property(TARGET test_runner_player PROPERTY LINK_FLAGS "-sALLOW_MEMORY_GROWTH --bind")
-	else()
-		target_compile_definitions(test_runner_player
-			PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
-	endif()
-	target_link_libraries(test_runner_player ${PLAYER_TEST_LIBRARIES})
-	if(CMAKE_COLOR_DIAGNOSTICS)
-		set(DOCTEST_COLOROPT "--force-colors")
-	endif()
-	add_custom_target(check_player COMMAND test_runner_player ${DOCTEST_COLOROPT})
-	if(NOT TARGET check)
-		add_custom_target(check)
-	endif()
-	add_dependencies(check_player test_runner_player)
-	add_dependencies(check check_player)
+	add_subdirectory(tests)
 endif()
 
 # Instrumentation framework
@@ -1090,15 +901,7 @@ endif()
 # Benchmarks
 option(PLAYER_ENABLE_BENCHMARKS "Build benchmarks" OFF)
 if(PLAYER_ENABLE_BENCHMARKS)
-	find_package(benchmark REQUIRED)
-	file(GLOB BENCH_FILES ${CMAKE_CURRENT_SOURCE_DIR}/bench/*.cpp)
-	foreach(i ${BENCH_FILES})
-		get_filename_component(name "${i}" NAME_WE)
-		add_executable(bench_${name} ${i})
-		set_target_properties(bench_${name} PROPERTIES WIN32_EXECUTABLE FALSE)
-		target_link_libraries(bench_${name} ${PROJECT_NAME})
-		target_link_libraries(bench_${name} benchmark)
-	endforeach()
+	add_subdirectory(bench)
 endif()
 
 # Print summary
