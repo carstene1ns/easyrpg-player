@@ -762,14 +762,6 @@ elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 
 	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
 
-	# debug information
-	if(PLAYER_DEVKITPRO)
-		dkp_target_generate_symbol_list(easyrpg-player)
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.map
-				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.lst
-			DESTINATION . COMPONENT debug)
-	endif()
-
 	# packaging for distribution
 	set(CPACK_GENERATOR "ZIP")
 	set(CPACK_SOURCE_GENERATOR ";") # disable source archive

@@ -33,6 +33,9 @@ nx_create_nro(easyrpg-player NACP easyrpg-player.nacp
 	ICON ${RES_SRCDIR}/icon.jpg
 	${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
 
+# debug information
+player_handle_dkp_debug_files(easyrpg-player)
+
 # installation
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.nro
 	DESTINATION easyrpg-player COMPONENT switch)

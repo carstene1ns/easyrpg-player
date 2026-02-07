@@ -22,6 +22,9 @@ wut_create_wuhb(easyrpg-player
 	DRCSPLASH ${RES_SRCDIR}/splash-drc.png
 	${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
 
+# debug information
+player_handle_dkp_debug_files(easyrpg-player)
+
 # installation
 install(FILES
 		${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.rpx

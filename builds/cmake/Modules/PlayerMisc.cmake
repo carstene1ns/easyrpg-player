@@ -24,6 +24,20 @@ endif()
 # Since there are shared workarounds, add catch-all here
 if(NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_3DS OR NINTENDO_SWITCH)
 	set(PLAYER_DEVKITPRO 1)
+
+	# handle debug information files
+	function(player_handle_dkp_debug_files TARGET)
+		dkp_target_generate_symbol_list(${TARGET})
+		get_target_property(OUTDIR ${TARGET} BINARY_DIR)
+		get_target_property(OUTNAME ${TARGET} OUTPUT_NAME)
+		if(NOT OUTNAME)
+			set(OUTNAME "${TARGET}")
+		endif()
+		set(OUTPUT "${OUTDIR}/${OUTNAME}")
+
+		install(FILES ${OUTPUT}.map ${OUTPUT}.lst
+			DESTINATION . COMPONENT debug)
+	endfunction()
 endif()
 if(PLAYER_DEVKITPRO OR VITA OR PS4)
 	set(PLAYER_CONSOLE_PORT 1)

@@ -33,6 +33,9 @@ endif()
 
 ogc_create_dol(easyrpg-player)
 
+# debug information
+player_handle_dkp_debug_files(easyrpg-player)
+
 # installation
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.dol
 	RENAME boot.dol
