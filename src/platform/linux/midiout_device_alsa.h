@@ -20,7 +20,7 @@
 
 #include <cstdint>
 #include <alsa/asoundlib.h>
-#include "audio_midi.h"
+#include "audio/midi.h"
 
 /**
  * Plays MIDI through ALSA

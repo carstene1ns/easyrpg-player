@@ -17,19 +17,19 @@
 
 // Headers
 #include "battle_animation.h"
-#include "game_enemy.h"
+#include "game/enemy.h"
 #include "sprite_actor.h"
-#include "game_battler.h"
-#include "game_actor.h"
-#include "game_screen.h"
+#include "game/battler.h"
+#include "game/actor.h"
+#include "game/screen.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"
-#include "player.h"
+#include "player_main.h"
 #include <lcf/reader_util.h>
 #include "output.h"
 #include "feature.h"
-#include "game_battle.h"
+#include "game/battle.h"
 
 Sprite_Actor::Sprite_Actor(Game_Actor* actor)
 	: Sprite_Battler(actor, actor->GetId())

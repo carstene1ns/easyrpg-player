@@ -23,7 +23,7 @@
 #include <istream>
 #include <vector>
 #include "bitmap.h"
-#include "player.h"
+#include "player_main.h"
 
 /**
  * Extracts resources from an EXE.

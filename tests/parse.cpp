@@ -1,9 +1,9 @@
-#include "game_actors.h"
-#include "game_message.h"
-#include "game_party.h"
+#include "game/actors.h"
+#include "game/message.h"
+#include "game/party.h"
 #include "options.h"
 #include <lcf/data.h>
-#include "game_variables.h"
+#include "game/variables.h"
 #include "main_data.h"
 #include <iostream>
 #include "doctest.h"

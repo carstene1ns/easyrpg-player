@@ -20,7 +20,7 @@
 
 #include <switch.h>
 
-#include "audio_generic.h"
+#include "audio/generic.h"
 
 class NxAudio : public GenericAudio {
 public:

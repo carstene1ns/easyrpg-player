@@ -1,20 +1,20 @@
 #ifndef EP_TEST_MOVE_ROUTE_H
 #define EP_TEST_MOVE_ROUTE_H
 
-#include "game_map.h"
-#include "game_vehicle.h"
-#include "game_event.h"
-#include "game_player.h"
-#include "game_party.h"
+#include "game/map.h"
+#include "game/vehicle.h"
+#include "game/event.h"
+#include "game/player.h"
+#include "game/party.h"
 #include "main_data.h"
 #include "map_data.h"
-#include "game_switches.h"
-#include "game_variables.h"
-#include "game_screen.h"
-#include "game_pictures.h"
+#include "game/switches.h"
+#include "game/variables.h"
+#include "game/screen.h"
+#include "game/pictures.h"
 #include "input.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include <lcf/data.h>
 #include <lcf/rpg/moveroute.h>
 

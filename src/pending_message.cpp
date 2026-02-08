@@ -16,15 +16,15 @@
  */
 
 #include "pending_message.h"
-#include "game_variables.h"
-#include "game_strings.h"
-#include "game_actors.h"
-#include "game_message.h"
-#include "game_switches.h"
+#include "game/variables.h"
+#include "game/strings.h"
+#include "game/actors.h"
+#include "game/message.h"
+#include "game/switches.h"
 #include <lcf/data.h>
 #include "output.h"
 #include "utils.h"
-#include "player.h"
+#include "player_main.h"
 #include "main_data.h"
 #include <cassert>
 #include <cctype>

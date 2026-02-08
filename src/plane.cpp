@@ -17,12 +17,12 @@
 
 // Headers
 #include "plane.h"
-#include "player.h"
+#include "player_main.h"
 #include "bitmap.h"
 #include "main_data.h"
-#include "game_map.h"
+#include "game/map.h"
 #include "drawable_mgr.h"
-#include "game_screen.h"
+#include "game/screen.h"
 
 Plane::Plane() : Drawable(0)
 {

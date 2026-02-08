@@ -18,7 +18,7 @@
 // Headers
 #include "baseui.h"
 #include "bitmap.h"
-#include "player.h"
+#include "player_main.h"
 
 #if USE_SDL==3
 #  include "platform/sdl/sdl3_ui.h"

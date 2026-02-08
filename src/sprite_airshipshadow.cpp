@@ -18,9 +18,9 @@
 // Headers
 #include "cache.h"
 #include "bitmap.h"
-#include "game_map.h"
-#include "game_player.h"
-#include "game_system.h"
+#include "game/map.h"
+#include "game/player.h"
+#include "game/system.h"
 #include "main_data.h"
 #include "sprite_airshipshadow.h"
 #include <string>

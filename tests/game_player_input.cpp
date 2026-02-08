@@ -1,9 +1,9 @@
-#include "game_player.h"
+#include "game/player.h"
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
+#include "game/map.h"
 #include "main_data.h"
-#include "game_system.h"
+#include "game/system.h"
 #include "rand.h"
 #include <climits>
 

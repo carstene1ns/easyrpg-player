@@ -19,16 +19,16 @@
 
 #include "filesystem_stream.h"
 #include "input.h"
-#include "game_actors.h"
-#include "game_interpreter_control_variables.h"
-#include "game_map.h"
-#include "game_interpreter.h"
-#include "game_party.h"
-#include "game_switches.h"
-#include "game_variables.h"
+#include "game/actors.h"
+#include "game/interpreter_control_variables.h"
+#include "game/map.h"
+#include "game/interpreter.h"
+#include "game/party.h"
+#include "game/switches.h"
+#include "game/variables.h"
 #include "main_data.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 
 #include <lcf/reader_lcf.h>
 #include <lcf/reader_util.h>

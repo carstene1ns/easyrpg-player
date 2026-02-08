@@ -18,7 +18,7 @@
 // Headers
 #include <cmath>
 #include "system.h"
-#include "player.h"
+#include "player_main.h"
 #include "rect.h"
 #include "util_macro.h"
 #include "window.h"

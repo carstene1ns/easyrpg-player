@@ -24,7 +24,7 @@
 #include <string>
 #include <windows.h>
 #include <mmsystem.h>
-#include "audio_midi.h"
+#include "audio/midi.h"
 
 /**
  * Plays MIDI through the Windows API

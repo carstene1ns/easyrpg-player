@@ -22,7 +22,7 @@
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/clib.h>
 #include <psp2/appmgr.h>
-#include "player.h"
+#include "player_main.h"
 #include "output.h"
 
 int _newlib_heap_size_user = 330 * 1024 * 1024;

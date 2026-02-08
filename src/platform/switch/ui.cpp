@@ -21,7 +21,7 @@
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "bitmap.h"
 
 #include <switch.h>
@@ -37,7 +37,7 @@
 #include "touch_ui_png.h"
 
 #ifdef SUPPORT_AUDIO
-#include "audio.h"
+#include "audio/interface.h"
 
 using namespace std::chrono_literals;
 

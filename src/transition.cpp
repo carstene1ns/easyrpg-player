@@ -21,15 +21,15 @@
 #include <array>
 #include <cmath>
 
-#include "player.h"
+#include "player_main.h"
 #include "transition.h"
 #include "async_handler.h"
 #include "bitmap.h"
-#include "game_player.h"
+#include "game/player.h"
 #include "graphics.h"
 #include "main_data.h"
 #include "scene.h"
-#include "scene_map.h"
+#include "scene/map.h"
 #include "spriteset_map.h"
 #include "baseui.h"
 #include "drawable.h"

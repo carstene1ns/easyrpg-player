@@ -17,17 +17,17 @@
 
 // Headers
 #include "battle_animation.h"
-#include "game_enemy.h"
-#include "game_screen.h"
+#include "game/enemy.h"
+#include "game/screen.h"
 #include "sprite_enemy.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"
-#include "player.h"
+#include "player_main.h"
 #include <lcf/reader_util.h>
 #include "output.h"
 #include "feature.h"
-#include "game_battle.h"
+#include "game/battle.h"
 
 Sprite_Enemy::Sprite_Enemy(Game_Enemy* enemy)
 	: Sprite_Battler(enemy, enemy->GetTroopMemberId())

@@ -21,7 +21,7 @@
 
 #include <ogcsys.h>
 #include <aesndlib.h>
-#include "audio.h"
+#include "audio/interface.h"
 #include "output.h"
 
 namespace {

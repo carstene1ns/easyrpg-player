@@ -24,9 +24,9 @@
 
 #include "org_easyrpg_player_player_EasyRpgPlayerActivity.h"
 #include "android.h"
-#include "player.h"
+#include "player_main.h"
 #include "baseui.h"
-#include "scene_settings.h"
+#include "scene/settings.h"
 
 #ifdef __cplusplus
 extern "C" {

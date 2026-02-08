@@ -21,7 +21,7 @@
 #include <emscripten.h>
 #include "baseui.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 
 namespace {
 	std::vector<std::string> args;

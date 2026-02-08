@@ -19,7 +19,7 @@
 #define EP_PLATFORM_LIBRETRO_AUDIO_H
 
 #include "libretro.h"
-#include "audio_generic.h"
+#include "audio/generic.h"
 
 class LibretroAudio : public GenericAudio {
 public:

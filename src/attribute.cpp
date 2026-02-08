@@ -20,11 +20,11 @@
 #include <lcf/rpg/attribute.h>
 #include <lcf/reader_util.h>
 #include <lcf/data.h>
-#include "game_battler.h"
-#include "game_actor.h"
-#include "game_enemy.h"
+#include "game/battler.h"
+#include "game/actor.h"
+#include "game/enemy.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include <climits>
 
 namespace Attribute {

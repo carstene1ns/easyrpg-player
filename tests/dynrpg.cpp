@@ -1,7 +1,7 @@
 #include <lcf/data.h>
 #include "doctest.h"
-#include "game_dynrpg.h"
-#include "game_variables.h"
+#include "game/dynrpg.h"
+#include "game/variables.h"
 #include "test_mock_actor.h"
 
 TEST_SUITE_BEGIN("DynRPG");

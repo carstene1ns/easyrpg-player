@@ -1,6 +1,6 @@
 #include <orbis/libkernel.h>
 #include <orbis/SystemService.h>
-#include "player.h"
+#include "player_main.h"
 #include "output.h"
 
 static char log_buffer[1024];

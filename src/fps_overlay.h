@@ -23,7 +23,7 @@
 #include "drawable.h"
 #include "memory_management.h"
 #include "rect.h"
-#include "game_clock.h"
+#include "game/clock.h"
 
 /**
  * FpsOverlay class.

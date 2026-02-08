@@ -20,13 +20,13 @@
 #include <cmath>
 #include "tilemap_layer.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "map_data.h"
 #include "main_data.h"
 #include "bitmap.h"
 #include "compiler.h"
-#include "game_map.h"
-#include "game_system.h"
+#include "game/map.h"
+#include "game/system.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
 

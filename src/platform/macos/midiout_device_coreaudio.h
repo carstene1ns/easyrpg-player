@@ -18,7 +18,7 @@
 #ifndef EP_MIDIOUT_COREAUDIO_H
 #define EP_MIDIOUT_COREAUDIO_H
 
-#include "audio_midi.h"
+#include "audio/midi.h"
 #include <AudioToolbox/AudioToolbox.h>
 
 /**

@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "player.h"
+#include "player_main.h"
 #include <gccore.h>
 #include <ogcsys.h>
 #include <unistd.h>

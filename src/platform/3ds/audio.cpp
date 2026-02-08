@@ -20,12 +20,12 @@
 #include <cstdint>
 #include <cstring>
 
-#include "audio.h"
+#include "audio/interface.h"
 #include "filefinder.h"
-#include "game_clock.h"
+#include "game/clock.h"
 #include "output.h"
-#include "audio_secache.h"
-#include "audio_decoder_base.h"
+#include "audio/secache.h"
+#include "audio/decoder_base.h"
 
 //#define EP_DEBUG_CTRAUDIO
 #ifdef EP_DEBUG_CTRAUDIO

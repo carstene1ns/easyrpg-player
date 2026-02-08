@@ -18,7 +18,7 @@
 #include <3ds.h>
 #include <cstdio>
 
-#include "player.h"
+#include "player_main.h"
 #include <string>
 #include <sys/stat.h>
 #include <unistd.h>

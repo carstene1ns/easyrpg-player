@@ -1,5 +1,5 @@
 #include "doctest.h"
-#include "game_destiny.h"
+#include "game/destiny.h"
 #include <vector>
 
 

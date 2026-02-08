@@ -29,8 +29,8 @@
 #include "point.h"
 #include "rect.h"
 #include "keys.h"
-#include "game_config.h"
-#include "game_clock.h"
+#include "game/config.h"
+#include "game/clock.h"
 #include "input.h"
 
 #ifdef SUPPORT_AUDIO

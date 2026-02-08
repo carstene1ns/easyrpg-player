@@ -1,4 +1,4 @@
-#include "game_message.h"
+#include "game/message.h"
 #include "options.h"
 #include <iostream> // needed on macOS (see onqtam/doctest#126)
 #include "doctest.h"

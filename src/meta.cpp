@@ -29,7 +29,7 @@
 #include "main_data.h"
 #include "meta.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "translation.h"
 #include <lcf/reader_util.h>
 

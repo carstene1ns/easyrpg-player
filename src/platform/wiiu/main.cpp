@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
-#include "player.h"
+#include "player_main.h"
 #include "utils.h"
 #include "output.h"
 

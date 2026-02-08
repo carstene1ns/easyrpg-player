@@ -18,11 +18,11 @@
 // Headers
 #include "ui.h"
 #include "color.h"
-#include "game_config.h"
+#include "game/config.h"
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "bitmap.h"
 #include <iostream>
 #include <psp2/rtc.h>
@@ -40,7 +40,7 @@
 #include <stdio.h>
 
 #ifdef SUPPORT_AUDIO
-#include "audio.h"
+#include "audio/interface.h"
 AudioInterface& Psp2Ui::GetAudio() {
 	return *audio_;
 }

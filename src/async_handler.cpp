@@ -31,7 +31,7 @@
 #include "filefinder.h"
 #include "memory_management.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "main_data.h"
 #include "utils.h"
 #include "transition.h"

@@ -17,7 +17,7 @@
 
 #include "filefinder_rtp.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "registry.h"
 
 #include <lcf/reader_util.h>

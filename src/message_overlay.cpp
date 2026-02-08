@@ -18,9 +18,9 @@
 #include <sstream>
 
 #include "message_overlay.h"
-#include "player.h"
+#include "player_main.h"
 #include "bitmap.h"
-#include "game_message.h"
+#include "game/message.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
 

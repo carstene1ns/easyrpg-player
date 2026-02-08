@@ -18,7 +18,7 @@
 #ifndef EP_AUDIO_SDL_H
 #define EP_AUDIO_SDL_H
 
-#include "audio_generic.h"
+#include "audio/generic.h"
 
 class SdlAudio : public GenericAudio {
 public:

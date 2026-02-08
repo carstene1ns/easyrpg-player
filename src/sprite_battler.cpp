@@ -17,11 +17,11 @@
 
 // Headers
 #include "sprite_battler.h"
-#include "game_battler.h"
+#include "game/battler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"
-#include "player.h"
+#include "player_main.h"
 #include <lcf/reader_util.h>
 #include "output.h"
 

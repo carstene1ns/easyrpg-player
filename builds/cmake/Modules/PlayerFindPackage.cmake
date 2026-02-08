@@ -77,6 +77,7 @@ function(player_find_package)
 				target_link_libraries(${PROJECT_NAME} ${TARGET_ITEM})
 				if(PLAYER_FIND_PACKAGE_DEFINITION)
 					target_compile_definitions(${PROJECT_NAME} PUBLIC ${PLAYER_FIND_PACKAGE_DEFINITION}=1)
+					set(PLAYER_${PLAYER_FIND_PACKAGE_DEFINITION} 1)
 				endif()
 
 				break()

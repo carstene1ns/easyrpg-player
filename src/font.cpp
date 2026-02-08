@@ -24,7 +24,7 @@
 
 #include "filesystem_stream.h"
 #include "system.h"
-#include "game_system.h"
+#include "game/system.h"
 #include "main_data.h"
 
 #ifdef HAVE_FREETYPE
@@ -53,7 +53,7 @@
 #include "bitmap.h"
 #include "utils.h"
 #include "cache.h"
-#include "player.h"
+#include "player_main.h"
 #include "compiler.h"
 
 // Static variables.

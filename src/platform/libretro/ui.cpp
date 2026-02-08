@@ -27,7 +27,7 @@
 #include "main_data.h"
 #include "options.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "scene.h"
 #include "utils.h"
 
@@ -44,7 +44,7 @@ namespace Options {
 }
 
 #ifdef SUPPORT_AUDIO
-#include "audio.h"
+#include "audio/interface.h"
 AudioInterface& LibretroUi::GetAudio() {
 	return *audio_;
 }

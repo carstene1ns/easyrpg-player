@@ -38,8 +38,8 @@ option(PLAYER_NONFREE "For commercial usage. \
 	Disables libraries and fonts that are licensed under (L)GPL." OFF)
 
 # Source Files
-include(PlayerMainSources.cmake)
-add_library(${PROJECT_NAME} OBJECT ${PLAYER_MAIN_SOURCES})
+add_library(${PROJECT_NAME} OBJECT)
+add_subdirectory(src)
 
 # These are actually unused when building in CMake, and should be removed someday:
 # src/platform/opendingux/opendingux_input_buttons.cpp, src/platform/psp/psp_input_buttons.cpp
@@ -346,7 +346,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 endif()
 
 # Endianess
-target_compile_definitions(${PROJECT_NAME} PRIVATE
+target_compile_definitions(${PROJECT_NAME} PUBLIC
 	$<$<BOOL:${PLAYER_BIGENDIAN}>:WORDS_BIGENDIAN>)
 
 # App Icon (for macOS)
@@ -532,10 +532,10 @@ if(PLAYER_HAS_AUDIO)
 
 	cmake_dependent_option(PLAYER_WITH_SPEEXDSP
 		"Use speexdsp as resampler when available." ON
-		"PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
+		"PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
 	cmake_dependent_option(PLAYER_WITH_SAMPLERATE
 		"Use libsamplerate as resampler when available." ON
-		"PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
+		"PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
 
 	if(PLAYER_AUDIO_RESAMPLER_IS_AUTO)
 		player_find_package(NAME speexdsp
@@ -624,24 +624,8 @@ if(PLAYER_HAS_AUDIO)
 		CONDITION PLAYER_WITH_XMP
 		DEFINITION HAVE_LIBXMP
 		TARGET XMP::XMP)
-
-	if(PLAYER_ENABLE_FMMIDI)
-		target_sources(${PROJECT_NAME} PRIVATE
-			src/decoder_fmmidi.cpp
-			src/decoder_fmmidi.h
-			src/midiprogram.h
-			src/midisynth.cpp
-			src/midisynth.h)
-	endif()
-
-	if(PLAYER_ENABLE_DRWAV)
-		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_DRWAV=1)
-		target_sources(${PROJECT_NAME} PRIVATE
-			src/decoder_drwav.cpp
-			src/decoder_drwav.h
-			src/external/dr_wav.h)
-	endif()
 endif()
+add_subdirectory(src/audio)
 
 # Fonts
 option(PLAYER_WITH_BAEKMUK "Enable built-in Baekmuk font (Korean)" ON)

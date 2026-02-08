@@ -2,7 +2,7 @@
 #include "filefinder.h"
 #include "main_data.h"
 #include "doctest.h"
-#include "player.h"
+#include "player_main.h"
 
 #define ZIP_PATH EP_TEST_PATH "/filesystem/test.zip"
 #define ZIP_FOLDER_PATH EP_TEST_PATH "/filesystem/folder.zip"

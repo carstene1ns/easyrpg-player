@@ -19,7 +19,7 @@
 #include <unistd.h>
 #include <string>
 #include <vector>
-#include "player.h"
+#include "player_main.h"
 #include "output.h"
 
 namespace {

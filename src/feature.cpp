@@ -17,8 +17,8 @@
 
 // Headers
 #include "feature.h"
-#include "player.h"
-#include "game_interpreter_shared.h"
+#include "player_main.h"
+#include "game/interpreter_shared.h"
 #include <lcf/data.h>
 
 bool Feature::HasRpg2kBattleSystem() {

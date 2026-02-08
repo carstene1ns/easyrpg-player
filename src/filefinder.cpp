@@ -42,7 +42,7 @@
 #include "filesystem_root.h"
 #include "fileext_guesser.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "registry.h"
 #include "main_data.h"
 #include <lcf/reader_util.h>

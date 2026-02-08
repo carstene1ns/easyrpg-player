@@ -24,7 +24,7 @@
 #include "filefinder.h"
 #include "utils.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include <lcf/reader_util.h>
 #include <algorithm>
 #include <cassert>

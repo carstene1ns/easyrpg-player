@@ -18,10 +18,10 @@
 // Headers
 #include "sprite_character.h"
 #include "cache.h"
-#include "game_map.h"
+#include "game/map.h"
 #include "bitmap.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 
 Sprite_Character::Sprite_Character(Game_Character* character, int x_offset, int y_offset) :
 	character(character),

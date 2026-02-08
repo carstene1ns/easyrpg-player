@@ -1,7 +1,7 @@
-#include "game_character.h"
-#include "game_player.h"
-#include "game_event.h"
-#include "game_vehicle.h"
+#include "game/character.h"
+#include "game/player.h"
+#include "game/event.h"
+#include "game/vehicle.h"
 #include "doctest.h"
 #include <climits>
 

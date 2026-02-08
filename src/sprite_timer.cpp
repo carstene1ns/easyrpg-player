@@ -19,12 +19,12 @@
 #include "sprite_timer.h"
 #include "cache.h"
 #include "bitmap.h"
-#include "game_message.h"
-#include "game_party.h"
-#include "game_system.h"
-#include "game_battle.h"
-#include "window_message.h"
-#include <player.h>
+#include "game/message.h"
+#include "game/party.h"
+#include "game/system.h"
+#include "game/battle.h"
+#include "window/message.h"
+#include "player_main.h"
 
 Sprite_Timer::Sprite_Timer(int which) :
 	which(which)

@@ -1,7 +1,7 @@
 #include <cassert>
 #include <cstdlib>
 #include "filefinder.h"
-#include "player.h"
+#include "player_main.h"
 #include "main_data.h"
 #include "doctest.h"
 

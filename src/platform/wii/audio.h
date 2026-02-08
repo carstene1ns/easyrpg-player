@@ -18,7 +18,7 @@
 #ifndef EP_PLATFORM_WII_AUDIO_H
 #define EP_PLATFORM_WII_AUDIO_H
 
-#include "audio_generic.h"
+#include "audio/generic.h"
 
 class WiiAudio : public GenericAudio {
 public:

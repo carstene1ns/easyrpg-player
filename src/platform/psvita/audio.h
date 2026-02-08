@@ -20,7 +20,7 @@
 
 #include <psp2/types.h>
 
-#include "audio_generic.h"
+#include "audio/generic.h"
 
 class Psp2Audio : public GenericAudio {
 public:

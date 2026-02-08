@@ -1,16 +1,16 @@
 #ifndef EP_TEST_MOCK_ACTOR
 #define EP_TEST_MOCK_ACTOR
 
-#include "game_actors.h"
-#include "game_party.h"
-#include "game_enemyparty.h"
-#include "game_system.h"
-#include "game_variables.h"
-#include "game_switches.h"
-#include "game_player.h"
-#include "game_battle.h"
+#include "game/actors.h"
+#include "game/party.h"
+#include "game/enemyparty.h"
+#include "game/system.h"
+#include "game/variables.h"
+#include "game/switches.h"
+#include "game/player.h"
+#include "game/battle.h"
 #include "main_data.h"
-#include "player.h"
+#include "player_main.h"
 #include "output.h"
 #include <lcf/data.h>
 

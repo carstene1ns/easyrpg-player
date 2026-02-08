@@ -21,11 +21,11 @@
 #include <vector>
 #include "bitmap.h"
 #include "color.h"
-#include "game_screen.h"
+#include "game/screen.h"
 #include "main_data.h"
 #include "weather.h"
 #include "drawable_mgr.h"
-#include "player.h"
+#include "player_main.h"
 #include "output.h"
 #include "rand.h"
 

@@ -2,7 +2,7 @@
 #include "filefinder.h"
 #include "main_data.h"
 #include "doctest.h"
-#include "player.h"
+#include "player_main.h"
 
 TEST_SUITE_BEGIN("Tar filesystem");
 

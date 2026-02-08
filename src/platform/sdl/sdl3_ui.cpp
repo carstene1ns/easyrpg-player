@@ -19,7 +19,7 @@
 #include <cstring>
 #include "SDL3/SDL_mouse.h"
 #include "SDL3/SDL_video.h"
-#include "game_config.h"
+#include "game/config.h"
 #include "system.h"
 #include "sdl3_ui.h"
 
@@ -41,7 +41,7 @@
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "bitmap.h"
 #include "lcf/scope_guard.h"
 

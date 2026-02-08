@@ -1,10 +1,10 @@
-#include "game_player.h"
+#include "game/player.h"
 #include "doctest.h"
 #include "options.h"
-#include "game_map.h"
-#include "game_vehicle.h"
+#include "game/map.h"
+#include "game/vehicle.h"
 #include "main_data.h"
-#include "game_switches.h"
+#include "game/switches.h"
 #include <climits>
 #include <initializer_list>
 

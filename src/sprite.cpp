@@ -18,7 +18,7 @@
 // Headers
 #include <string>
 #include "sprite.h"
-#include "player.h"
+#include "player_main.h"
 #include "util_macro.h"
 #include "bitmap.h"
 #include "cache.h"

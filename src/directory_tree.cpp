@@ -20,7 +20,7 @@
 #include "filesystem.h"
 #include "output.h"
 #include "platform.h"
-#include "player.h"
+#include "player_main.h"
 #include <lcf/reader_util.h>
 
 //#define EP_DEBUG_DIRECTORYTREE

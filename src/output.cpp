@@ -35,7 +35,7 @@
 #include "filefinder.h"
 #include "input.h"
 #include "options.h"
-#include "player.h"
+#include "player_main.h"
 #include "bitmap.h"
 #include "message_overlay.h"
 #include "font.h"

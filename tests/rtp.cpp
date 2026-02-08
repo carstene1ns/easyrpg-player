@@ -1,7 +1,7 @@
 #include <limits>
 #include <ostream>
 #include "filefinder.h"
-#include "player.h"
+#include "player_main.h"
 #include "rtp.h"
 #include "doctest.h"
 

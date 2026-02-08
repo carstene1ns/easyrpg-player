@@ -1,7 +1,7 @@
 #include <benchmark/benchmark.h>
 #include "filefinder_rtp.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 
 static void BM_InitRtp2k(benchmark::State& state) {
 	Output::SetLogLevel(LogLevel::Error);

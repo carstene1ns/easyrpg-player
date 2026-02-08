@@ -20,7 +20,7 @@
 
 #include <cstdint>
 #include "libretro.h"
-#include "audio_midi.h"
+#include "audio/midi.h"
 
 /**
  * Plays MIDI through Libretro API

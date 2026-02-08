@@ -1,6 +1,6 @@
 #include "mock_game.h"
-#include "game_actors.h"
-#include "game_system.h"
+#include "game/actors.h"
+#include "game/system.h"
 
 static lcf::rpg::Terrain MakeTerrain() {
 	return {};

@@ -25,7 +25,7 @@
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "bitmap.h"
 
 #ifdef SUPPORT_AUDIO

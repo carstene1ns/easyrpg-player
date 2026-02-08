@@ -17,9 +17,9 @@
 
 #ifdef SUPPORT_AUDIO
 
-#include "audio.h"
+#include "audio/interface.h"
 #include "output.h"
-#include "game_clock.h"
+#include "game/clock.h"
 
 #include <vector>
 #include <cstdint>

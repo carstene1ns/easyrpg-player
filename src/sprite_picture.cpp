@@ -18,11 +18,11 @@
 
 #include "sprite_picture.h"
 #include "main_data.h"
-#include "game_pictures.h"
-#include "game_battle.h"
-#include "game_screen.h"
-#include "game_windows.h"
-#include "player.h"
+#include "game/pictures.h"
+#include "game/battle.h"
+#include "game/screen.h"
+#include "game/windows.h"
+#include "player_main.h"
 #include "bitmap.h"
 
 Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)

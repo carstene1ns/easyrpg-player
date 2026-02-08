@@ -15,16 +15,16 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "algo.h"
-#include "game_battler.h"
-#include "game_actor.h"
-#include "game_enemy.h"
-#include "game_system.h"
+#include "game/battler.h"
+#include "game/actor.h"
+#include "game/enemy.h"
+#include "game/system.h"
 #include "main_data.h"
-#include "game_player.h"
-#include "game_targets.h"
-#include "game_battle.h"
+#include "game/player.h"
+#include "game/targets.h"
+#include "game/battle.h"
 #include "attribute.h"
-#include "player.h"
+#include "player_main.h"
 #include "rand.h"
 #include <lcf/rpg/skill.h>
 #include <lcf/reader_util.h>

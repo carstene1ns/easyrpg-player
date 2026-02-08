@@ -23,9 +23,9 @@
 
 #include "baseui.h"
 #include "input_source.h"
-#include "player.h"
+#include "player_main.h"
 #include "output.h"
-#include "game_system.h"
+#include "game/system.h"
 #include "main_data.h"
 #include "version.h"
 

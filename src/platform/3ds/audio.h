@@ -18,15 +18,14 @@
 #ifndef EP_PLATFORM_3DS_AUDIO_H
 #define EP_PLATFORM_3DS_AUDIO_H
 
-// TODO: make this relative with source restructure, e.g. "engine/audio.h"
-#include_next "audio.h"
+#include "audio/interface.h"
 
 #include <3ds.h>
 #include <3ds/synchronization.h>
 #include <memory>
 
-#include "audio_decoder.h"
-#include "game_clock.h"
+#include "audio/decoder.h"
+#include "game/clock.h"
 
 class CtrAudio final : public AudioInterface {
 public:

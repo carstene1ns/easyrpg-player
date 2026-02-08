@@ -32,9 +32,9 @@
 #include "default_graphics.h"
 #include "bitmap.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include <lcf/data.h>
-#include "game_clock.h"
+#include "game/clock.h"
 #include "translation.h"
 
 using namespace std::chrono_literals;

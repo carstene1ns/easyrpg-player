@@ -17,11 +17,11 @@
 
 // Headers
 #include "input.h"
-#include "game_config.h"
+#include "game/config.h"
 #include "input_buttons.h"
 #include "input_source.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "system.h"
 #include "baseui.h"
 

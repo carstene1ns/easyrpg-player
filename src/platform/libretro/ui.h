@@ -19,7 +19,7 @@
 #define EP_PLATFORM_LIBRETRO_UI_H
 
 // Headers
-#include "audio.h"
+#include "audio/interface.h"
 #include "baseui.h"
 #include "color.h"
 #include "rect.h"

@@ -21,7 +21,7 @@
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"
-#include "player.h"
+#include "player_main.h"
 #include "bitmap.h"
 #include <iostream>
 #include <sys/iosupport.h>
@@ -36,7 +36,7 @@
 #include "battery_t3x.h"
 
 #ifdef SUPPORT_AUDIO
-#include "audio.h"
+#include "audio/interface.h"
 AudioInterface& CtrUi::GetAudio() {
 	return *audio_;
 }

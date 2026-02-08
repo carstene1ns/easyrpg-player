@@ -17,13 +17,13 @@
 
 // Headers
 #include "sprite_weapon.h"
-#include "game_battler.h"
-#include "game_actor.h"
-#include "game_screen.h"
+#include "game/battler.h"
+#include "game/actor.h"
+#include "game/screen.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"
-#include "player.h"
+#include "player_main.h"
 #include <lcf/reader_util.h>
 #include "output.h"
 
