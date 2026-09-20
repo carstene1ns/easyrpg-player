@@ -150,9 +150,11 @@ namespace {
 	FT_Library library = nullptr;
 
 	static bool IsBetterFontSize(int candidate, int current_best, int target_size) {
-		// When the font is not scalable this helper function is used to find
-		// the closest smaller font height. An exception is when their is no
-		// smaller in which cases it picks the minimum.
+		// When the font is not scalable, this helper function is used to find
+		
+		// the closest smaller font height. When there is no smaller height,
+		
+		// it picks the minimum.
 		if (current_best < 0) {
 			return true;
 		}
